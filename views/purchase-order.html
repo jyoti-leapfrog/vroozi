@@ -1,0 +1,236 @@
+<!-- Body Start -->
+<div class="span40" ng-controller="PurchaseOrderCtrl">
+
+    <!-- Create Purchase Order Start -->
+    <div class="page-header">
+        <h2 class="section-h2">{{labelPurchaseOrder}}</h2>
+    </div>
+
+    <div class="row">
+      <div class="span6">
+        <a href="#/purchase-request/{{ purchaseOrder.purchaseRequestId }}" class="btn btn-warning btn span6">Go Back</a>
+      </div>
+    </div>
+
+    <form name="purchaseOrderForm" novalidate>
+        <div class="form-section-plain" style="padding-bottom: 24px;">
+
+
+        <div class="spacing" style="height: 20px"></div>
+        <div class="row">
+            <div class="span6 offset1">
+                <label class="control-label" for="order">Order</label>
+                <span class="span6 uneditable-input" id="order">{{ purchaseOrder.orderNumber | formatOrder }}</span>
+            </div>
+
+            <div class="span2 offset6">
+                <label class="control-label" for="status1">Status</label>
+                <span class="span6 uneditable-input" id="status1">{{purchaseOrder.status}}</span>
+            </div>
+
+            <div class="span7 offset6">
+                <label class="control-label" for="vendorName">Vendor Name</label>
+                <span class="span6 uneditable-input" id="vendorName">{{purchaseOrder.supplierName}}</span>
+            </div>
+
+            <div class="span7 offset4">
+                <label class="control-label" for="effectiveDate">Effective Date</label>
+                <span class="span6 uneditable-input" id="effectiveDate">{{purchaseOrder.effectiveDate | date:'MM/dd/yyyy'}}</span>
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+            <div class="span11 offset1">
+                <label class="control-label" for="name" style="display:inline;">Order Name</label>
+                <span class="span10 uneditable-input" id="name">{{purchaseOrder.name}}</span>
+            </div>
+            <div class="span7 offset1">
+                <label class="control-label" for="priority" style="display:inline;">Priority</label>
+                <span class="span6 uneditable-input" id="priority">{{purchaseOrder.priority}}</span>
+            </div>
+            <div class="span7 offset1">
+                <label class="control-label" for="vendorId" style="display:inline;">Vendor Id</label>
+                <span class="span6 uneditable-input" id="vendorId">{{purchaseOrder.supplierId}}</span>
+            </div>
+            <div class="span7 offset4">
+                <label class="control-label" for="requester" style="display:inline;">Requester</label>
+                <span class="span6 uneditable-input" id="requester">{{purchaseOrder.requester}}</span>
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+            <div class="span10 offset1">
+                <label class="control-label" for="order" style="display:inline;">Shipping Address</label>
+
+                <div class="controls">
+                    <address class="well well-small" ng-show="purchaseOrder.shipAddresses">
+                        <strong>{{ purchaseOrder.shipAddresses.addressName }}</strong><br>
+                        {{ purchaseOrder.shipAddresses.street }}<br>
+                        <span ng-show="purchaseOrder.shipAddresses.street2">{{ purchaseOrder.shipAddresses.street2 }}<br></span>
+                        {{ purchaseOrder.shipAddresses.city }}, {{ purchaseOrder.shipAddresses.state }} {{ purchaseOrder.shipAddresses.postalCode }}<br>
+                        {{ purchaseOrder.shipAddresses.country }}<br>
+                        <abbr title="Phone">P:</abbr>{{ purchaseOrder.shipAddresses.phone }}
+                    </address>
+                </div>
+            </div>
+            <div class="span7 offset2">
+                <label class="control-label" for="department" style="display:inline;">Department</label>
+                <span class="span6 uneditable-input" id="department">{{purchaseOrder.department}}</span>
+            </div>
+            <div class="span18 offset1">
+                <label class="control-label" for="reason" style="display:inline;">Payment Terms</label>
+                <span class="span17 uneditable-input" id="reason">{{purchaseOrder.paymentTerms}}</span>
+            </div>
+        </div>
+
+<!--<pre>-->
+<!--{{purchaseOrder.items | json}}-->
+<!--</pre>-->
+
+        <div class="row">
+            <div class="span38 offset1">
+                <table class="hidden-phone span38 table table-striped table-hover table-condensed table-bordered">
+                <table class="display-phone table table-striped table-hover table-condensed table-bordered">
+                    <caption><h4 class="pull-left">Line Item Overview</h4></caption>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Supplier</th>
+                        <th>Qty</th>
+                        <th>UoM</th>
+                        <th class="hidden-phone hidden-tablet">Category</th>
+                        <th class="hidden-phone hidden-tablet">Part No.</th>
+                        <th>Unit Price</th>
+                        <th class="hidden-phone hidden-tablet">Delivery Date</th>
+                        <!--<th><span class="hidden-phone">Notes</span><span class="visible-phone">{{'Notes' | firstLetter}}</span></th>-->
+                        <th>Total Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="lineItem in purchaseOrder.items">
+                          <td>{{ lineItem.id }}</td>
+                          <td><a href="" ng-click="viewLineItem(lineItem)">{{ lineItem.description }}</a></td>
+                          <td>{{ lineItem.supplierName }}</td>
+                          <td>{{ lineItem.qty }}</td>
+                          <td>{{ lineItem.uom}}</td>
+                          <td class="hidden-phone hidden-tablet">{{ lineItem.category}}</td>
+                          <td class="hidden-phone hidden-tablet">{{ lineItem.partNo }}</td>
+                          <td>{{ lineItem.unitPrice | currency:lineItem.currency }} {{ lineItem.currency }}</td>
+                          <td class="hidden-phone hidden-tablet">{{ lineItem.deliveryDate | date: 'MM/dd/yyyy' }} </td>
+                          <!--<td><a href="" ng-click="editLineItem(lineItem)"><i class="icon-list-alt" ></i></a></td>-->
+                          <td>{{ lineItem.unitPrice * lineItem.qty | currency:lineItem.currency }} {{ lineItem.currency }}</td>
+                      </tr>
+                      <tr ng-show="lineItems.length == 0">
+                        <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">This purchase order has no line items.</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span7 offset19" style="margin-top: 5px" ng-show="lineItems.length > 0">
+                <label class="control-label"><strong>Subtotal</strong></label>
+            </div>
+            <div class="span6 offset1" ng-show="lineItems.length > 0">
+                <div class="controls">
+                    <span class="uneditable-input span6">{{ subTotal | currency:currencyCode }} <small>{{ currencyCode }}</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="lineItems.length > 0">
+            <div class="span7 offset25" style="margin-top: 5px">
+                <label class="control-label"><strong>Shipping Charges</strong></label>
+            </div>
+            <div class="span6 offset1">
+                <div class="controls">
+                    <span class="uneditable-input span6">{{ shippingCharges | currency:currencyCode }} <small>{{ currencyCode }}</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="lineItems.length > 0">
+            <div class="span7 offset25" style="margin-top: 5px">
+                <label class="control-label"><strong>Tax</strong></label>
+            </div>
+            <div class="span6 offset1">
+                <div class="controls">
+                    <span class="uneditable-input span6">{{ taxAmount | currency:currencyCode }} <small>{{ currencyCode }}</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="lineItems.length > 0">
+            <div class="span7 offset25" style="margin-top: 5px">
+                <label class="control-label"><strong><span style="font-size: 20px">Total</span></strong></label>
+            </div>
+            <div class="span6 offset1">
+                <div class="controls">
+                    <span class="uneditable-input span6" style="font-size: 20px">{{  totalAmount | currency:currencyCode  }} <small>{{ currencyCode }}</small></span>
+                </div>
+            </div>
+        </div>
+        <div class="spacing" style="height: 15px"></div>
+
+        <!-- Notes -->
+        <div class="row">
+            <div class="span18 offset1">
+              <label class="control-label span17" style="margin-right: 1em" for="notesForSupplier">Notes for Supplier</label>
+              <textarea class="span18" rows="3" id="notesForSupplier" ng-model="purchaseOrder.notesToSupplier" ng-disabled="isReadOnlyOrder"></textarea>
+            </div>
+        </div>
+        <div class="spacing" style="height: 40px"></div>
+        <!-- /Notes -->
+
+        <!-- Purchase Orders -->
+        <div class="span38 offset1" ng-show="purchaseOrders.length >= 0">
+          <table class="span38 table table-striped table-hover table-condensed table-bordered">
+            <caption><h4 class="pull-left">Purchase Orders</h4></caption>
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Order Number</th>
+                <th>Status</th>
+                <th>Total Price</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="purchaseOrders" ng-repeat="PurchaseOrder in purchaseOrders">
+              <td>{{PurchaseOrder.supplierName}}</td>
+              <td>{{PurchaseOrder.orderNumber | formatOrder}}</td>
+              <td>{{PurchaseOrder.status}}</td>
+              <td>{{PurchaseOrder.totalAmount}} <small>{{PurchaseOrder.currency}}</small></td>
+            </tr>
+            <tr ng-show="purchaseOrders.length == 0">
+              <td colspan="4" style="height: 4em;vertical-align: middle;text-align:center;">This purchase order has no line items.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /Purchase Orders -->
+
+        <div class="row">
+            <div class="span6 offset13">
+                <a href="#/purchase-request/{{ purchaseOrder.purchaseRequestId }}" class="btn btn-warning btn-large span6">Go Back</a>
+            </div>
+        </div>
+
+        <div class="spacing" style="height: 60px"></div>
+
+        </div>
+    </form>
+    <!-- Create Purchase Order End -->
+
+    <!-- Modals -->
+    <div id="lineItemOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/lineItem-modal.html'"></div>
+
+<!-- /Modals -->
+
+<!--</div>-->
+</div>
+
+

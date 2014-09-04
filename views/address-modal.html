@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">Shipping Address</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="addressForm">
+        <div id="addressNameDiv" class="control-group" ng-class="{error: addressForm.addressName.$dirty && addressForm.addressName.$invalid}">
+            <label class="control-label" for="addressName">Address Name</label>
+            <div class="controls">
+                <input type="text" name="addressName" id="addressName" placeholder="" required ng-model="address.addressName">
+                <span class="help-inline" ng-show="addressForm.addressName.$error.required">required</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="address.companyAddress">
+                    Company Address
+                </label>
+            </div>
+        </div>
+        <div id="attentionDiv" class="control-group" ng-class="{error: addressForm.attention.$dirty && addressForm.attention.$invalid}">
+            <label class="control-label" for="attention">Attention To</label>
+            <div class="controls">
+                <input type="text" name="attention" id="attention" placeholder="" required ng-model="address.attention">
+                <span class="help-inline" ng-show="addressForm.attention.$error.required">required</span>
+            </div>
+        </div>
+        <div id="countryDiv" class="control-group" ng-class="{error: addressForm.country.$dirty && addressForm.country.$invalid}">
+            <label class="control-label" for="country">Country</label>
+
+            <div class="controls">
+                <select id="country" name="country" ng-model="address.country" ng-options="country.countryName as country.countryName for country in countries" required></select>
+                <span class="help-inline" ng-show="addressForm.country.$error.required">required</span>
+            </div>
+        </div>
+        <div id="streetDiv" class="control-group"  ng-class="{error: addressForm.street.$dirty && addressForm.street.$invalid}">
+            <label class="control-label" for="street">Street</label>
+            <div class="controls">
+                <input type="text" name="street" id="street" placeholder="123 Ocean Ave." required ng-model="address.street">
+                <span class="help-inline" ng-show="addressForm.street.$error.required">required</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="street2">Street #2</label>
+            <div class="controls">
+                <input type="text" id="street2" placeholder="Apt. 410" ng-model="address.street2">
+            </div>
+        </div>
+        <div id="cityDiv" class="control-group" ng-class="{error: addressForm.city.$dirty && addressForm.city.$invalid}">
+            <label class="control-label" for="city">City</label>
+            <div class="controls">
+                <input type="text" name="city" id="city" placeholder="Santa Monica" required ng-model="address.city">
+                <span class="help-inline" ng-show="addressForm.city.$error.required">required</span>
+            </div>
+        </div>
+        <div id="postalCodeDiv" class="control-group" ng-class="{error: addressForm.postalCode.$dirty && addressForm.postalCode.$invalid}">
+            <label class="control-label" for="postalCode">Zip</label>
+            <div class="controls">
+                <input type="text" name="postalCode" id="postalCode" placeholder="90401" required ng-model="address.postalCode">
+                <span class="help-inline" ng-show="addressForm.postalCode.$error.required">required</span>
+            </div>
+        </div>
+        <div id="stateDiv" class="control-group"  ng-class="{error: (addressForm.state1.$dirty && addressForm.state1.$invalid) || (addressForm.state2.$dirty && addressForm.state2.$invalid)}">
+            <label class="control-label" ng-show="address.country == 'United States'" for="state">State</label>
+            <label class="control-label" ng-show="address.country != 'United States'" for="state">Region</label>
+            <div class="controls">
+                <select id="state" name="state1" ng-show="address.country == 'United States'" ng-model="address.state" ng-options="region.code as region.code for region in regions" required></select>
+                <input type="text" name="state2" id="state" ng-show="address.country != 'United States'" required ng-model="address.state">
+                <span class="help-inline" ng-show="addressForm.state1.$error.required || addressForm.state2.$error.required">required</span>
+            </div>
+        </div>
+
+        <div id="phoneDiv" class="control-group" ng-class="{error: addressForm.phone.$dirty && addressForm.phone.$invalid}">
+            <label class="control-label" for="phone">Phone</label>
+            <div class="controls">
+                <input type="text" name="phone" id="phone" placeholder="(555) 555-5555" ng-model="address.phone">
+            </div>
+        </div>
+        <div id="taxIdDiv" class="control-group" ng-class="{error: addressForm.taxId.$dirty && addressForm.taxId.$invalid}">
+            <label class="control-label" for="taxId">Tax Id</label>
+            <div class="controls">
+                <input name="taxId" type="text" id="taxId" placeholder="" ng-model="address.taxId">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button href="" ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button href="" ng-click="saveShippingAddress()" ng-disabled="addressForm.$invalid" type="button" class="btn btn-primary">Save changes</button>
+</div>

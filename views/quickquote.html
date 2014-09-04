@@ -1,0 +1,163 @@
+<div class="row select-parent-12" ng-controller="QuickQuoteCtrl">
+  <div class="center-div span40">
+    <section class="main-content">
+      <div class="page-header mt-0">
+        <h2>Create QuickQuote</h2>
+      </div>
+      <div class="quickrfx-container">
+        <form method="post" action="#">
+          <div class="quickrfx-blocks">
+            <div class="quickrfxbg-blocks create-quote-wrapper">
+              <div class="col-1">
+                <div class="form-group">
+                  <label>QuickQuote Number</label>
+                  <span class="span10 uneditable-input">{{ quotation.quotationNumber | formatOrder}}</span>
+                </div>
+                <div class="form-group">
+                  <label for="QuotationRequest.name">QuickQuote Name </label>
+                  <input type="text" class="span10" ng-model = "quotation.quotationName">
+                </div>
+                <div class="form-group">
+                  <label for="rfxname">Buyer Name</label>
+                  <input type="text" class="span10" ng-model="quotation.contactName"/>
+                </div>
+                
+                <div class="form-group sml-box clearfix">
+                  <!-- <label>Deadline</label>
+                  <input type="text" class="span"  disabled="" ng-model="quotation.deadline">
+                  <input type="text" class="span10" disabled="" value="13:00am"> -->
+                    <div class="calender-block">
+                      <label for="datefrom">Deadline </label>
+                      <input type="text" name="startDate" id="dateform" class="span7 effective ng-valid ng-valid-required ng-dirty" ng-model="quotation.expirationDate" b-datepicker="" required="">
+                    </div>
+                    <div class="calender-block">
+                      <label for="quotehr">Time</label>
+                      <input class="span4" data-format="hh:mm:ss" type="text" id="quotehr" ng-value="quotation.quoteDate" disabled="" value="5:00 PM">
+                    </div>
+                    <div class="calender-block">
+                      <label for="timeZone">Time Zone</label>                  
+                      <input class="span4" type="text" id="quotehr" ng-value="quotation.quoteDate" disabled="" value="PST">
+                    </div>                 
+                 </div>
+              </div>
+              <div class="col-1">                
+                <div id="datetimepicker" class="form-group input-append date">
+                  <label for="quotedate">Quote Date</label>
+                  <input class="span7" type="text" id="quotedate" ng-model="quotation.quoteDate" value="{{curDate}}" b-datepicker="">                  
+                </div>
+                <div class="form-group">
+                  <label>Supplier Name</label>
+                  <input type="text" class="span10" disabled="disabled">
+                </div>
+                <div class="form-group">
+                  <label>Contact Name </label>
+                  <input type="text" class="span10" disabled="" ng-model="quotation.contactName">
+                </div>
+                <div class="form-group">
+                  <label for="paymentterms"ng-model="Quotation.paymentTerms">Payment Terms </label>
+                  <select class="span10">
+                    <option>Immediately</option>
+                    <option>Net 7</option>
+                    <option>Net 14</option>
+                    <option>Net 30</option>
+                    <option>Net 45</option>
+                    <option>Net 60</option>                    
+                  </select>
+                </div>  
+                <div class="form-group">
+                  <label>RFX Number </label>
+                    <span class="span10 uneditable-input">{{ quotation.quotationRequestNumber | formatOrder}}</span>
+                </div>              
+              </div>
+            </div>
+          </div>
+          <div class="quickrfx-blocks">
+            <h2>Items to be Quoted</h2>
+            <div class="quickrfxbg-blocks">
+              <div class="col-2-block">
+                <div class="item-quote-block clearfix">
+                  <div class="table-wrapper">
+                    <div>                    
+                       <div class="form-group">                        
+                            <label for="description">Description </label>
+                            <textarea ng-model="qr.description" rows="1" class="span12" disabled="disabled">{{qr.description}}</textarea>
+                        </div>
+                        <div class="form-group">                        
+                            <label for="qty">Qty </label>
+                            <input type="text" class="span3" ng-model="qr.qty" ng-value="{{qr.qty}}" disabled="disabled">
+                        </div>
+                        <div class="form-group">                        
+                            <label for="uom">UoM </label>
+                            <input type="text" ng-model="qr.uom" class="span3" ng-value="{{qr.uom}}"  ng-model="quote.qty" disabled="disabled">
+                        </div>
+                        <div class="form-group">                        
+                            <label for="partno">Part No.</label>
+                            <input type="text" name="partno" class="span3" ng-value="{{qr.partNo}}" value="{{item.partNo}}"  disabled="disable=d">
+                        </div>                        
+                    </div>
+                      
+                  </div>
+                  
+                  <div class="add-info-wrapper">
+                    <div class="column-one">
+                        <div class="form-group">                        
+                            <label for="qty">Qty </label>
+                            <input type="text" name="qty" class="span3" ng-model="quotation.qty">
+                        </div>                                           
+                        <div class="form-group">
+                          <label for="price">Price</label>
+                          <input type="text" name="price" class="span3" ng-model="price">
+                        </div>                   
+                        <div id="datetimepicker1" class="form-group input-append date">
+                          <label for="deliverydate">Delivery Date</label>
+                          <input class="span5" data-format="hh:mm:ss" type="text" ng-model="quotation.deliveryDate" b-datepicker="">
+                        </div>                    
+                    </div>                                
+                  </div>
+                 
+                  </div>
+                
+              </div>
+            </div>
+            <div class="quickrfxbg-blocks">
+              <div class="create-quote-btm">
+                <div class="col-1">
+                  <div class="form-group">
+                    <label for="Notesforbuyer">Notes for Buyer</label>
+                    <textarea class="form-control" rows="8" ng-model="quotation.buyersnote"></textarea>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                    <label for="terms">Terms and Conditions </label>
+                    <textarea class="form-control" rows="8"  disabled="">This Agreement, including all exhibits and addenda hereto and all Order Forms, constitutes the entire agreement between the parties and supersedes all prior and contemporaneous agreements, proposals or representations, written or oral, concerning its subject matter. No modification, amendment, or waiver of any provision of this Agreement shall be effective unless in writing and either signed or accepted electronically by the party against whom the modification, amendment or waiver is to be asserted. However, to the extent of any conflict or inconsistency between the provisions in the body of this Agreement and any exhibit or addendum hereto or any Order Form, the terms of such exhibit, addendum or Order Form shall prevail. Notwithstanding any language to the contrary therein, no terms or conditions stated in Your purchase order or other order documentation (excluding Order Forms) shall be incorporated into or form any part of this Agreement, and all such terms or conditions shall be null and void.Vroozi, Inc.
+                    </textarea>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="button-wrapper btn-new">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-large btn-warning">Go Back</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-large btn-success">Attach Files</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-large btn-primary" ng-click="quickQuote()">Submit Quote</button>
+                  </div>
+                  
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+  if ($('.select-parent-12')) {
+    $('.hide-sidebar-demo').hide();
+    $('.select-parent-12').parent().parent().removeClass('span40');  
+  }    
+</script>

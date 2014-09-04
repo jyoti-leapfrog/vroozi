@@ -1,0 +1,91 @@
+<!-- Body Start -->
+<div class="span40">
+    <!--<div class="spacing" style="height:900px">-->
+
+    <div class="page-header">
+        <h2 class="section-h2">Company Settings</h2>
+    </div>
+
+    <!-- Company Information Start -->
+    <form class="form-horizontal" ng-controller="CompanySettingsCtrl">
+        <div class="plainwell" style="padding-top: 0; padding-bottom: 0; margin-bottom: 5px">
+            <h4 style="margin: 10px 0">Defaults</h4>
+            <hr style="margin-top: 5px">
+            <div class="control-group">
+                <label class="control-label">Company Name</label>
+                <div class="controls">
+                    <span class="uneditable-input">{{companySettings.companyName}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Company Code</label>
+                <div class="controls">
+                    <span class="uneditable-input">{{companySettings.companyCode}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Company Username</label>
+                <div class="controls">
+                    <span class="uneditable-input">{{companySettings.userName}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Company Password</label>
+                <div class="controls">
+                    <span class="uneditable-input">{{companySettings.password}}</span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- Company Information Stop -->
+
+    <!-- Company Content Start -->
+    <div ng-controller="ControllerMediaCtrl">
+        <form action="/uploads" name="uploadLogoForm" class="form-horizontal" ng-upload>
+            <div class="plainwell" style="padding-top: 0; padding-bottom: 0; margin-bottom: 20px">
+                <h4 style="margin: 10px 0">Content</h4>
+                <hr style="margin-top: 5px">
+                <div class="control-group">
+                    <div class="controls">
+                        <p>If you upload a logo larger than 190 x 37 pixels, it will be re-sized.</p>
+                        <p>The following image formats are supported: JPG, GIF and PNG.</p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="unitLogo">Logo Image</label>
+                    <div class="controls">
+                        <input type="file" id="unitLogo" name="unitLogo" class="filestyle" data-classButton="btn">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="uploadButton"><img ng-show="uploading" src="/img/loading.gif" width="22"></label>
+                    <div class="controls">
+                        <input id="uploadButton" type="submit" value="Upload" upload-click="uploadClick()" upload-submit="uploadComplete(contents, completed)" class="btn btn-primary">
+                    </div>
+                </div>
+                <div ng-controller="ControllerFaceText">
+                    <form class="form-horizontal">
+                        <label class="control-label" for="faceText">Welcome Message</label>
+                        <div class="controls">
+                            <textarea id="faceTextArea" ck-editor rows="5" id="faceText" size="10000" ng-model = "companySettings.faceText"></textarea>
+
+                        </div>
+                        <div></div>
+                        <div class="control-group" style="text-align: right;margin-top: 10px;"  >
+                            <div class="controls" >
+                                <input id="updateButton" type="button" value="Update" ng-click = "updateFaceText(companySettings.faceText)" class="btn btn-primary">
+                                <input id="resetButton" type="button" value=" Reset " ng-click = "reset(companySettings);" class="btn btn-primary">
+                            </div>
+                            <!--<a href="#" role="button" ng-click = "updateFaceText(companySettings)" class="btn btn-small" data-toggle="modal">Update</a>-->
+                            <!--<a href="#" role="button" ng-click = "reset(companySettings);" class="btn btn-small" data-toggle="modal">Reset</a>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </form>
+        <div id="imageLoadingOverlay" style="height: 213px !important; top: 30%; border: 0 solid rgba(0, 0, 0, 0)!important;box-shadow: 0 0 0 rgba(0, 0, 0, 0)!important; background-color: transparent !important;" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/imageLoading-modal.html'"></div>
+    </div>
+    <!-- Company Content Stop -->
+
+    <!--</div>-->
+</div>

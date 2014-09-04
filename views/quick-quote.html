@@ -1,0 +1,155 @@
+<div class="row" ng-controller="QuickRfxCtrl">
+  <div class="span40">
+    <section class="main-content">
+      <div class="page-header mt-0">
+        <h2>Create QuickQuote</h2>
+        asdfasfd
+      </div>
+      <div class="quickrfx-container">
+        <form method="post" action="#">
+          <div class="quickrfx-blocks">
+            <div class="quickrfxbg-blocks span40 well">
+              <div class="span13">
+                <div class="form-group">
+                  <label>QuickQuote Number</label>
+                  <input type="text" disabled="" ng-value="5000000003"></div>
+                <div class="form-group">
+                  <label for="QuotationRequest.name">QuickQuote Name </label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="span13">
+                <div class="form-group">
+                  <label for="rfxname">Buyer Name</label>
+                  <select class="form-control" ng-model="QuotationRequest.buyerName">
+                    <option>Buyer Name 1</option>
+                    <option>Buyer Name 2</option>
+                    <option>Buyer Name 3</option>
+                    <option>Buyer Name 4</option>
+                    <option>Buyer Name 5</option>
+                  </select>
+                </div>
+                <div class="form-group sml-box">
+                  <label>Deadline</label>
+                  <input type="text" disabled="" value="7-17-2014"><input type="text" disabled="" value="13:00am">
+                </div>
+                <div class="form-group">
+                  <label>Contact Name </label>
+                  <input type="text" disabled="" value="Contact name here">
+                </div>
+                <div class="form-group">
+                  <label>Supplier Name</label>
+                  <input type="text" disabled="" value="Supplier Name here">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-4">
+                <div id="datetimepicker" class="form-group input-append date">
+                  <label for="quotedate">Quote Date</label>
+                  <input class="form-control" data-format="hh:mm:ss" type="text" id="quotedate" ng-model="QuotationRequest.quotedate">
+                  <span class="add-on"> <span class="icon icon-calendar"></span> </span> </div>
+                <div class="form-group">
+                  <label for="paymentterms"ng-model="Quotation.paymentTerms">Payment Terms </label>
+                  <select class="form-control">
+                    <option>Payment Terms 1</option>
+                    <option>Payment Terms 2</option>
+                    <option>Payment Terms 3</option>
+                    <option>Payment Terms 4</option>
+                    <option>Payment Terms 5</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quickrfx-blocks">
+            <h2>Items to be Quoted</h2>
+            <div class="quickrfxbg-blocks">
+              <div class="col-2-block">
+                <div class="span40 well">
+                  <div class="table-wrapper span19 pull-left">
+                    <div class="table-responsive">
+                      <table class="table table-condensed">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>UoM</th>
+                            <th>Part No.</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>Material Support Stands | Load Capacity: 2,000.000(Pounds) | Height :38(Inch)</td>
+                            <td>1</td>
+                            <td>EA</td>
+                            <td>1146178</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="span14 pull-right">
+                    <div class="add-info-wrapper">
+                      <div class="form-group">
+                        <label for="qty">Qty </label>
+                        <input type="text" name="qty" class="form-control" ng-model="quote.qty">
+                      </div>
+                      <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text" name="price" class="form-control" ng-model="quote.unitPrice">
+                      </div>
+                      <div id="datetimepicker1" class="form-group input-append date">
+                        <label for="deliverydate">Delivery Date</label>
+                        <input class="form-control" data-format="hh:mm:ss" type="text" id="deliverydate" ng-model="Quotation.deliverydate">
+                        <span class="add-on"> <span class="icon icon-calendar"></span> </span> </div>
+                      <div class="form-group col-md-12">
+                        <label for="notes">Notes</label>
+                        <textarea name="notes" class="form-control" rows="3" ng-model="QuotationRequest.items.notes"></textarea>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="attachment">Attachment</label>
+                        <input type="file" name="attachment">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            <div class="quickrfxbg-blocks">
+              <div class="span40 well">
+                <div class="span19">
+                  <div class="form-group">
+                    <label for="Notesforbuyer">Notes for Buyer</label>
+                    <textarea class="form-control span18" rows="8"></textarea>
+                  </div>
+                </div>
+                <div class="span19">
+                  <div class="form-group">
+                    <label for="terms">Terms and Conditions </label>
+                    <textarea class="form-control span18" rows="8" placeholder="">
+                      This Agreement, including all exhibits and addenda hereto and all Order Forms, constitutes the entire agreement between the parties and supersedes all prior and contemporaneous agreements, proposals or representations, written or oral, concerning its subject matter. No modification, amendment, or waiver of any provision of this Agreement shall be effective unless in writing and either signed or accepted electronically by the party against whom the modification, amendment or waiver is to be asserted. However, to the extent of any conflict or inconsistency between the provisions in the body of this Agreement and any exhibit or addendum hereto or any Order Form, the terms of such exhibit, addendum or Order Form shall prevail. Notwithstanding any language to the contrary therein, no terms or conditions stated in Your purchase order or other order documentation (excluding Order Forms) shall be incorporated into or form any part of this Agreement, and all such terms or conditions shall be null and void.
+                      Vroozi, Inc.
+                    </textarea>
+                  </div>
+                </div>
+                <div class="button-wrapper col-md-12">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-success" ng-click="newQuickRfxOrder()">Save Quote</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary">Submit Quote</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-warning">Go Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>

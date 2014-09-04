@@ -1,0 +1,64 @@
+<div ng-include="'partials/quickrfx.html'"></div>
+<div class="page-header"ng-show="acl.viewPurchaseOrders">
+    <h2 class="section-h2">Orders Overview <span ng-bind="searchQuery"></span>
+    </h2>
+
+</div>
+<div ng-controller="PurchaseOrdersOverviewCtrl" ng-show="acl.viewPurchaseOrders">
+    <div style="text-align: right; width: 100%;" ng-show="isAdminAndBuyer">
+        <!--<button ng-click="getMyPrOrder()" type="submit" class="btn btn-success btn-block" style="float: left;width: 155px;margin-bottom: 5px;">My Purchase Orders</button>-->
+        <!--<button ng-click="getAllPrOrder()" type="submit" class="btn btn-success btn-block" style="float: left;width: 155px; margin-top: 0px;margin-left: 5px;">All Purchase Orders</button>-->
+        </br>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th>ORDER NUMBER</th>
+                <th class="hidden-phone">DATE CREATED</th>
+                <th>ORDER NAME</th>
+                <th>
+                    <span class="hidden-phone">STATUS</span>
+                    <span class="visible-phone">{{'STATUS' | firstLetter}}</span>
+                </th>
+                <th>SUPPLIER</th>
+                <th class="hidden-phone">TOTAL AMOUNT</th>
+                <th>
+                    <span class="hidden-phone hidden-tablet">OPTIONS</span>
+                    <span class="visible-tablet visible-phone">{{'OPTIONS' | firstLetter}}</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="!orders">
+                <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+            </tr>
+            <tr ng-repeat="order in orders">
+                <td><a href="#/purchase-order/{{ order.id }}" >{{ order.orderNumber | formatOrder}}</a></td>
+                <td class="hidden-phone">{{ order.createdDate | date:'MM/dd/yyyy'  }}</td>
+                <td>{{ order.orderName }}</td>
+                <td>
+                    <span class="hidden-phone label label-info">{{ order.status | changeStatus | initialUppercase }}</span>
+                    <span class="visible-phone label label-info">{{ order.status | changeStatus | firstLetter }}</span>
+                </td>
+                <td>{{ order.supplierName }}</td>
+                <td class="hidden-phone">{{ orderTotalAmount(order) | currency:order.currency }}</td>
+                <td  ng-show="(order.status != 'SENT' && order.status != 'APPROVED') && acl.deletePurchaseOrder " class="text-center-imp"><i class="icon-trash" ng-click="deletePurchaseOrder((order.orderNumber| formatOrder),order.id)" ></i></td>
+                <td  ng-show="order.status == 'APPROVED'"><i class="icon-folder-open" ng-click="deletePurchaseOrder(order.id,$index);"></i>
+
+                </td>
+
+            </tr>
+            <tr ng-show="orders && orders.length == 0">
+                <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">There are no existing purchase orders.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-show="numberOfPagesOrders > 1">
+        <pagination num-pages="numberOfPagesOrders" on-select-page="onSelectPage(page)" current-page="currentPage"></pagination>
+    </div>
+
+    <!--<div id="lineItemOverlayItem" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/purchase-request-item.html'"></div>-->
+
+</div>

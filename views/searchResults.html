@@ -1,0 +1,150 @@
+<div ng-controller="SearchResultsCtrl">
+    <div class="page-header" ng-show="searchingItems">
+        <h2 class="section-h2">Searching...</h2>
+    </div>
+
+    <div class="page-header" ng-show="noSearchResultFound">
+        <h2 class="section-h2">Sorry, no results found for '{{ searchKeyword }}'</h2>
+    </div>
+
+    <div class="page-header" ng-show="results.items.length > 0">
+        <h2 class="section-h2" style="display: inline">{{ results.pagination.totalNumberOfItems }} Results for '{{ results.keyword }}' </h2>
+        <div class="btn-group pull-right" style="display: none;">
+            <button class="btn btn-small active" title="List View"><i class="icon-list"></i></button>
+            <button class="btn btn-small" title="Grid View"><i class="icon-th-large"></i></button>
+        </div>
+        <div class="btn-group pull-right" style="margin-right:3px;">
+          <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+            {{ recordsPerPage }}
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="recordsPerPage = 10">10</a></li>
+            <li><a href="" ng-click="recordsPerPage = 20">20</a></li>
+            <li><a href="" ng-click="recordsPerPage = 50">50</a></li>
+            <li><a href="" ng-click="recordsPerPage = 100">100</a></li>
+          </ul>
+        </div>
+        <div class="btn-group pull-right" style="margin-right:3px;">
+          <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+            {{ sort }}
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="sortBy = 'PRICE_DESC'">Price Decending</a></li>
+            <li><a href="" ng-click="sortBy = 'PRICE_ASC'">Price Ascending</a></li>
+            <li><a href="" ng-click="sortBy = 'RELEVANCY'">Relevancy</a></li>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="tab-content"  ng-show="results.items.length > 0">
+    	<div class="tab-pane active" id="listView">
+    	    <span ng-repeat="item in results.items">
+                <div style="margin-left: 0px !important;" class="row">
+                    <table cellspacing="1" cellpadding="1" >
+                        <tr>
+                            <td width="18%">
+                                <div>
+                                    <a href="#/details/{{ item.id }}"><img src="{{ item.imageUrl }}" alt="" width="135px"></a>
+                                    <div class="offset2" style="padding-top: 10px;">
+                                        <label class="checkbox">
+                                            <input type="checkbox">
+                                            Compare
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="61%">
+                                <div>
+                                    <a href="#/details/{{ item.id }}"><h4 ng-bind-html-unsafe="item.title"></h4></a>
+                                    <hr class="soft">
+                                    <b><small>Vendor Number: {{ item.vendorMat }}</small></b><br>
+                                    <b><small>Manufacturer Number: {{ item.manufactMat }}</small></b><br>
+                                    <p>{{ item.description | truncate:200}}</p>
+                                    <a style="display: none;" class="btn btn-small pull-right">View Details</a>
+
+                                </div>
+                            </td>
+                            <td width="21%">
+                                <!--Just for testing, if some bug appears-->
+
+                                <!--<input ng-show="adminOnly" value="1">-->
+                                <!--<input ng-show="approverOnly" value="2">-->
+                                <!--<input ng-show="buyerOnly" value="3">-->
+                                <!--<input ng-show="employeeOnly" value="4">-->
+                                <!--<input ng-show="rolesWithBuyer" value="5">-->
+                                <!--<input ng-show="rolesWithoutBuyer" value="6">-->
+                                <!--<input ng-show="fromPrRequest" value="7">-->
+                                <!--<input ng-show="fromPrOrder" value="8">-->
+                                <!--<input ng-show="buyerApprover" value="9">-->
+
+
+                                <div style="text-align: right;">
+                                    <form class="form-horizontal qtyFrm">
+                                        <h3>{{ item.unitPrice | currency:item.currencyCode }}</h3>
+                                        <input style="width: 40px;" type="number" placeholder="Qty." ng-model="item.quantity">
+                                        <div class="btn-group hidden-phone" style="margin-top: 22px">
+                                            <button class="btn btn-large  dropdown-toggle" ng-show="rolesWithBuyer && !fromPrRequest && !fromPrOrder && !buyerApprover" data-toggle="dropdown"><i class=" icon-shopping-cart"></i> Add Item</button>
+                                            <button ng-show="rolesWithBuyer && !fromPrRequest && !fromPrOrder && !buyerApprover" class="btn dropdown-toggle btn-large " style="height: 45px !important;" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                            </button>
+
+                                            <button class="btn btn-large " ng-show="rolesWithBuyer && fromPrRequest && !buyerApprover" ng-click="addToOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Request</button>
+
+                                            <button class="btn btn-large " ng-show="rolesWithBuyer && fromPrOrder && !buyerApprover" ng-click="addToPurchaseOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Order</button>
+
+                                            <button class="btn btn-large " ng-show="buyerApprover" ng-click="addToPurchaseOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Order</button>
+
+                                            <button class="btn btn-large " ng-show="(adminOnly || approverOnly || employeeOnly) || rolesWithoutBuyer " ng-click="addToOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Request</button>
+
+                                            <button class="btn btn-large " ng-show="buyerOnly" ng-click="addToPurchaseOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Order</button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ng-click="addToOrder(item, true)">Add to Request</a></li>
+                                                <li><a href="" ng-click="addToPurchaseOrder(item, true)">Add to Order</a></li>
+                                                <!--<li><a href="" ng-click="addToFavorite(item)">Add to Favorite</a></li>-->
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group visible-phone" style="margin-top: 22px">
+                                            <button class="btn  dropdown-toggle" ng-show="rolesWithBuyer && !fromPrRequest && !fromPrOrder && !buyerApprover" data-toggle="dropdown"><i class=" icon-shopping-cart"></i> Add Item</button>
+                                            <button ng-show="rolesWithBuyer && !fromPrRequest && !fromPrOrder && !buyerApprover" class="btn dropdown-toggle btn-large " style="height: 45px !important;" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                            </button>
+
+                                            <button class="btn " ng-show="rolesWithBuyer && fromPrRequest && !buyerApprover" ng-click="addToOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Request</button>
+
+                                            <button class="btn  " ng-show="rolesWithBuyer && fromPrOrder && !buyerApprover" ng-click="addToPurchaseOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Order</button>
+
+                                            <button class="btn  " ng-show="buyerApprover" ng-click="addToPurchaseOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Order</button>
+
+                                            <button class="btn  " ng-show="(adminOnly || approverOnly || employeeOnly) || rolesWithoutBuyer " ng-click="addToOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Request</button>
+
+                                            <button class="btn " ng-show="buyerOnly" ng-click="addToPurchaseOrder(item, false)"><i class=" icon-shopping-cart"></i> Add to Order</button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ng-click="addToOrder(item, true)">Add to Request</a></li>
+                                                <li><a href="" ng-click="addToPurchaseOrder(item, true)">Add to Order</a></li>
+                                                <!--<li><a href="" ng-click="addToFavorite(item)">Add to Favorite</a></li>-->
+                                            </ul>
+                                        </div>
+                                    </form>
+                                    <div class="pull-right" >
+                                        <img class="supplierLogo" src="{{ item.supplierLogo}}" alt="{{ item.supplierName }}">
+                                    </div>
+                                    <!-- <div class="pull-right">
+                                        <a title="prefered" class="prefered pull-right"></a>
+                                    </div> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+                <hr class="soft">
+            </span>
+            <pagination num-pages="results.pagination.totalNumberOfPages" current-page="pageNo"></pagination>
+    	</div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <button type="button" ng-click="closeModal()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">Supplier</h3>
+</div>
+<form action="/uploads/supplier-logo" class="form-horizontal" name="supplierLogoForm" ng-upload>
+    <div class="modal-body">
+        <div class="plainwell" style="padding-top: 0; padding-bottom: 0; margin-bottom: 20px">
+            <h4 style="margin: 10px 0">Content</h4>
+            <hr style="margin-top: 5px">
+            <div class="control-group">
+                <div class="controls">
+                    <p>If you upload a logo larger than X x Y pixels will be re-sized.</p>
+                    <p>The following image format are supported: JPG, GIF and PNG.</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="logo">Logo Image</label>
+                <div class="controls">
+                    <input type="file" id="logo" name="logo" class="filestyle" data-classButton="btn">
+                </div>
+            </div>
+            <input type="hidden" name="companyId" value="{{selectedCompanyId}}">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <input id="uploadButton" type="submit" value="Upload" upload-submit="supplierLogoFormHandler(contents, completed)" class="btn btn-primary">
+    </div>
+</form>

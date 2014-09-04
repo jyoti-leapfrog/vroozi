@@ -1,0 +1,345 @@
+<!-- Body Start -->
+<div class="span40" id="PurchaseRequestDiv" ng-controller="PurchaseRequestCtrl">
+<!--<div class="spacing" style="height:900px">-->
+
+    <!-- Create Purchase Request Start -->
+    <div class="page-header" ng-show = "!showHeadingDrop">
+        <h2 class="section-h2">{{labelPurchaseRequest}}</h2>
+    </div>
+    <div class="page-header" ng-show = "showHeadingDrop" style="padding-bottom: 20px; border-bottom: 0px solid #EEEEEE;">
+        <!--<h2 class="section-h2">{{labelPurchaseRequest}}</h2>-->
+        <div class="btn-group pull-left" style="margin-right:3px;">
+            <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+                Purchase Request
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="" ng-href="#/purchase-request/{{ idOrder }}">Purchase Request</a></li>
+                <li><a href="" ng-href="#/purchase-goods/{{ idOrder }}">Goods Receipt</a></li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <form name="purchaseRequestForm" id="purchaseRequestForm" novalidate>
+        <div class="form-section-plain" style="padding-bottom: 24px;">
+
+
+        <div class="spacing" style="height: 10px"></div>
+        <div class = "row " ng-show = "showPrintButton">
+            <div class="span3 pull-right" style="width: 63px">
+                <a class="btn " ng-click="generatePDF(purchaseRequest.id)" ng-show="acl.exportPdfRequest" ng-disabled="ordersForm.$invalid"><i class="icon-print"></i></a>
+                <a ng-href="{{pdfReportsUrl}}" href="" id="pdfReportsUrl" ng-show="false"></a>
+
+            </div>
+        </div>
+        <div class="spacing" style="height: 10px"></div>
+        <div class="row">
+            <div class="span11 offset1">
+                <label class="control-label" for="order">Order</label>
+                <span class="span10 uneditable-input" id="order">{{ purchaseRequest.orderNumber | formatOrder }}</span>
+            </div>
+            <div class="span2 offset1">
+                <label class="control-label" for="status1"  ng-show="purchaseRequest.status =='REJECTED' || purchaseRequest.status =='APPROVED'">Status </label>
+                <a href="#rejectNotesOverlay" data-toggle="modal" ng-show="purchaseRequest.status =='REJECTED' || purchaseRequest.status =='APPROVED'"> <span class="span6" id="status1" uneditable-input>{{ purchaseRequest.status}}</span></a>
+                <!--<span class="span6" id="status" uneditable-input ng-show="purchaseRequest.status=='PENDING'">{{ purchaseRequest.status}}</span></a>-->
+            </div>
+
+            <div class="span4 offset17 form-inline" style="width: 155px;">
+                <label class="control-label " for="effectiveDate">Effective Date</label>
+                <small ng-show="purchaseRequestForm.effectiveDate.$error.required" class="muted"> - required</small>
+                <input  type="text" name="effectiveDate" id="effectiveDate" class="span7 effective" ng-model="purchaseRequest.effectiveDate" b-datepicker ng-disabled="isReadOnlyRequest" required >
+                <small ng-show="purchaseRequestForm.effectiveDate.$error.afterToday" class="muted">Date should be greater than {{yesterday}}</small>
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+            <div class="span11 offset1 form-inline">
+                <label class="control-label" for="name">Request Name</label>
+                <small ng-show="purchaseRequestForm.name.$error.required" class="muted"> - required</small>
+                <input class="span10" type="text" name="name" id="name" placeholder="" ng-model="purchaseRequest.name" ng-disabled="isReadOnlyRequest" required >
+            </div>
+            <div class="span7 offset1">
+                <label class="control-label" for="priority">Priority</label>
+
+                <div class="controls">
+                    <select id="priority" class="span6" ng-model='purchaseRequest.priority' ng-options='option.value as option.name for option in priorityOptions' ng-disabled="isReadOnlyRequest" required>
+
+                    </select>
+                </div>
+                <!--<input class="span7" type="text" id="priority" placeholder="">-->
+            </div>
+            <div class="span7 offset1 form-inline">
+                <label class="control-label" for="requester">Requester</label>
+                <small ng-show="purchaseRequestForm.requester.$error.required" class="muted"> - required</small>
+                <input class="span7" type="text" name="requester" id="requester" placeholder="" ng-model="purchaseRequest.requester" ng-disabled="isReadOnlyRequest" required>
+            </div>
+            <div class="span7 offset4">
+                <label class="control-label" for="approver">Approver  <small ng-show="purchaseRequestForm.approver.$error.required" class="muted"> -required</small></label>
+                <!--<small ng-show="purchaseRequestForm.approver.$error.required" class="muted"> -required</small>-->
+                <!--<input class="span7" type="email" id="approver" name="approver" placeholder="joe.smith@gmail.com" ng-model="purchaseRequest.approverEmail" ng-disabled="isReadOnlyRequest" required>-->
+                <select id="approver" class="span7" ng-model='purchaseRequest.approverId' ng-options='option.value as option.name for option in approverUsersOptions' ng-disabled="isReadOnlyRequest" required>
+
+                </select>
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+            <div class="span11 offset1">
+                <label class="control-label" for="order">Shipping Address</label>
+                <small ng-show="purchaseRequestForm.shippingAddress.$error.required" class="muted"> - required</small>
+
+                <div class="controls">
+                  <div>
+                    <select class="span10" id="shipAddresses" ng-change="updateLineItemShippingAddress()" ng-model="purchaseRequest.shipAddresses" ng-options="shipAddresses as shipAddresses.addressName for shipAddresses in addresses|filter:{active:'true'}" ng-disabled="isReadOnlyRequest" required></select>
+                    <a href="#shippingAddressOverlay" role="button" ng-click="resetClassAddressManagement()" class="btn btn-primary btn-mini" data-toggle="modal" style="vertical-align: text-bottom;" ng-show="!isReadOnlyRequest && acl.addAddress"><i class="icon-plus icon-white" ng-show="!isReadOnlyRequest"></i></a>
+                  </div>
+                    <address class="well well-small" ng-show="purchaseRequest.shipAddresses">
+                        <strong>{{ purchaseRequest.shipAddresses.addressName }}</strong><br>
+                        {{ purchaseRequest.shipAddresses.street }}<br>
+                        <span ng-show="purchaseRequest.shipAddresses.street2">{{ purchaseRequest.shipAddresses.street2 }}<br></span>
+                        {{ purchaseRequest.shipAddresses.city }}, {{ purchaseRequest.shipAddresses.state }} {{ purchaseRequest.shipAddresses.postalCode }}<br>
+                        {{ purchaseRequest.shipAddresses.country }}<br>
+                        <abbr title="Phone">P:</abbr>{{ purchaseRequest.shipAddresses.phone }}
+                    </address>
+                </div>
+            </div>
+            <div class="span7 offset1">
+                <label class="control-label" for="department">Department</label>
+                <input class="span7" type="text" id="department" placeholder=""  ng-model="purchaseRequest.department" ng-disabled="isReadOnlyRequest">
+            </div>
+            <div class="span18 offset1">
+                <label class="control-label span18" style="margin-right: 1em" for="reason">Reason for Request</label>
+                <textarea class="span18" rows="3" id="reason" ng-model="purchaseRequest.reasonForRequest" ng-disabled="isReadOnlyRequest"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span38 offset1">
+                <table class="display-phone table table-striped table-hover table-condensed table-bordered">
+                    <caption><h4 class="pull-left">Line Item Overview</h4></caption>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Supplier</th>
+                        <th>Qty</th>
+                        <th>UoM</th>
+                        <th class="hidden-phone hidden-tablet">Category</th>
+                        <th class="hidden-phone hidden-tablet">Part No.</th>
+                        <th>Unit Price</th>
+                        <th class="hidden-phone hidden-tablet">Delivery Date</th>
+                        <!--<th><span class="hidden-phone">Notes</span><span class="visible-phone">{{'Notes' | firstLetter}}</span></th>-->
+                        <th>Total Price</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="lineItem in lineItems">
+                          <td>{{ $index + 1 }}</td>
+                          <td><a href="" ng-click="editLineItem(lineItem, $index); setLineItemSaveButtonLabel('EDIT')">{{ lineItem.description }}</a></td>
+                          <td>{{getSupplierName(lineItem)}}</td>
+                          <td>{{ lineItem.qty }}</td>
+                          <td>{{ lineItem.uom}}</td>
+                          <td class="hidden-phone hidden-tablet">{{ lineItem.categoryName}}</td>
+                          <td class="hidden-phone hidden-tablet">{{ lineItem.partNo }}</td>
+                          <td>{{ lineItem.unitPrice | currency:lineItem.currency }} <!--{{ lineItem.currency }}--></td>
+                          <td class="hidden-phone hidden-tablet">{{ lineItem.deliveryDate | date: 'MM/dd/yyyy' }} </td>
+                          <!--<td><a href="" ng-click="editLineItem(lineItem)"><i class="icon-list-alt" ></i></a></td>-->
+                          <td>{{ lineItem.unitPrice * lineItem.qty | currency:lineItem.currency }} <!--{{ lineItem.currency }}--></td>
+                          <td><a href="" ng-click="deleteLineItem($index)" ng-show="!isReadOnlyRequest && acl.deleteLineItem"><i class="icon-trash"></i></a></td>
+                      </tr>
+                      <tr ng-show="lineItems.length == 0">
+                        <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">This purchase request has no line items.</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span6 offset1">
+                <a href="#lineItemOverlay" role="button" ng-click="resetClass(); setLineItemSaveButtonLabel(''); setLineItemNo()" class="btn btn-primary span6" data-toggle="modal" ng-show="!isReadOnlyRequest && acl.addLineItem">Add Line Item</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span7 offset25" style="margin-top: 5px" ng-show="lineItems.length > 0">
+                <label class="control-label"><strong>Subtotal</strong></label>
+            </div>
+            <div class="span6 offset1" ng-show="lineItems.length > 0">
+                <div class="controls">
+                    {{ subTotal | currency:currencyCode }} <!--small>{{ currencyCode }}</small-->
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="lineItems.length > 0">
+            <div class="span7 offset25" style="margin-top: 5px">
+                <label class="control-label"><strong>Shipping Charges</strong></label>
+            </div>
+            <div class="span6 offset1">
+                <div class="controls">
+                    {{ shippingCharges | currency:currencyCode }} <!--small>{{ currencyCode }}</small-->
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="lineItems.length > 0">
+            <div class="span7 offset25" style="margin-top: 5px">
+                <label class="control-label"><strong>Tax</strong></label>
+            </div>
+            <div class="span6 offset1">
+                <div class="controls">
+                    {{ taxAmount | currency:currencyCode }} <!--small>{{ currencyCode }}</small-->
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="lineItems.length > 0">
+            <div class="span7 offset25" style="margin-top: 5px">
+                <label class="control-label"><strong><span style="font-size: 20px">Total</span></strong></label>
+            </div>
+            <div class="span6 offset1">
+                <div class="controls">
+                    {{  totalAmount | currency:currencyCode  }} <!--small>{{ currencyCode }}</small-->
+                </div>
+            </div>
+        </div>
+        <div class="spacing" style="height: 15px"></div>
+
+        <!-- Notes -->
+        <div class="row">
+            <div class="span18 offset1">
+                <label class="control-label span17" style="margin-right: 1em" for="notesForApprover">Notes for Approver</label>
+                <textarea class="span18" rows="3" id="notesForApprover" ng-model="purchaseRequest.notesToApprover" ng-disabled="isReadOnlyRequest"></textarea>
+            </div>
+            <div class="span18 offset2">
+                <label class="control-label span17" style="margin-right: 1em" for="notesForSupplier">Notes for Supplier</label>
+                <textarea class="span18" rows="3" id="notesForSupplier" ng-model="purchaseRequest.notesToSupplier" ng-disabled="isReadOnlyRequest"></textarea>
+            </div>
+        </div>
+        <div class="spacing" style="height: 40px"></div>
+        <!-- /Notes -->
+
+        <!-- Purchase Orders -->
+        <div class="row">
+            <div class="span38 offset1" ng-show="purchaseOrders.length >= 0">
+              <table style="margin-left: 0" class="span38 table table-striped table-hover table-condensed table-bordered">
+                <caption><h4 class="pull-left">Purchase Orders</h4></caption>
+                <thead>
+                  <tr>
+                    <th>Supplier</th>
+                    <th>Order Number</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="loadingMessagePO">
+                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+                </tr>
+                <tr ng-show="purchaseOrders" ng-repeat="PurchaseOrder in purchaseOrders">
+                  <td><a href="#/purchase-order/{{PurchaseOrder.id}}">{{PurchaseOrder.supplierName}}</a></td>
+                  <td>{{PurchaseOrder.orderNumber | formatOrder}}</td>
+                  <td>{{PurchaseOrder.status}}</td>
+                  <td>{{PurchaseOrder.totalAmount | priceFormat:PurchaseOrder.currency }} <small>{{PurchaseOrder.currency}}</small> </td>
+                </tr>
+                <tr ng-show="noContentPO">
+                  <td colspan="4" style="height: 4em;vertical-align: middle;text-align:center;">This purchase request has no purchase orders.</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+        <!-- /Purchase Orders -->
+
+        <div class="row hidden-phone hidden-tablet">
+            <div class="span8 offset1" ng-show="showApproveButtons && acl.approveRequest">
+                <!--<button ng-click="approvePurchaseRequest()" class="btn btn-primary btn-large btn-block"  ng-show="showApproveButtons">Approve Request</button>-->
+                <a href="#approveNotesOverlay" role="button" class="btn btn-success btn-large btn-block" data-toggle="modal" ng-show="showApproveButtons && acl.approveRequest">Approve Request</a>
+            </div>
+
+            <div class="span8 offset1" ng-show="showApproveButtons && acl.rejectRequest">
+                <a href="#rejectNotesOverlay" role="button" class="btn btn-danger btn-large btn-block" data-toggle="modal" ng-show="showApproveButtons && acl.rejectRequest">Reject Request</a>
+                <!--<a href="#lineItemOverlay" role="button" class="btn btn-primary span5" data-toggle="modal" ng-show="!isReadOnlyRequest">Add Line Item</a>-->
+            </div>
+
+
+            <div class="span8 offset1" ng-show="isReadOnlyRequest && acl.submitRequest && purchaseRequest.status=='PENDING'">
+                <button ng-click="changeEditable()" class="btn btn-primary btn-large btn-block"  >Change Request</button>
+            </div>
+
+            <div class="span8 offset1" ng-show="!isReadOnlyRequest && acl.saveRequest && editable ">
+                <a ng-click="draftPurchaseRequest()" class="btn btn-success btn-large btn-block">Save Request</a>
+            </div>
+
+            <div class="span8 offset1" ng-show="!isReadOnlyRequest && acl.submitRequest">
+                <button ng-click="submitPurchaseRequest()" class="btn btn-primary btn-large btn-block"   ng-disabled="purchaseRequestForm.$invalid">Submit Request</button>
+            </div>
+
+            <div class="span8 offset1" ng-show="goBackPurchase">
+                <a ng-click="draftPurchaseRequest();goBack()"  class="btn btn-warning btn-large btn-block">Go Back</a>
+            </div>
+
+            <div class="span8 offset1" ng-show="!goBackPurchase && isReadOnlyRequest && goBackPurchasePending">
+                <a ng-click="goBack()" class="btn btn-warning btn-large btn-block">Go Back</a>
+            </div>
+            <div class="span8 offset1" ng-show="!goBackPurchase && !isReadOnlyRequest && goBackPurchasePending">
+                <a ng-click="submitPurchaseRequest();goBack()" class="btn btn-warning btn-large btn-block">Go Back</a>
+            </div>
+            <!--<div class="span8 offset1" ng-show="">-->
+                <!--<a ng-click="goBack()" class="btn btn-warning btn-large btn-block">Go Back</a>-->
+            <!--</div>-->
+        </div>
+
+        <div class="row hidden-desktop">
+            <div class="span10 offset1" ng-show="showApproveButtons && acl.approveRequest">
+                <!--<button ng-click="approvePurchaseRequest()" class="btn btn-primary btn-large btn-block"  ng-show="showApproveButtons">Approve Request</button>-->
+                <a href="#approveNotesOverlay" role="button" class="btn btn-success btn-large btn-block" data-toggle="modal" ng-show="showApproveButtons && acl.approveRequest">Approve Request</a>
+            </div>
+
+            <div class="span10 offset1" ng-show="showApproveButtons && acl.rejectRequest">
+                <a href="#rejectNotesOverlay" role="button" class="btn btn-danger btn-large btn-block" data-toggle="modal" ng-show="showApproveButtons && acl.rejectRequest">Reject Request</a>
+                <!--<a href="#lineItemOverlay" role="button" class="btn btn-primary span5" data-toggle="modal" ng-show="!isReadOnlyRequest">Add Line Item</a>-->
+            </div>
+
+
+            <div class="span10 offset1" ng-show="(isReadOnlyRequest && acl.submitRequest && purchaseRequest.status=='PENDING') || showApproveButtons">
+                <button ng-click="changeEditable()" class="btn btn-primary btn-large btn-block"  >Change Request</button>
+            </div>
+
+            <div class="span10 offset1" ng-show="!isReadOnlyRequest && acl.saveRequest && editable ">
+                <a ng-click="draftPurchaseRequest()" class="btn btn-success btn-large btn-block">Save Request</a>
+            </div>
+
+            <div class="span10 offset1" ng-show="!isReadOnlyRequest && acl.submitRequest">
+                <button ng-click="submitPurchaseRequest()" class="btn btn-primary btn-large btn-block"   ng-disabled="purchaseRequestForm.$invalid">Submit Request</button>
+            </div>
+
+            <div class="span10 offset1">
+                <a ng-click="goBack()" class="btn btn-warning btn-large btn-block">Go Back</a>
+            </div>
+        </div>
+
+
+        <div class="spacing" style="height: 60px"></div>
+
+        </div>
+    </form>
+    <!-- Create Purchase Request End -->
+
+    <!-- Modals -->
+    <div id="lineItemOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/lineItem-modal.html'"></div>
+    <div id="shippingAddressOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/address-modal.html'" ng-controller="AddressCtrl"></div>
+    <div id="rejectNotesOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" ng-include="'partials/reject-notes-modal.html'"></div>
+    <div id="approveNotesOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true" ng-include="'partials/approve-notes-modal.html'"></div>
+    <!--<div id="deletedOrderOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" ng-include="'partials/delete-order-modal.html'"></div>-->
+
+<!-- /Modals -->
+
+<!--</div>-->
+</div>
+
+

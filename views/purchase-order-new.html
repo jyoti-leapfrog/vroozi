@@ -1,0 +1,542 @@
+<!-- Body Start -->
+<div class="span40" style="width: 100%" ng-controller="PurchaseOrdersCtrl">
+
+<!-- Create Purchase Order Start -->
+<div class="page-header">
+    <h2 class="section-h2">{{labelPurchaseOrderText}}</h2>
+</div>
+
+
+
+<form name="purchaseOrderForm" novalidate>
+<div class="form-section-plain" style="padding-bottom: 24px;">
+
+
+<div class="spacing" style="height: 10px"></div>
+<div class="row">
+    <div class="span3 pull-right" style="width: 6.5%">
+        <a class="btn " ng-click="generatePDFOrder(purchaseOrder)" ng-show="acl.exportPdfOrder" ng-disabled="ordersForm.$invalid"><i class="icon-print"></i></a>
+        <!-- <a ng-href="{{pdfOrderReportsUrl}}" href="" id="pdfOrderReportsUrl" ng-show="false"></a> -->
+    </div>
+    <!-- will be opened once FALC-357 (Purchase Order PDF) is implemented
+    <div class="row" ng-show="showPrintButton">
+        <div class="span3 pull-right" style="width: 6.5%">
+            <a class="btn " ng-click="generatePDFOrder(purchaseOrder.id)" ng-show="acl.exportPdfOrder" ng-disabled="ordersForm.$invalid"><i class="icon-print"></i></a>
+            <a ng-href="{{pdfOrderReportsUrl}}" href="" id="pdfOrderReportsUrl" ng-show="false"></a>
+        </div>
+    </div> -->
+    <div class="span18 offset1">
+        <div class="control-group" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+                <div  id="logoContainer"  class="control-label">
+                    <img style="padding-left: 0;" id="logo-image" class="brand offset1" ng-src="{{logoPath}}">
+                </div>
+        </div>
+
+        <label class="control-label span6" for="companyAddresses" style="display:inline; text-align: right;">Company Address</label>
+        <small ng-show="purchaseRequestForm.shippingAddress.$error.required" class="muted">required</small>
+
+
+        <div class="controls">
+            <div class="offset7">
+                <select class="span10" id="companyAddresses" name="companyAddresses" ng-model="purchaseOrder.companyAddress" ng-options="companyAddresses as companyAddresses.addressName for companyAddresses in addresses|filter:{companyAddress:'true', active:'true'}" ng-disabled="isReadOnlyRequest || disablePOforEmployee || isReadOnlyPO" required></select>
+                <!--  plus button  <a href="#shippingAddressOverlay" role="button" class="btn btn-primary btn-mini" data-toggle="modal" style="vertical-align: text-bottom;" ng-show="!isReadOnlyRequest && acl.addAddress"><i class="icon-plus icon-white" ng-show="!isReadOnlyRequest"></i></a>-->
+            </div><small ng-show="purchaseOrderForm.companyAddresses.$error.required" class="muted pull-right" style="margin-top: -10px; margin-right: 20px;">required</small>
+            <div style="height: 145px;" ng-show="purchaseOrder.companyAddress">
+                <address class="span9 offset7 well well-small" style="margin-top: 10px;" ng-show="purchaseOrder.companyAddress">
+                    <strong>{{ purchaseOrder.companyAddress.addressName }}</strong><br>
+                    {{ purchaseOrder.companyAddress.street }}<br>
+                    <span ng-show="purchaseOrder.companyAddress.street2">{{ purchaseOrder.companyAddress.street2 }}<br></span>
+                    {{ purchaseOrder.companyAddress.city }}, {{ purchaseOrder.companyAddress.state }} {{ purchaseOrder.companyAddress.postalCode }}<br>
+                    {{ purchaseOrder.companyAddress.country }}<br>
+                    <abbr title="Phone">P:</abbr>{{ purchaseOrder.companyAddress.phone }}
+                </address>
+            </div>
+        </div>
+
+        <div class="control-group" style="margin-top: 10px;">
+            <label class="control-label span6" style="text-align: right;">Approval Required</label>
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" style="margin-left: 28px !important;" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-model="purchaseOrder.approvalRequired" />
+                </label>
+            </div>
+        </div>
+
+        <div class="control-group" style="margin-top: 30px;" ng-show="purchaseOrder.approvalRequired">
+            <label class="control-label span6" style="text-align: right" for="approver">Approver
+                <!--<small ng-show="purchaseOrderForm.approver.$error.required" class="muted"> -required</small>-->
+            </label>
+            <div class="offset7">
+                <select id="approver" class="span10" ng-model='purchaseOrder.approverId'
+                        ng-options='option.value as option.name for option in approverUsersOptions'
+                        ng-disabled="isReadOnlyRequest" >
+                </select>
+            </div>
+
+        </div>
+
+        <div class="control-group" style="margin-top: 30px;" ng-class="{error: purchaseOrderForm.vendor.$dirty && purchaseOrderForm.vendor.$invalid}">
+            <label class="control-label span6" style="text-align: right;" for="vendor">Vendor Name</label>
+
+            <div class="controls offset7">
+                <select id="vendor" class="span10" ng-change="vendorChange();" name="vendor" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-model="supplier.companyId" ng-options="supplier.companyId as supplier.companyName for supplier in suppliers" required></select>
+                <br><small ng-show="purchaseOrderForm.vendor.$error.required" class="muted pull-right" style="margin-top: -10px; margin-right: 20px;">required</small>
+            </div>
+        </div>
+
+        <!--<div class="control-group" ng-class="{error: purchaseOrderForm.vendorId.$dirty && purchaseOrderForm.vendorId.$invalid}">-->
+            <!--<label class="control-label span6" style="text-align: right;" for="vendorId">Vendor Id</label>-->
+            <!--<div class="controls offset7">-->
+                <!--<span class="span10 uneditable-input" id="vendorId">{{supplier.defaultVendorId}}</span>-->
+                <!--<span class="help-inline" ng-show="purchaseOrderForm.vendorId.$error.required">required</span>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="control-group" ng-class="{error: purchaseOrderForm.salesRep.$dirty && purchaseOrderForm.salesRep.$invalid}">-->
+            <!--<label class="control-label span6" style="text-align: right;" for="salesRep">Sales Rep</label>-->
+            <!--<div class="controls offset7">-->
+                <!--<span class="span10 uneditable-input" id="salesRep">{{supplier.contactName}}</span>-->
+                <!--<span class="help-inline" ng-show="purchaseOrderForm.salesRep.$error.required">required</span>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+        <div class="control-group" style="margin-top: 30px;">
+            <label class="control-label span6" style="display:inline; text-align: right;">Supplier Address</label>
+            <div class="controls offset7" style="height: 145px;">
+                <address class="span9 well well-small" style="margin-left: 1px;">
+                    {{ supplier.address1 }}<br>
+                    <span ng-show="supplier.address2">{{ supplier.address2 }}<br></span>
+                    <span ng-show="supplier.city">{{ supplier.city }}, {{ supplier.state }} {{ supplier.postalCode }}<br> </span>
+                    {{ supplier.country }}<br>{{supplier.defaultVendorId}}<br>{{supplier.contactName}}
+                    <abbr title="Phone"><span ng-show="{{supplier.phone}}">P:</span></abbr>{{ supplier.phone }}
+                </address>
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.email.$dirty && purchaseOrderForm.email.$invalid}">
+            <label class="control-label span6" style="text-align: right;" for="supplierEmail">Supplier Email</label>
+
+
+            <div class="controls offset7">
+                <input class="span10" type="email" name="email" id="supplierEmail" placeholder="" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-model="purchaseOrder.supplierEmail" required/><br>
+                <small ng-show="purchaseOrderForm.email.$error.required" class="muted pull-right" style="margin-top: -10px; margin-right: 20px;">required</small>
+            </div>
+        </div>
+
+
+        <div class="control-group" style="margin-top: 30px;">
+            <label class="control-label span6" for="shippingAddress" style="display:inline; text-align: right;">Shipping Address</label>
+            <div class="controls offset7">
+                <select class="span10" id="shippingAddress" ng-change="updateLineItemShippingAddress()" name="shippingAddress" ng-model="purchaseOrder.shipAddresses" ng-options="shippingAddress as shippingAddress.addressName for shippingAddress in addresses|filter:{active:'true'}" ng-disabled="disablePOforEmployee || isReadOnlyPO" required></select>
+                <small ng-show="purchaseOrderForm.shippingAddress.$error.required" class="muted pull-right" style="margin-top: -10px; margin-right: 20px;">required</small>
+                <div ng-show="!isReadOnlyPO">
+                    <a href="#shippingAddressOverlay" ng-show="!disablePOforEmployee" ng-click="resetClassAddressManagement()" role="button" class="btn btn-primary btn-mini" data-toggle="modal" style="vertical-align: text-bottom;" ng-show="!isReadOnlyRequest && acl.addAddress"><i class="icon-plus icon-white" ng-show="!isReadOnlyRequest"></i></a>
+                </div>
+                    <!--<a href="#shippingAddressOverlay" role="button" class="btn btn-primary btn-mini" data-toggle="modal" style="vertical-align: text-bottom;" ng-show="!isReadOnlyRequest && acl.addAddress"><i class="icon-plus icon-white" ng-show="!isReadOnlyRequest"></i></a>-->
+            </div>
+            <div class="span15 pull-right">
+                <address class="span9 well well-small pull-right" style="margin-left: 1px; margin-top: 8px; margin-right: 20px;" ng-show="purchaseOrder.shipAddresses">
+                    <strong>{{ purchaseOrder.shipAddresses.addressName }}</strong><br>
+                    {{ purchaseOrder.shipAddresses.street }}<br>
+                    <span ng-show="purchaseOrder.shipAddresses.street2">{{ purchaseOrder.shipAddresses.street2 }}<br></span>
+                    {{ purchaseOrder.shipAddresses.city }}, {{ purchaseOrder.shipAddresses.state }} {{ purchaseOrder.shipAddresses.postalCode }}<br>
+                    {{ purchaseOrder.shipAddresses.country }}<br>
+                    <abbr title="Phone">P:</abbr>{{ purchaseOrder.shipAddresses.phone }}
+                </address>
+            </div>
+        </div>
+
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.shippingInstructions.$dirty && purchaseOrderForm.shippingInstructions.$invalid}">
+            <label class="control-label span6" style="text-align: right;" for="shippingInstructions">Shipping Instructions</label>
+
+            <div class="controls offset7">
+                <textarea class="span10" ng-maxlength="300" rows="3" id="shippingInstructions" ng-model="purchaseOrder.shippingInstructions" ng-disabled="disablePOforEmployee || isReadOnlyPO"></textarea>
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.fobTerms.$dirty && purchaseOrderForm.fobTerms.$invalid}">
+            <label class="control-label span6" style="text-align: right;" for="fobTerms">FOB Terms</label>
+
+
+            <div class="controls offset7">
+                <input class="span10" type="text" id="fobTerms" placeholder=""  ng-model="purchaseOrder.fobTerms" ng-disabled="disablePOforEmployee || isReadOnlyPO" />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="span18">
+        <div class="control-group" style="height: 53px;">
+            <label style="font-weight: bold; text-align: right; margin-top: 15px;" class="control-label span7">Order Number: </label>
+            <div class="controls offset8" style="padding-top: 15px;">
+                <label style="font-weight: bold; font-size: 16px; margin-left: 5px;">{{purchaseOrder.orderNumber | formatOrder}}</label>
+            </div>
+            <!--<pre>{{purchaseOrder.orderNumber}}</pre>-->
+        </div>
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="orderType">Order Type</label>
+
+            <div class="controls offset8">
+                <select id="orderType" name="orderType" style="margin-left: 5px;" class="span10" ng-model="purchaseOrder.orderType" ng-disabled="disablePOforEmployee || isReadOnlyPO"  required>
+                    <option value="standard" selected="selected">Standard</option>
+                    <option value="stock">Stock</option>
+                    <option value="blanket">Blanket</option>
+                </select>
+                <small ng-show="purchaseOrderForm.orderType.$error.required" class="muted">required</small>
+            </div>
+        </div>
+
+        <div class="control-group span16" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="orderName">Order Name</label>
+
+            <div class="controls offset8">
+                <input type="text" class="span10" ng-model="purchaseOrder.orderName" ng-disabled="disablePOforEmployee || isReadOnlyPO" id="orderName"/>
+                <span class="help-inline" ng-show="purchaseOrderForm.name.$error.required">required</span>
+            </div>
+        </div>
+
+        <div class="control-group span16" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" style="text-align: right;">Version </label>
+
+            <div class="controls offset8">
+                1
+            </div>
+        </div>
+
+        <div class="control-group span16" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" style="text-align: right;">Status </label>
+
+            <div class="controls offset8">
+                {{purchaseOrder.status}}
+            </div>
+        </div>
+
+        <div class="control-group span16 form-inline" ng-class="{error: purchaseOrderForm.requester.$dirty && purchaseOrderForm.requester.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="requester">Requester</label>
+
+            <div class="controls offset8">
+                <input type="text"name="requester" class="span10" ng-model="purchaseOrder.requester" ng-disabled="disablePOforEmployee || isReadOnlyPO" id="requester" required>
+                <span class="help-inline" ng-show="purchaseOrderForm.requester.$error.required"><small class="muted">required</small></span>
+            </div>
+        </div>
+
+        <div class="control-group span16 form-inline">
+            <label class="control-label span7" style="text-align: right;">Payment terms </label>
+
+            <div class="controls offset8">
+                <select id="paymentTerms" name="paymentTerms" class="span10" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-model="purchaseOrder.paymentTerms" ng-options="paymentTerm.paymentTermId as paymentTerm.paymentTermDescription for paymentTerm in paymentTermsOrder" required></select>
+                <small ng-show="purchaseOrderForm.paymentTerms.$error.required" class="muted" style="margin-top: -10px; margin-right: -50px;">required</small>
+                <!--<span class="span10 uneditable-input" id="vatInfo">{{supplier.paymentTerms}}</span>-->
+                <!--<span class="help-inline" ng-show="purchaseOrderForm.name.$error.required">required</span>-->
+            </div>
+
+        </div>
+
+        <div class="control-group span16" style="padding-top: 10px;" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="vatInfo">VAT Info</label>
+
+            <div class="controls offset8">
+                <input type="text" class="span10" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-model="purchaseOrder.vatInfo" id="vatInfo" />
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" for="creationDate" style="display:inline; text-align: right;">Creation Date</label>
+            <!--<small ng-show="purchaseOrderForm.creationDate.$error.required" class="muted"> - required</small>-->
+            <div class="controls offset8">
+                <input type="text" name="creationDate" style="margin-left: 5px;" id="creationDate" name="creationDate" class="span5 effective"
+                       ng-model="purchaseOrder.createdDate" b-datepicker ng-disabled="disablePOforEmployee || isReadOnlyPO" required/>
+                <small ng-show="purchaseOrderForm.creationDate.$error.required" class="muted pull-right span10" style="margin-top: -10px; margin-right: 113px; margin-bottom: 10px; text-align: right;"> - required</small>
+                <small ng-show="purchaseOrderForm.creationDate.$error.afterToday" class="muted">Date should be greater
+                    than {{yesterday}}
+                </small>
+            </div>
+        </div>
+
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" for="issueDate" style="display:inline; text-align: right;">Issue Date</label>
+            <!--<small ng-show="purchaseOrderForm.issueDate.$error.required" class="muted"> - required</small>-->
+            <div class="controls offset8">
+                <input type="text" name="issueDate" style="margin-left: 5px;" id="issueDate" class="span5 effective"
+                       ng-model="purchaseOrder.issueDate" b-datepicker ng-disabled="true"  />
+                <small ng-show="purchaseOrderForm.issueDate.$error.afterToday" class="muted">Date should be greater
+                    than {{yesterday}}
+                </small>
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: purchaseOrderForm.name.$dirty && purchaseOrderForm.name.$invalid}">
+            <label class="control-label span7" for="revisionDate" style="display:inline; text-align: right;">Revision Date</label>
+            <!--<small ng-show="purchaseOrderForm.revisionDate.$error.required" class="muted"> - required</small>-->
+            <div class="controls offset8">
+                <input type="text" name="revisionDate" id="revisionDate" style="margin-left: 5px;" class="span5 effective"
+                       ng-model="purchaseOrder.revisionDate" b-datepicker ng-disabled="true"/>
+                <small ng-show="purchaseOrderForm.revisionDate.$error.afterToday" class="muted">Date should be greater
+                    than {{yesterday}}
+                </small>
+            </div>
+        </div>
+
+        <div class="control-group form-inline" ng-class="{error: purchaseOrderForm.buyer.$dirty && purchaseOrderForm.buyer.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="buyer">Buyer</label>
+
+            <div class="controls offset8">
+                <input type="text" class="span10" ng-model="purchaseOrder.buyer" ng-disabled="disablePOforEmployee || isReadOnlyPO" style="margin-left: 5px;" id="buyer" name="buyer" required>
+                <span class="help-inline" ng-show="purchaseOrderForm.buyer.$error.required">
+                     <small class="muted">required</small>
+                 </span>
+            </div>
+        </div>
+
+        <div class="control-group form-inline" style="padding-top: 10px;" ng-class="{error: purchaseOrderForm.buyerContact.$dirty && purchaseOrderForm.buyerContact.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="buyerContact">Buyer Contact</label>
+
+            <div class="controls offset8">
+                <input type="text" class="span10" ng-model="purchaseOrder.buyerContact" ng-disabled="disablePOforEmployee || isReadOnlyPO" style="margin-left: 5px;" id="buyerContact" name="buyerContact" required/>
+                <span class="help-inline"ng-show="purchaseOrderForm.buyerContact.$error.required">
+                     <small class="muted">required</small>
+                 </span>
+            </div>
+        </div>
+
+        <div class="control-group form-inline" style="padding-top: 10px;" ng-class="{error: purchaseOrderForm.purchasingOrganization.$dirty && purchaseOrderForm.purchasingOrganization.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="purchasingOrganization">Purchasing Organization</label>
+
+            <div class="controls offset8">
+                <input type="text" class="span10" ng-model="purchaseOrder.purchasingOrganization" ng-disabled="disablePOforEmployee || isReadOnlyPO" style="margin-left: 5px;" id="purchasingOrganization" name="purchasingOrganization" required/>
+                <span class="help-inline" ng-show="purchaseOrderForm.purchasingOrganization.$error.required">
+                     <small class="muted">required</small>
+                 </span>
+            </div>
+        </div>
+
+        <div class="control-group form-inline" style="padding-top: 10px;" ng-class="{error: purchaseOrderForm.purchasingGroup.$dirty && purchaseOrderForm.purchasingGroup.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="purchasingGroup">Purchasing Group</label>
+
+            <div class="controls offset8">
+                <input type="text" class="span10" ng-model="purchaseOrder.purchasingGroup" ng-disabled="disablePOforEmployee || isReadOnlyPO" style="margin-left: 5px;" id="purchasingGroup" name="purchasingGroup" required/>
+                <span class="help-inline" ng-show="purchaseOrderForm.purchasingGroup.$error.required">
+                     <small class="muted">required</small>
+                 </span>
+            </div>
+        </div>
+
+        <div class="control-group form-inline" style="padding-top: 10px;" ng-class="{error: purchaseOrderForm.companyCode.$dirty && purchaseOrderForm.companyCode.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="companyCode">Company Code</label>
+
+            <div class="controls offset8">
+                <select id="companyCode" name="companyCode" required style="margin-left: 5px;" class="span10" ng-model="purchaseOrder.companyCode" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-options="companyCode.companyCode as companyCode.companyCode for companyCode in companyCodes|filter:{active:'true'}"></select>
+                <span class="help-inline" ng-show="purchaseOrderForm.companyCode.$error.required">
+                     <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+
+        <div class="control-group form-inline" style="padding-top: 10px;" ng-class="{error: purchaseOrderForm.invoiceComments.$dirty && purchaseOrderForm.invoiceComments.$invalid}">
+            <label class="control-label span7" style="text-align: right;" for="invoiceComments">Invoice Comments</label>
+
+            <div class="controls offset8">
+                <textarea class="span10" ng-maxlength="300" style="margin-left: 5px;" rows="3" id="invoiceComments" name="invoiceComments" ng-disabled="disablePOforEmployee || isReadOnlyPO" ng-model="purchaseOrder.invoiceComments" required></textarea>
+                <span class="help-inline" ng-show="purchaseOrderForm.invoiceComments.$error.required">
+                     <small class="muted">required</small>
+                 </span>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="spacing" style="height: 20px"></div>
+
+<div class="row">
+    <div class="span18 offset1">
+
+
+
+    </div>
+    <div class="span18">
+
+
+    </div>
+</div>
+<div class="spacing" style="height: 20px"></div>
+
+
+<!--<pre>-->
+<!--{{purchaseOrder.items | json}}-->
+<!--</pre>-->
+
+<div class="row">
+    <div class="span38 offset1">
+        <table class="hidden-phone span38 table table-striped table-hover table-condensed table-bordered">
+            <table class="display-phone table table-striped table-hover table-condensed table-bordered">
+                <caption><h4 class="pull-left">Line Item Overview</h4></caption>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Supplier</th>
+                    <th>Qty</th>
+                    <th>UoM</th>
+                    <th class="hidden-phone hidden-tablet">Category</th>
+                    <th class="hidden-phone hidden-tablet">Part No.</th>
+                    <th>Unit Price</th>
+                    <th class="hidden-phone hidden-tablet">Delivery Date</th>
+                    <!--<th><span class="hidden-phone">Notes</span><span class="visible-phone">{{'Notes' | firstLetter}}</span></th>-->
+                    <th>Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="lineItem in lineItems">
+                    <td>{{ $index + 1 }}</td>
+                    <td><a href="" ng-click="viewLineItem(lineItem, $index); setLineItemSaveButtonLabel('EDIT')" >{{ lineItem.description }}</a></td>
+                    <td>{{ lineItem.supplierName }}</td>
+                    <td>{{ lineItem.qty }}</td>
+                    <td>{{ lineItem.uom}}</td>
+                    <td class="hidden-phone hidden-tablet">{{ lineItem.categoryName}}</td>
+                    <td class="hidden-phone hidden-tablet">{{ lineItem.partNo }}</td>
+                    <td>{{ lineItem.unitPrice | currency:lineItem.currency }} {{ lineItem.currency }}</td>
+                    <td class="hidden-phone hidden-tablet">{{ lineItem.deliveryDate | date: 'MM/dd/yyyy' }} </td>
+                    <!--<td><a href="" ng-click="editLineItem(lineItem)"><i class="icon-list-alt" ></i></a></td>-->
+                    <td>{{ lineItem.unitPrice * lineItem.qty | currency:lineItem.currency }} {{ lineItem.currency }}</td>
+                    <td ng-show="!isReadOnlyPO"><a href="" ng-click="deleteLineItem($index)" ng-show="!disablePOforEmployee && acl.deleteLineItem"><i class="icon-trash"></i></a></td>
+                </tr>
+                <tr ng-show="lineItems.length == 0">
+                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">This purchase order has no line items.</td>
+                </tr>
+                </tbody>
+            </table>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="span6 offset1" ng-show="!isReadOnlyPO">
+        <a href="#lineItemOverlay" role="button" ng-click="resetClassLineItem(); setLineItemSaveButtonLabel(''); setLineItemNo()" class="btn btn-primary span6" data-toggle="modal" ng-show="!disablePOforEmployee && acl.addLineItem">Add Line Item</a>
+    </div>
+</div>
+<div class="row">
+    <div class="span7 offset25" style="margin-top: 5px" ng-show="lineItems.length > 0">
+        <label class="control-label"><strong>Subtotal</strong></label>
+    </div>
+    <div class="span6 offset1" ng-show="lineItems.length > 0">
+        <div class="controls">
+            <span class="uneditable-input span6">{{ subTotal | currency:currencyCode }} <small>{{ currencyCode }}</small></span>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="lineItems.length > 0">
+    <div class="span7 offset25" style="margin-top: 5px">
+        <label class="control-label"><strong>Shipping Charges</strong></label>
+    </div>
+    <div class="span6 offset1">
+        <div class="controls">
+            <span class="uneditable-input span6">{{ shippingCharges | currency:currencyCode }} <small>{{ currencyCode }}</small></span>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="lineItems.length > 0">
+    <div class="span7 offset25" style="margin-top: 5px">
+        <label class="control-label"><strong>Tax</strong></label>
+    </div>
+    <div class="span6 offset1">
+        <div class="controls">
+            <span class="uneditable-input span6">{{ taxAmount | currency:currencyCode }} <small>{{ currencyCode }}</small></span>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="lineItems.length > 0">
+    <div class="span7 offset25" style="margin-top: 5px">
+        <label class="control-label"><strong><span style="font-size: 20px">Total</span></strong></label>
+    </div>
+    <div class="span6 offset1">
+        <div class="controls">
+            <span class="uneditable-input span6" style="font-size: 20px">{{  totalAmount | currency:currencyCode  }} <small>{{ currencyCode }}</small></span>
+        </div>
+    </div>
+</div>
+<div class="spacing" style="height: 15px"></div>
+
+<!-- Notes control-group -->
+<div class="row control-group form-inline"  ng-class="{error: purchaseOrderForm.notesForSupplier.$dirty && purchaseOrderForm.notesForSupplier.$invalid}">
+    <div class="controls offset1">
+        <label class="control-label" style="margin-right: 1em" for="notesForSupplier">Notes for Supplier</label>
+    </div>
+    <div class="control-label offset1">
+        <textarea class="span18" rows="3" id="notesForSupplier" name="notesForSupplier" ng-model="purchaseOrder.notesToSupplier" ng-disabled="disablePOforEmployee || isReadOnlyPO" required></textarea>
+        </br>
+        <span class="help-inline" ng-show="!disablePOforEmployee && purchaseOrderForm.notesForSupplier.$error.required">
+            <small class="muted">required</small>
+        </span>
+    </div>
+</div>
+<div class="spacing" style="height: 40px"></div>
+<!-- /Notes -->
+
+<!-- Purchase Orders -->
+<div class="span38 offset1" ng-show="purchaseOrders.length >= 0">
+    <table class="span38 table table-striped table-hover table-condensed table-bordered">
+        <caption><h4 class="pull-left">Purchase Orders</h4></caption>
+        <thead>
+        <tr>
+            <th>Supplier</th>
+            <th>Order Number</th>
+            <th>Status</th>
+            <th>Total Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="purchaseOrders" ng-repeat="PurchaseOrder in purchaseOrders">
+            <td>{{PurchaseOrder.supplierName}}</td>
+            <td>{{PurchaseOrder.orderNumber | formatOrder}}</td>
+            <td>{{PurchaseOrder.status}}</td>
+            <td>{{PurchaseOrder.totalAmount}} <small>{{PurchaseOrder.currency}}</small></td>
+        </tr>
+        <tr ng-show="purchaseOrders.length == 0">
+            <td colspan="4" style="height: 4em;vertical-align: middle;text-align:center;">This purchase order has no line items.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- /Purchase Orders -->
+
+<div class="row">
+    <div class="span8 offset1" ng-show="goBackOrder">
+        <a ng-click="newDraftPurchaseOrder();goBack()" class="btn btn-warning btn-large btn-block" ng-show="!isReadOnlyPO">Go Back</a>
+    </div>
+
+    <div class="span8 offset1" ng-show="!goBackOrder">
+        <a ng-click="goBack()" class="btn btn-warning btn-large btn-block" ng-show="isReadOnlyPO">Go Back</a>
+    </div>
+    <div class="span8" ng-show="acl.savePurchaseOrder">
+        <a ng-click="newDraftPurchaseOrder()" class="btn btn-success btn-large btn-block" ng-show="!isReadOnlyPO">Save Order</a>
+    </div>
+
+    <div class="span8" ng-show="!isReadOnlyRequest && acl.submitPurchaseOrder">
+        <button ng-click="submitPurchaseOrder()" class="btn btn-primary btn-large btn-block" ng-show="!isReadOnlyPO" ng-disabled="purchaseOrderForm.$invalid">Send Order</button>
+    </div>
+
+
+</div>
+
+<div class="spacing" style="height: 60px"></div>
+</div>
+</form>
+<!-- Create Purchase Order End -->
+
+<!-- Modals -->
+<div id="lineItemOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/lineItem-modal.html'"></div>
+<div id="shippingAddressOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/address-modal.html'" ng-controller="AddressCtrl"></div>
+<!-- /Modals -->
+
+<!--</div>-->
+
+</div>
+

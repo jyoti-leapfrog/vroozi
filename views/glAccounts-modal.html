@@ -1,0 +1,27 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">GL Account</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="glAccountForm">
+       <div id="glAccountCodeDiv" class="control-group" ng-class="{error: glAccountForm.glAccountCode.$dirty && glAccountForm.glAccountCode.$invalid}">
+            <label class="control-label" for="glAccountCode">GL Account Code</label>
+            <div class="controls">
+                <input type="text" name="glAccountCode" id="glAccountCode" placeholder="" required ng-model="gLAccount.glAccountCode">
+                <span class="help-inline" ng-show="glAccountForm.glAccountCode.$error.required">required</span>
+            </div>
+        </div>
+        <div id="glAccountDescriptionDiv" class="control-group" ng-class="{error: glAccountForm.glAccountDescription.$dirty && glAccountForm.glAccountDescription.$invalid}">
+            <label class="control-label" for="glAccountDescription">Description</label>
+            <div class="controls">
+                <input type="text" name="glAccountDescription" id="glAccountDescription" placeholder="" required ng-model="gLAccount.glAccountDescription">
+                <span class="help-inline" ng-show="glAccountForm.glAccountDescription.$error.required">required</span>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="saveGLAccount()" ng-disabled="glAccountForm.$invalid" type="button" class="btn btn-primary">Save changes</button>
+</div>

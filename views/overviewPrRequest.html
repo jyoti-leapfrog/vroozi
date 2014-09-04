@@ -1,0 +1,70 @@
+<div class="page-header"ng-show="acl.viewOrders">
+    <h2 class="section-h2">Requests Overview <span ng-bind="searchQuery"></span>
+        <a href="/api/purchaseRequests/export" class="btn" ng-show="acl.exportUserRequests"><i class="icon-export"></i>Export</a>
+        <a href="#" ng-click="generatePDF()" class="btn" ng-show="acl.exportUserRequests"><i class="icon-export"></i>Export PDF</a>
+    </h2>
+
+</div>
+<div ng-controller="RequestsOverviewCtrl" ng-show="acl.viewOrders">
+    <div ng-show="isAdmin" style="margin-left: 5px">
+        <div id="switchDiv"  class="" style="width: 80px; background-color: #3A87AD; height: 24px; border: 1.3px solid; border-radius:5px  ">
+            <span id="requestSwitchOptions" class="pull-left" style="margin-left:3px; margin-right:3px; margin-top: 2px; color: #ffffff; font-size: 13px; font-weight: 600">{{ switchLabel }}</span>
+            <span id="requestSwitchButton" class="btn-link pull-right" ng-click="requestSwitch()"
+                  style="width: 40px; background-color: #ffffff; color: #ffffff; height: 24px; border-radius:5px;
+                  margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px">
+            </span>
+        </div>
+        <!--previous implemented all and my button-->
+        <!--<button ng-click="getMyPrRequest()" type="submit" class="btn btn-success btn-block" style="float: left;width: 155px;margin-bottom: 5px;">My Purchase Requests</button>-->
+        <!--<button ng-click="getAllPrRequest()" type="submit" class="btn btn-success btn-block" style="float: left;width: 155px; margin-top: 0px;margin-left: 5px;">All Purchase Requests</button>-->
+        </br>
+    </div>   
+    <table class="table table-condensed table-striped table-hover">
+        <thead>
+        <tr>
+            <th>REQUEST NUMBER</th>
+            <th class="hidden-phone">DATE CREATED</th>
+            <th>REQUEST NAME</th>
+            <th>
+                <span class="hidden-phone">STATUS</span>
+                <span class="visible-phone">{{'STATUS' | firstLetter}}</span>
+            </th>
+            <th>APPROVER</th>
+            <th class="hidden-phone">TOTAL AMOUNT</th>
+            <th>
+                <span class="hidden-phone hidden-tablet">OPTIONS</span>
+                <span class="visible-tablet visible-phone">{{'OPTIONS' | firstLetter}}</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="!orders">
+            <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+        </tr>
+        <tr ng-repeat="order in orders">
+            <td><a href="#/purchase-request/{{ order.id }}" >{{ order.orderNumber | formatOrder}}</a></td>
+            <td class="hidden-phone">{{ order.createdDate | date:'MM/dd/yyyy'  }}</td>
+            <td>{{ order.name }}</td>
+            <td>
+                <span class="hidden-phone label label-info">{{ order.status | changeStatus | initialUppercase }}</span>
+                <span class="visible-phone label label-info">{{ order.status | changeStatus | firstLetter }}</span>
+            </td>
+            <td>{{ order.approverName }}</td>
+            <td class="hidden-phone">{{ orderTotalAmount(order) | currency:order.currency }}</td>
+            <td  ng-show="(order.status != 'SENT' && order.status != 'APPROVED') && acl.deleteRequest "><i class="icon-trash" ng-click="deleteOrder((order.orderNumber| formatOrder),order.id)" ></i></td>
+            <td  ng-show="order.status == 'APPROVED'"><i class="icon-folder-open" ng-click="purchaseOrder(order.id,$index);"></i>
+
+            </td>
+
+        </tr>
+        <tr ng-show="orders && orders.length == 0">
+            <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">There are no existing purchase requests.</td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-show="numberOfPages>1">
+        <pagination num-pages=numberOfPages on-select-page="onSelectPage(page)" current-page="currentPage"></pagination>
+    </div>
+    <div id="lineItemOverlayItem" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/purchase-request-item.html'"></div>
+
+</div>

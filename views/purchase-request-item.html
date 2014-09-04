@@ -1,0 +1,88 @@
+
+<div class="modal-header">
+    <button type="button" ng-click="closeModal()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel1">Goods Receipt</h3>
+</div>
+<div class="modal-body">
+<form class="form-horizontal" name="lineItemForm" novalidate>
+
+
+<div class="control-group" ng-class="{error: lineItemForm.itemType.$dirty && lineItemForm.itemType.$invalid}">
+    <div class="row">
+        <div class="span30 offset1">
+                <table class="display-phone table table-striped table-hover table-condensed table-bordered">
+                    <caption><h4 class="pull-left">Line Item Overview</h4></caption>
+                    <thead>
+                    <!--<tr>-->
+
+                        <!--<td>3{{requestNumber}}</td>-->
+
+                    <!--</tr>-->
+                    <!--<tr>-->
+
+                        <!--<td>{{creationDate  | date:'medium'}}</td>-->
+
+                    <!--</tr>-->
+                    <tr>
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Qty Ordered</th>
+                        <th>Qty Received</th>
+                        <th>Delivery Date</th>
+                        <th><span>Notes</span><span ng-show="lineItemForm.$invalid" style="color: #ff0000"> *</span></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="lineItem in lineItems">
+                        <td>{{ lineItem.id }}</td>
+                        <td style="width: 156px;">{{ lineItem.description }}</td>
+                        <td><input id="qty{{$index}}" type="text" ng-model = "lineItem.qty" ng-disabled="true" ng-bind="lineItem.qty" class="input-small" >
+
+                        </td>
+                        <td>
+                            <div class="control-group" ng-class="{error: lineItemForm.qtyNew.$dirty && lineItemForm.qtyNew.$invalid}">
+                                <input type="number" name="qtyNew" class="input-small" id="qtyNew" placeholder="" integer required ng-change="blurCallback($index, lineItem)" ng-model="lineItem.qtyNew" ng-disabled="lineItem.disableInput">
+                            </div>
+                        </td>
+                        <!--<div ng-class="{error: lineItemForm.itemType.$dirty && lineItemForm.itemType.$invalid}">-->
+                            <!--<td>-->
+                                <!--<input ng-model = "lineItem.qtyNew" class="input-small" ng-disabled="lineItem.disableInput" integer>-->
+                            <!--</td>-->
+                        <!--</div>-->
+                        <td>
+                            <input type="text"  value="{{lineItem.deliveryDateForGoods | date: 'MM/dd/yyyy'}}" class="input-small" placeholder="" required ng-model="lineItem.deliveryDateForGoods" b-datepicker ng-disabled="lineItem.disableInput"></td>
+                        <td>
+
+                            <div class="controls" style="margin-left: 0px !important;">
+                                <select style="width: 200px;" id="goodsNotes" name="goodsNotes" ng-model='lineItem.goodsNotes'ng-disabled="lineItem.disableInput" required>
+                                    <option value="Item passed inspection">Item passed inspection</option>
+                                    <option value="Item faulty">Item faulty</option>
+                                    <option value="Received item satisfactory">Received item satisfactory</option>
+
+
+                                </select>
+                <!--<span class="help-inline" ng-show="lineItemForm.currency.$error.required">-->
+                    <!--<small class="muted">required</small>-->
+                <!--</span>-->
+                            </div>
+                        </i></a></td>
+
+                    </tr>
+                    <tr ng-show="lineItems.length == 0">
+                        <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">This purchase request has no line items.</td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+
+
+</form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()"  class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="orderLineItem(lineItems)" ng-show="!isReadOnlyRequest && saveMsgShow" ng-disabled="lineItemForm.$invalid" class="btn btn-primary">Confirm Order</button>
+
+</div>

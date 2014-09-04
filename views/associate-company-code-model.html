@@ -1,0 +1,36 @@
+
+<div class="modal-header">
+    <button type="button" class="close" ng-click="closeModal()" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">Associate Company Code</h3>
+</div>
+<div class="modal-body" >
+    <form class="form-horizontal" name="associateCompanyCodeForm">
+        <div id="companyCodeDiv" class="control-group" ng-class="{error: associateCompanyCodeForm.companyCode.$dirty && associateCompanyCodeForm.companyCode.$invalid}">
+            <label class="control-label" for="companyCode">Company Code</label>
+            <div class="controls">
+                <input type="text" name="companyCode" id="companyCode" placeholder="" required alphanum ng-model="companyCode.companyCode" maxlength="10">
+                <span class="help-inline" ng-show="associateCompanyCodeForm.companyCode.$error.required">required</span>
+            </div>
+        </div>
+        <div id="companyCodeDescriptionDiv" class="control-group" ng-class="{error: associateCompanyCodeForm.companyCodeDescription.$dirty && associateCompanyCodeForm.companyCodeDescription.$invalid}">
+            <label class="control-label" for="companyCodeDescription">Description</label>
+            <div class="controls">
+                <input type="text" name="companyCodeDescription" id="companyCodeDescription" placeholder="" required ng-model="companyCode.companyCodeDescription" maxlength="50">
+                <span class="help-inline" ng-show="associateCompanyCodeForm.companyCodeDescription.$error.required">required</span>
+            </div>
+        </div>
+        <div id="companyAddressDiv" class="control-group" ng-class="{error: associateCompanyCodeForm.companyAddress.$dirty && associateCompanyCodeForm.companyAddress.$invalid}">
+            <div class="control-group">
+                <label class="control-label" style="width:170px" for="companyAddress">Company Address</label>
+                <div class="controls">
+                    <select id="companyAddress" ng-model="companyCode.companyAddress" ng-options="address.addressName as address.addressName for address in addresses|filter:{active:'true'}" required></select>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="associateCompanyCode()" ng-disabled="associateCompanyCodeForm.$invalid" type="button" class="btn btn-primary">Save</button>
+</div>

@@ -1,0 +1,127 @@
+<html>
+<head>
+    <title>System Status</title>
+    <meta http-equiv="refresh" content="120">
+    <meta http-equiv="cache-control" content="no-cache">
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #003366;
+            font-size: 1em;
+        }
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #003366;
+            font-size: 1.5em;
+        }
+        table {
+            border-collapse:collapse;
+        }
+        table, td, th {
+            border:1px solid #c0c0c0;
+            padding: 2px 20px 2px 6px;
+        }
+        .fadedText {
+            color: #80c080;
+        }
+        .bolderText {
+            font-weight: bolder;
+            color: #505050;
+        }
+        .smallText {
+            font-size: 0.8em;
+        }
+    </style>
+    <script src="js/moment.min.js"></script>
+    <script>
+        moment().format();
+        var startDateTime = {{STARTUP}};
+        var dateTimeOffset = new Date().getTime() - {{CURRENT_TIME}};
+        startDateTime += dateTimeOffset;
+
+        function displayDate() {
+            var timeSinceStartup = uptime(startDateTime);
+            document.getElementById("uptime").innerHTML=timeSinceStartup;
+        }
+
+        function uptime(startTime) {
+            var now = moment();
+            var start = moment(startTime);
+            var days = now.diff(start, 'days');
+            var hours = Math.floor(now.diff(start, 'hours') % 24);
+            var minutes = Math.floor(now.diff(start, 'minutes') % 60);
+            var seconds = Math.floor(now.diff(start, 'seconds') % 60);
+
+            var strDays = "";
+            if(days > 1) {
+                strDays += days + " days ";
+            } else if(days == 1) {
+                strDays += days + " day ";
+            }
+
+            var strHours = "";
+            if(hours > 1) {
+                strHours += hours + " hours ";
+            } else if(hours == 1) {
+                strHours += hours + " hour ";
+            }
+
+            var strMinutes = "";
+            if(minutes > 1) {
+                strMinutes += minutes + " minutes ";
+            } else if(minutes == 1) {
+                strMinutes += minutes + " minute ";
+            }
+
+            var strSeconds = "";
+            if(seconds > 1) {
+                strSeconds += seconds + " seconds";
+            } else if(seconds == 1) {
+                strSeconds += seconds + " second";
+            }
+
+            return strDays + strHours + strMinutes + strSeconds;
+        }
+
+        function onPageLoad() {
+            var clientDateTime = new Date();
+            document.getElementById("last-server-refresh").innerHTML=clientDateTime;
+
+            setInterval(displayDate,1000);
+        }
+    </script>    
+</head>
+<body onload="onPageLoad();">
+    <div class="smallText">Last server refresh: <span id="last-server-refresh">N/A</span></div>
+    <h1>Shopper UI: <span class="fadedText">status</span></h1>
+    <table>
+        <tr>
+            <td class="bolderText">Version</td><td>{{RELEASE}}</td>
+        </tr>
+        <tr>
+            <td class="bolderText">App Mode</td><td>{{APP_MODE}}</td>
+        </tr>
+        <tr>
+            <td class="bolderText">Commit Hash</td><td><a href="https://github.com/vroozi/shopper/commit/{{COMMIT_HASH}}" target="_blank">{{COMMIT_HASH}}</a></td>
+        </tr>
+        <tr>
+            <td class="bolderText">Uptime</td><td><div id="uptime">{{UPTIME}}</div></td>
+        </tr>
+        <tr>
+            <td class="bolderText">Start Time</td><td>{{START_TIME}}</td>
+        </tr>
+        <tr>
+            <td class="bolderText">Cookie VSD</td><td>{{COOKIE_VSD}}</td>
+        </tr>
+        <tr>
+            <td class="bolderText">Cookie Domain</td><td>{{COOKIE_DOMAIN}}</td>
+        </tr>
+        <tr>
+            <td class="bolderText">Cookie Max Age</td><td>{{COOKIE_MAX_AGE}}</td>
+        </tr>
+        <tr>
+            <td class="bolderText">Session Timeout</td><td>{{SESSION_TIMEOUT}}</td>
+        </tr>
+    </table>
+</body>
+</html>

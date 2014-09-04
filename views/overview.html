@@ -1,0 +1,58 @@
+<!-- Notifications Start -->
+<div class="center-div span40">
+    <div ng-hide="true">
+        <div class="page-header" >
+            <h2 class="section-h2">Notifications</h2>
+        </div>
+        <div id="notifications" ng-controller="NotificationCtrl">
+            <div class="alert" ng-repeat="notification in notifications" ng-class="{'info':'alert-info', 'warning':'alert-warning'}[notification.type]">
+                <!--<button type="button" class="close" data-dismiss="alert">&times;</button>-->
+                <strong>Info!</strong> {{notification.message}}
+            </div>
+        </div>    
+    </div>
+    
+    <!-- Notifications End -->
+    <!-- Tab Pannel Start -->
+    <div ng-controller="TabPannelCtrl">
+    <ul class="nav nav-tabs" ng-show="showTabPannel">
+        <li id="purchaseRequestTab" ng-show="acl.viewOrders" ng-click="selectTab('PrRequests');overviewTab('purchaseRequest');">
+            <a id="purchaseRequestLabel" style="color: #0088CC;" class="btn btn-link hidden-phone">Purchase Request</a>
+            <a id="purchaseRequestLabelM" style=" font-size: 13px;" class="btn btn-link visible-phone">Purchase Req</a>
+        </li>
+        <li id="approvalOrdersTab" ng-show="acl.viewApprovalOrders" ng-click="selectTab('AppOrders');overviewTab('approvalOrders');">
+            <a id="approvalOrdersLabel" style="color: #808080;" class="btn btn-link hidden-phone">Approval Orders</a>
+            <a id="approvalOrdersLabelM" style=" font-size: 13px;" class="btn btn-link visible-phone">Approval Ord</a>
+        </li>
+        <li id="purchaseOrdersTab" ng-show="acl.viewPurchaseOrders" ng-click="selectTab('PrOrders');overviewTab('purchaseOrders');">
+            <a id="purchaseOrdersLabel" style="color: #808080;" class="btn btn-link hidden-phone">Purchase Orders</a>
+            <a id="purchaseOrdersLabelM" style=" font-size: 13px;" class="btn btn-link visible-phone">Purchase Ord</a>
+        </li>
+    </ul>
+
+        <!--Pages will be loaded in content from TabPannelCtrl based on selected Tab FALC-494-->
+        <div ng-bind-html-unsafe="content"></div>
+
+    </div>
+</div>
+<!--Suppliers Start -->
+<div class="page-header" ng-show="false">
+    <h2 class="section-h2">Suppliers</h2>
+</div>
+<div class="list_carousel responsive" id="list_carousel" ng-show="false">
+    <ul caroufredsel>
+        <li><a href="http://www.bhphotovideo.com/"  target="_blank"><img src="images/brands/BnH_logo.jpg" alt="B&H"></a></li>
+        <li><a href="http://www.officedepot.com/" target="_blank"><img src="images/brands/office-depot-logo.jpg" alt="Office Depot"></a></li>
+        <li><a href="http://www.staples.com/" target="_blank"><img src="images/brands/staples.jpeg" alt="Staples"></a></li>
+        <li><a href="http://www.grainger.com/" target="_blank"><img src="images/brands/grainger-logo.jpg" alt="Graingers"></a></li>
+        <li><a href="http://www.officemax.com/" target="_blank"><img src="images/brands/office-max-logo.jpg" alt="Office Max"></a></li>
+        <li><a href="http://www.cdw.com/" target="_blank"><img src="images/brands/cdw_logo.jpeg" alt="CDW"></a></li>
+        <li><a href="http://www.uline.com/" target="_blank"><img src="images/brands/uline-logo.jpg" alt="ULINE"></a></li>
+        <li><a href="http://store.hermanmiller.com/" target="_blank"><img src="images/brands/herman-miller-logo2.jpg" alt="Herman Miller"></a></li>
+        <li><a href="http://hdsupplysolutions.com/" target="_blank"><img src="images/brands/hd-supply.png" alt="HD Supply"></a></li>
+    </ul>
+    <div class="clearfix"></div>
+    <a class="carousel-control" id="carouselLeft" href="" style="position: relative;top: -40px;left: -50px;float:left;">&lsaquo;</a>
+    <a class="carousel-control" id="carouselRight" href="" style="position: relative;top: -40px;float:right;">&rsaquo;</a>
+</div>
+<!--Suppliers End -->

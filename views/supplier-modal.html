@@ -1,0 +1,135 @@
+<div class="modal-header">
+    <button type="button" ng-click="closeModal()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">Supplier</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="supplierForm">
+
+        <div id="nameDiv" class="control-group" ng-class="{error: supplierForm.name.$dirty && supplierForm.name.$invalid}">
+            <label class="control-label" for="name">Supplier Name</label>
+
+            <div class="controls">
+                <input type="text" name="name" id="name" placeholder="Acme Inc." required ng-model="supplier.companyName" ui-event="{ blur : 'validateByName()' }" >
+                <span class="help-inline" ng-show="supplierForm.name.$error.required">required</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="contactName">Sales Rep</label>
+
+            <div class="controls">
+                <input type="text" name="contactName" id="contactName" placeholder="John H. Patterson" ng-model="supplier.contactName">
+            </div>
+        </div>
+
+        <div id="countryDiv" class="control-group" ng-class="{error: supplierForm.country.$dirty && supplierForm.country.$invalid}">
+            <label class="control-label" for="country">Country</label>
+            <div class="controls">
+                <select id="country" name="country" ng-model="supplier.country" ng-options="country.id as country.name for country in countries" required></select>
+                <span class="help-inline" ng-show="supplierForm.country.$error.required">required</span>
+            </div>
+        </div>
+
+        <div id="streetDiv" class="control-group" ng-class="{error: supplierForm.street.$dirty && supplierForm.street.$invalid}">
+            <label class="control-label" for="city">Street</label>
+
+            <div class="controls">
+                <input type="text" name="street" id="street" placeholder="" required ng-model="supplier.address1">
+                <span class="help-inline" ng-show="supplierForm.street.$error.required">required</span>
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: supplierForm.street2.$dirty && supplierForm.street2.$invalid}">
+            <label class="control-label" for="street2">Street #2</label>
+
+            <div class="controls">
+                <input type="text" name="street2" id="street2" placeholder="" ng-model="supplier.address2">
+            </div>
+        </div>
+
+        <div id="cityDiv" class="control-group" ng-class="{error: supplierForm.city.$dirty && supplierForm.city.$invalid}">
+            <label class="control-label" for="city">City</label>
+
+            <div class="controls">
+                <input type="text" name="city" id="city" placeholder="Santa Monica" required ng-model="supplier.city">
+                <span class="help-inline" ng-show="supplierForm.city.$error.required">required</span>
+            </div>
+        </div>
+
+        <div id="zipDiv" class="control-group" ng-class="{error: supplierForm.zip.$dirty && supplierForm.zip.$invalid}">
+            <label class="control-label" for="zip">Zip</label>
+
+            <div class="controls">
+                <input type="text" name="zip" id="zip" placeholder="" required ng-model="supplier.zip">
+                <span class="help-inline" ng-show="supplierForm.zip.$error.required">required</span>
+            </div>
+        </div>
+
+        <div class="control-group"  ng-class="{error: supplierForm.state.$dirty && supplierForm.state.$invalid}">
+            <label class="control-label" ng-show="supplier.country == '1'" for="state">State</label>
+            <label class="control-label" ng-show="supplier.country != '1'" for="state">Region</label>
+            <div class="controls">
+                <select id="state" name="state" ng-show="supplier.country == '1'" ng-model="supplier.state" ng-options="region.code as region.code for region in regions"></select>
+                <input type="text" name="state" id="state" ng-show="supplier.country != '1'" ng-model="supplier.state">
+                <!--<span class="help-inline" ng-show="supplierForm.state.$error.required">required</span>-->
+            </div>
+        </div>
+
+
+
+        <div class="control-group">
+            <label class="control-label" for="phone">Phone</label>
+
+            <div class="controls">
+                <input type="text" name="phone" id="phone" placeholder="(208)867-5309" ng-model="supplier.phone">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="email">Email Address</label>
+
+            <div class="controls">
+                <input type="email" name="email" id="email" placeholder="sales@vroozi.com" ng-model="supplier.email">
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: supplierForm.vendorId.$dirty && supplierForm.vendorId.$invalid}">
+            <label class="control-label" for="vendorId">Vendor ID</label>
+
+            <div class="controls">
+                <input type="text" name="vendorId" id="vendorId" placeholder="" ng-model="supplier.defaultVendorId">
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: supplierForm.paymentTerms.$dirty && supplierForm.paymentTerms.$invalid}">
+            <label class="control-label" for="paymentTerms">Payment Terms</label>
+
+            <div class="controls">
+                <select id="paymentTerms" name="paymentTerms" ng-model="supplier.paymentTerms" ng-options="paymentTerm.value as paymentTerm.name for paymentTerm in paymentTermsObject.paymentTermOption"></select>
+            </div>
+        </div>
+
+
+        <div class="control-group" ng-class="{error: supplierForm.taxId.$dirty && supplierForm.taxId.$invalid}">
+            <label class="control-label" for="taxId">Tax ID</label>
+
+            <div class="controls">
+                <input type="text" name="taxId" id="taxId" placeholder="" ng-model="supplier.taxId">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="buyRoute">Has BuyRoute ?</label>
+
+            <div class="controls">
+                <input type="checkbox" name="supplier.buyRoute" ng-model="supplier.buyRoute">
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="saveSupplier()" ng-disabled="supplierForm.$invalid" type="button" class="btn btn-primary">Save changes</button>
+</div>

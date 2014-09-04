@@ -1,0 +1,81 @@
+<!-- Body Start -->
+<div class="span40">
+    <!--<div class="spacing" style="height:900px">-->
+
+    <div class="page-header">
+        <h2 class="section-h2">My Account</h2>
+    </div>
+
+    <!-- Address Management Start -->
+    <div class="plainwell" ng-controller="AddressCtrl">
+        <form class="form-horizontal">
+            <h4 style="margin: 10px 0">Address Management</h4>
+            <hr style="margin-top: 5px">
+            <div class="control-group">
+                <label class="control-label" style="width:170px; text-align: left !important;" for="address">Default Delivery Address</label>
+                <div class="controls">
+                    <select id="address" ng-model="defaultShipping.id" ng-options="address.id as address.addressName for address in addresses|filter:{active:'true'}" ng-change="defaultShippingChange(defaultShipping.id)" required></select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" style="width:170px; text-align: left !important;" for="address">Default Company Address</label>
+                <div class="controls">
+                    <select id="defaultCompanyAddress" ng-model="defaultCompanyAddress.id" ng-options="address.id as address.addressName for address in addresses|filter:{companyAddress:'true', active:'true'}" ng-change="defaultCompanyAddressChange(defaultCompanyAddress.id)" required></select>
+                </div>
+            </div>
+            <hr>
+        </form>
+        <div class="bar">
+            <!-- Create a binding between the searchString model and the text field -->
+            <input type="text" ng-model="searchString" placeholder="Enter your search terms" />
+        </div>
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-change="checkAll(confirmed)" ng-model="confirmed"></th>
+                <th>Name</th>
+                <th>City</th>
+                <th class="hidden-tablet hidden-phone">State/Region</th>
+                <th class="hidden-tablet hidden-phone">Zip</th>
+                <th class="hidden-tablet hidden-phone">Country</th>
+                <th>Telephone</th>
+                <th>Status</th>
+                <th class="hidden-tablet hidden-phone">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="loadingMessageAdd">
+                <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+            </tr>
+            <tr ng-repeat="address in addresses | searchForAddress:searchString:this | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+                <td><input ng-model="address.selected" type="checkbox" ng-change="setCheckAll(address.selected)"></td>
+                <td><a href="" ng-click="editAddress(address)">{{address.addressName}}</a></td>
+                <td>{{address.city}}</td>
+                <td class="hidden-tablet hidden-phone">{{address.state | uppercase}}</td>
+                <td class="hidden-tablet hidden-phone">{{address.postalCode}}</td>
+                <td class="hidden-tablet hidden-phone">{{address.country}}</td>
+                <td>{{address.phone | phonenumber}}</td>
+                <td>{{address.active | setStatus}}</td>
+                <td class="hidden-tablet hidden-phone"><a href="" ng-click="deleteAddress(address)"><i class="icon-trash"> </i></a></td>
+            </tr>
+            <tr ng-show="noContentAdd">
+                <td colspan="6" style="height: 4em;vertical-align: middle;text-align:center;">You have not defined any addresses.</td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-show="numberOfPages()>1">
+            <pagination num-pages="numberOfPages()" current-page="currentPage"></pagination>
+        </div>
+
+        <form class="form-horizontal">
+            <div class="control-group">
+                <a href="#addressOverlay" role="button" ng-click="resetClassAddressManagement()" class="btn btn-small" data-toggle="modal">Create a new Address</a>
+                <a role="button" class="btn btn-small" ng-click="activateAddress()"><i class="icon-small icon-ok"></i> ACTIVATE</a>
+                <a role="button" class="btn btn-small" ng-click="deactivateAddress()"><i class="icon-small icon-remove"></i> DEACTIVATE</a>
+            </div>
+        </form>
+        <!-- Modals -->
+        <div id="addressOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/address-modal.html'"></div>
+        <!-- /Modals -->
+    </div>
+</div>

@@ -1,0 +1,17 @@
+{
+    "name": "purchasing-manager",
+    "version": "1.0.0",
+    "main": "app.js",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "angular-ui-select2": "latest"
+    },
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}

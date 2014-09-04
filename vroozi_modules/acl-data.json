@@ -1,0 +1,253 @@
+[   {
+        "controls": ["quickquote"],
+        "allow": ["*"],
+        "api": "/api/quotation-request",
+        "methods": ["GET"]
+    },
+    {
+        "controls": ["viewOrders"],
+        "allow": ["Admin", "Employee"],
+        "api": "/api/purchaseRequests",
+        "methods": ["GET"]
+    },
+    {
+        "controls": ["viewPurchaseOrders"],
+        "allow": ["Admin","Buyer"],
+        "api": "/api/purchase-orders",
+        "methods": ["GET"]
+    },
+    {
+        "controls": ["viewApprovalOrders"],
+        "allow": ["Admin", "Approver"],
+        "api": "/api/purchaseRequests",
+        "methods": ["GET"]
+    },
+
+    {
+        "controls": ["viewRequest"],
+        "allow": ["*"],
+        "api": "/api/purchaseRequests",
+        "methods": ["GET"]
+    },
+    {
+        "controls": ["saveRequest"],
+        "allow": ["Admin", "Employee"],
+        "api": "/api/purchaseRequests",
+        "methods": ["PUT"]
+    },
+    {
+        "controls": ["submitRequest"],
+        "allow": ["Admin", "Employee", "Approver"],
+        "api": "/api/purchaseRequests",
+        "methods": ["PUT"]
+    },
+    {
+        "controls": ["savePurchaseOrder", "submitPurchaseOrder"],
+        "allow": ["Buyer"],
+        "api": "/api/purchase-orders",
+        "methods": ["PUT"]
+    },
+    {
+        "controls": ["createRequest", "deleteRequest"],
+        "allow": ["Admin", "Employee"],
+        "api": "/api/purchaseRequests",
+        "methods": ["POST", "DELETE"]
+    },
+    {
+        "controls": ["createPurchaseOrder", "deletePurchaseOrder"],
+        "allow": ["Buyer","Admin"],
+        "api": "/api/purchaseRequests",
+        "methods": ["POST", "DELETE"]
+    },
+    {
+        "controls": ["createQuickRfx"],
+        "allow": ["Buyer"],
+        "api": "/api/quickRfxRequest",
+        "methods": ["POST", "DELETE"]
+    },
+    {
+        "controls": ["viewQuickRfx"],
+        "allow": ["Buyer", "Admin"],
+        "api": "/api/buyRoutesItems",
+        "methods": ["GET","POST", "DELETE"]
+    },
+    {
+        "controls": ["approveRequest", "rejectRequest"],
+        "allow": ["Admin", "Approver"],
+        "api": "/api/purchaseRequests",
+        "methods": ["PUT"]
+    },
+    {
+        "controls": ["viewSuppliers"],
+        "allow": ["Admin","Buyer"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT"]
+    },
+    {
+        "controls": ["deleteSuppliers"],
+        "allow": ["Admin"],
+        "api": "/api/purchaseRequests",
+        "method": ["DELETE"]
+    },
+    {
+        "controls": ["viewPurchaseRequestSummary"],
+        "allow": ["Admin", "Employee"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["viewPurchaseRequestSearchResultsFunctionality"],
+        "allow": ["Admin","Approver", "Employee"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["viewPurchaseOrdersSummary"],
+        "allow": ["Buyer","Admin"],
+        "api": "/api/purchase-orders",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["viewApproversPurchaseOrdersSummary"],
+        "allow": ["Admin","Approver"],
+        "api": "/api/purchase-orders",
+        "method": ["GET"]
+    },
+
+    {
+        "controls": ["viewPurchaseOrderSearchResultsFunctionality"],
+        "allow": ["Buyer"],
+        "api": "/api/purchase-orders",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["addLineItem", "editLineItem", "deleteLineItem"],
+        "allow": ["Admin", "Employee", "Buyer"],
+        "api": "/api/purchaseRequests",
+        "methods": ["POST", "DELETE"]
+    },
+    {
+        "controls": ["addAddress", "editAddress", "deleteAddress"],
+        "allow": ["Admin", "Employee", "Buyer"],
+        "api": "/api/purchaseRequests",
+        "methods": ["POST", "DELETE"]
+    },
+
+    {
+        "controls": ["viewDraftRequests"],
+        "allow": ["Admin", "Employee"],
+        "url": "/api/purchaseRequests",
+        "method": ["GET"]
+    },
+    {
+        "controls": ["viewPendingRequests", "viewAttentionRequests", "viewApprovedRequests"],
+        "allow": ["Admin", "Employee"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET"]
+    },
+    {
+        "controls": ["viewMyAccount", "viewSettings", "updateProfile"],
+        "allow": ["*"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["viewSettings"],
+        "allow": ["Admin", "Employee", "Buyer"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+    {
+        "controls": ["viewCompanySettings", "updateCompanySettings"],
+        "allow": ["Admin"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+    {
+        "controls": ["createUser", "updateUser", "deleteUser", "viewUser"],
+        "allow": ["Admin"],
+        "api": "/api/purchaseRequests",
+        "method": ["POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["setDefaultAddress"],
+        "allow": ["Admin", "Employee"],
+        "api": "/api/purchaseRequests",
+        "method": ["PUT"]
+    },
+
+    {
+        "controls": ["viewSearch"],
+        "allow": ["Admin", "Employee", "Buyer"],
+        "api": "/api/purchaseRequests",
+        "method": ["POST"]
+    },
+    {
+        "controls": ["createTemplate"],
+        "allow": [""],
+        "api": "/api/purchaseRequests",
+        "method": ["POST"]
+    },
+
+    {
+        "controls": ["viewOrganization", "updateOrganization"],
+        "allow": ["Master_Admin","Admin"],
+        "api": "/api/purchaseRequests",
+        "method": ["GET", "POST", "PUT", "DELETE"]
+    },
+
+    {
+        "controls": ["createCatalog"],
+        "allow": ["Admin"],
+        "api": "/api/contents",
+        "methods": ["POST"]
+    },
+
+    {
+        "controls": ["deleteCatalog"],
+        "allow": ["Admin"],
+        "api": "/api/contents",
+        "methods": ["DELETE"]
+    },
+
+    {
+        "controls": ["exportUserRequests"],
+        "allow": ["*"],
+        "api": "/api/reports",
+        "methods": ["GET"]
+    },
+
+    {
+        "controls": ["exportAllRequests"],
+        "allow": ["Admin"],
+        "api": "/api/reports",
+        "methods": ["GET"]
+    }
+    ,
+
+    {
+        "controls": ["exportPdfOrder"],
+        "allow": ["Admin","Buyer"],
+        "api": "/api/reports",
+        "methods": ["GET"]
+    }
+    ,
+
+    {
+        "controls": ["exportPdfRequest"],
+        "allow": ["Admin","Employee"],
+        "api": "/api/reports",
+        "methods": ["GET"]
+    }
+]
+
+
+
+
+

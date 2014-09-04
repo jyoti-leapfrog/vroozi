@@ -1,0 +1,268 @@
+
+<div class="span40 center-div" ng-controller="QuickRfxCtrl">
+  <section class="main-content">
+    <div class="page-header mt-0">
+      <h2>Create QuickRFX</h2>
+    </div>
+    <div class="quickrfx-container">
+      <div class="quickrfx-blocks">
+        <div class="quickrfxbg-blocks">
+          <form method="post" action="#">
+            <div class="span19 form-quickrfx">
+              <div class="form-group">
+                <label>QuickRFX Number </label>
+                <input type="text" disabled="" ng-value="{{quotationRequestNumberFormatted}}" value="{{quotationRequestNumberFormatted}}" class="span10">
+              </div>
+              <div class="form-group">
+                <label for="rfxname">QuickRFX Name </label>
+                <input type="text" class="span10" ng-model="quotationrequest.quotationRequestName">
+              </div>
+              <div class="form-group input-append date clearfix">
+              <div class="calender-block">
+                <label for="datefrom">Start Date </label>
+                <input type="text" name="startDate" id="dateform" class="span7 effective ng-valid ng-valid-required ng-dirty" ng-model="quotationrequest.createdDate" b-datepicker="" required="">
+                </div>
+                <div class="calender-block">
+                <label for="quotehr">Time</label>
+                <input class="span3" data-format="hh:mm:ss" type="text" id="quotehr" ng-model="quotation.quoteDate">
+                </div>
+                <div class="calender-block">
+                <label for="timeZone">Time Zone</label>                  
+                <select class="span7">
+                  <option>(GMT-08:00) Pacific Time</option>
+                  <option>(GMT-10:00) Hawaii</option>
+                  <option>(GMT-09:00) Alaska</option>                  
+                  <option>(GMT-07:00) Arizona</option>
+                  <option>(GMT-07:00) Chihuahua</option>
+                  <option>(GMT-07:00) Mountain Time</option>
+                  <option>(GMT-06:00) Central America</option>
+                  <option>(GMT-06:00) Central Time</option>                   
+                </select>
+                </div>
+              </div>
+              <div class="form-group input-append date clearfix">
+              <div class="calender-block">
+                <label for="dateto">Deadline</label>
+                <input type="text" id="dateto" class="span7 effective ng-valid ng-valid-required ng-dirty" b-datepicker="" ng-model="quotationrequest.deadline" required="">
+                
+                </div>
+                <div class="calender-block">
+                <label for="quotehr">Time</label>
+                <input class="span3" data-format="hh:mm:ss" type="text" id="quotehr" ng-model="quotation.quoteDate">
+                </div>
+                <div class="calender-block">
+                <label for="timeZone">Time Zone</label>                  
+                <select class="span7">
+                  <option>(GMT-08:00) Pacific Time</option>
+                  <option>(GMT-10:00) Hawaii</option>
+                  <option>(GMT-09:00) Alaska</option>                  
+                  <option>(GMT-07:00) Arizona</option>
+                  <option>(GMT-07:00) Chihuahua</option>
+                  <option>(GMT-07:00) Mountain Time</option>
+                  <option>(GMT-06:00) Central America</option>
+                  <option>(GMT-06:00) Central Time</option>                   
+                </select>
+                </div>
+
+              </div>
+              <div class="form-group input-append date">
+                <label for="QRFX">When Can Suppliers Open The QuickRFX</label>
+                <input type="text" id="QRFX" class="span7 effective ng-valid ng-valid-required ng-dirty" b-datepicker="" required="">
+                 </div>
+            </div>
+            <div class="span19 pull-right">
+            <div class="form-group input-append date">
+                <label for="EffectiveDate">Effective Date </label>
+                <input type="text" id="EffectiveDate" class="span7 effective ng-valid ng-valid-required ng-dirty" b-datepicker="" required="" ng-model="quotationrequest.effectiveDate">
+                 </div>
+              <div class="form-group">
+                <label for="rfxname">Buyer Name</label>
+                  <input type="text" ng-model="quotationrequest.buyerName" />
+              </div>
+              <div class="form-group">
+                <label>Buyer Group</label>
+                <input class="span10" type="text" disabled="" ng-model="buyerGroupName" ng-value="buyerGroupName">
+              </div>
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" ng-model="multipleResponsesPerSupplier">
+                    Multiple Responses Per Supplier </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="quickrfx-blocks">
+        <div class="quickrfxbgnew-blocks pd-0">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Suppliers</h3>
+            </div>
+            <div class="panel-form">
+              <form method="post" action="#" class="form-inline" name="supplierForm">
+                <div class="form-group span19">
+                  <input type="text" ng-model="selectedSupplier"
+                                  typeahead="sup as sup.companyName for sup in suppliers | filter:{companyName:$viewValue} | limitTo:8" class="form-control" placeholder="Search for Supplier" />
+                  <button type="button" class="btn btn-primary" ng-click="addSupplierToList()"> <span class="icon icon-plus icon-white"></span><span class="glyphicon-class">Add Supplier </span> </button>
+                </div>
+                <div class="form-group form-add-block span18">
+                  <div class="input-fields">
+                    <input type="text" class="input-small" ng-model="quotationrequest.companyName" placeholder="Company Name" required="required" >
+                    <input type="text" class="input-small" ng-model="quotationrequest.contactName" placeholder="Contact Name" required="required">
+                    <input type="text" class="input-small" ng-model="mail" placeholder="Email" required="required">
+                    <button type="button" class="btn btn-primary" ng-click="addNewSupplierToList(quotationrequest.companyName, quotationrequest.contactName, mail)"> <span class="icon icon-plus icon-white"></span> </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Company Name</th>
+                    <th>Supplier ID</th>
+                    <th>Contact Name</th>
+                    <th>Address</th>
+                    <th>Email Address</th>
+                    <th>Phone  Number</th>
+                    <th class="text-center-imp">Options</th>
+                  </tr>
+                </thead>
+                
+                <tbody ng-repeat="supplier in selectedSuppliers">
+                    <tr>
+                      <td>
+                         <span ng-show="!supplier.quotations || supplier.quotations.length==0">{{supplier.companyName}}</span>
+                         <span ng-show="supplier.quotations || supplier.quotations.length>0" ng-click="toggleQuotation($index);" style="cursor:pointer; font-weight:bold;">{{supplier.companyName}}</span>
+                      </td>
+                      <td>{{supplier.companyId}}</td>
+                      <td>{{supplier.contactName}}</td>
+                      <td>{{supplier.address1}}</td>
+                      <td>{{supplier.email}}</td>
+                      <td>{{supplier.phone}}</td>
+                      <td class="text-center-imp"><span class="icon icon-trash"></span></td>                    
+                    </tr>
+                    <tr>
+                      <td colspan="7" ng-show="quoteResponsePosition== $index">
+                         <table class="table table-condensed">
+                         <thead>
+                           <tr>
+                             <th>Response Date</th>
+                             <th>Price Per Unit</th>
+                             <th>Qty</th>
+                             <th>Total Price</th>
+                             <th>Delivery Date</th>
+                             <th>Option</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           <tr ng-repeat ="quote in supplier.quotations">
+                             <td>{{quote.responseDate}}</td>
+                             <td>${{quote.unitPrice}}</td>
+                             <td>{{quote.qty}}</td>
+                             <td>${{quote.unitPrice * quote.qty}}</td>
+                             <td>{{quote.deliveryDate}}</td>
+                             <td><a href="#" class="btn btn-primary">Accept</a></td>
+                           </tr>
+                         </tbody>
+                       </table>
+                      </td>
+                    </tr>
+                 </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quickrfx-blocks">
+        <h2>Items to be Quoted</h2>
+        <div class="table-wrapper">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Line Item Overview</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Supplier</th>
+                    <th>Qty</th>
+                    <th>UoM</th>
+                    <th>Category</th>
+                    <th>Part No.</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>{{ quotationrequest.items[0].description }}</td>
+                    <td>{{ quotationrequest.items[0].supplierName}}</td>
+                    <td>{{ quotationrequest.items[0].qty}}</td>
+                    <td>{{ quotationrequest.items[0].uom}}</td>
+                    <td>{{ quotationrequest.items[0].categoryName}}</td>
+                    <td>{{ quotationrequest.items[0].partNo }}</td>
+                    <td>{{ quotationrequest.items[0].unitPrice }}</td>
+                    <td><input type="hidden" ng-modal="quotationrequest.items" value="{{quotationrequest.items[0]}}"></td>
+                  </tr>
+                  <tr ng-repeat="lineItems in li" ng-show="li">
+                    <td></td>
+                    <td>{{ lineItems.description }}</td>
+                    <td>{{ lineItems.supplierName}}</td>
+                    <td>{{ lineItems.qty}}</td>
+                    <td>{{ lineItems.uom}}</td>
+                    <td>{{ lineItems.categoryName}}</td>
+                    <td>{{ lineItems.partNo }}</td>                   
+                    <td>{{ lineItems.unitPrice }}</td>                   
+                  </tr>
+                </tbody>
+              </table>
+               </div>
+             </div>
+               <div class="row mt-10">
+                   <div class="span6 offset1">
+                       <a href="#lineItemOverlay" role="button" class="btn btn-primary span6" data-toggle="modal">Add Line Item</a>
+            </div>
+          </div>
+          <div class="quickrfxbg-blocks mt-30">
+            <form method="post" action="#">
+              <div class="bottom-container">               
+                <div class="create-quote-btm">
+                  <div class="col-1">
+                    <div class="form-group">
+                      <label for="Notesforbuyer">Notes for Supplier</label>
+                      <textarea class="form-control" rows="8" ng-model="quotation.buyersnote"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label for="terms">Terms and Conditions </label>
+                      <textarea class="form-control" rows="8" placeholder="">This Agreement, including all exhibits and addenda hereto and all Order Forms, constitutes the entire agreement between the parties and supersedes all prior and contemporaneous agreements, proposals or representations, written or oral, concerning its subject matter. No modification, amendment, or waiver of any provision of this Agreement shall be effective unless in writing and either signed or accepted electronically by the party against whom the modification, amendment or waiver is to be asserted. However, to the extent of any conflict or inconsistency between the provisions in the body of this Agreement and any exhibit or addendum hereto or any Order Form, the terms of such exhibit, addendum or Order Form shall prevail. Notwithstanding any language to the contrary therein, no terms or conditions stated in Your purchase order or other order documentation (excluding Order Forms) shall be incorporated into or form any part of this Agreement, and all such terms or conditions shall be null and void.Vroozi, Inc.
+                      </textarea>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="button-wrapper">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-large btn-warning" ng-click="goBack()">Go Back</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-large btn-success">Attach Files</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-large btn-primary" ng-click="newQuickRfxOrder(true)">Submit RFX</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+                 <div id="lineItemOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/lineItem-modal.html'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

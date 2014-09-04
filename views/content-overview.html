@@ -1,0 +1,112 @@
+<!-- Body Start -->
+<div class="span40" ng-controller="ContentManagerCtrl">
+    <!--<div class="spacing" style="height:900px">-->
+
+    <div class="page-header">
+        <h2 class="section-h2">Content Manager</h2>
+    </div>
+
+    <!-- File Upload Start -->
+    <div ng-controller="FileUploadCtrl">
+        <form action="/contentuploads" name="uploadContentForm" class="form-horizontal" ng-upload>
+            <div class="plainwell" style="padding-top: 0; padding-bottom: 0; margin-bottom: 20px">
+                <h4 style="margin: 10px 0">Content</h4>
+                <hr style="margin-top: 5px">
+                <div class="control-group">
+                    <label class="control-label" for="groupName">Group Name</label>
+
+                    <div class="controls">
+                        <input type="text" id="groupName" name="groupName" class="input-medium">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="supplier">Supplier</label>
+                    <div class="controls">
+                        <select id="supplier" class="select" name="supplier" ng-model='supplier' ng-options='supplier.value as supplier.name for supplier in suppliers.suppliersOptions' required>
+                        </select>
+                    </div>
+
+                        <input type="hidden" name="supplierId" value="{{supplier}}" >
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="contentFile">Select Content File</label>
+
+                    <div class="controls">
+                        <input type="file" id="contentFile" name="contentFile" class="filestyle" data-classButton="btn">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="contentFile">Select image File</label>
+
+                    <div class="controls">
+                        <input type="file" id="imageFile" name="imageFile" class="filestyle" data-classButton="btn">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="uploadButton"><img ng-show="uploading" src="/img/loading.gif"
+                                                                         width="22"></label>
+
+                    <div class="controls">
+                        <input id="uploadButton" type="button" value="Upload" upload-click="uploadClick()"
+                               upload-submit="uploadComplete(contents, completed)" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- File Upload Stop -->
+
+    <!-- Content overview Start -->
+    <div class="plainwell" >
+        <form class="form-horizontal">
+            <h4 style="margin: 10px 0">Content Overview</h4>
+            <hr style="margin-top: 5px">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Short Description</th>
+                    <th>Vendor Mat</th>
+                    <th>Price</th>
+                    <th>Currency</th>
+                    <th>Product Category</th>
+                    <th>Group Name</th>
+                    <th>Supplier</th>
+                    <th class="hidden-phone" ng-show="acl.deleteCatalog">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="loadingMessageItems">
+                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+                </tr>
+                <tr ng-repeat="item in items | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+                    <td>{{item.shortDescription}}</td>
+                    <td>{{item.vendorMat}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.currency}}</td>
+                    <td>{{item.productCategory}}</td>
+                    <td>{{item.transactionName}}</td>
+                    <td>{{item.supplierName}}</td>
+                    <td ng-show="acl.deleteCatalog" ><a href="" ng-click="deleteProductOffer(item)"><i class="icon-trash"> </i></a></td>
+                </tr>
+                <tr ng-show="noContentItems">
+                    <td colspan="6" style="height: 4em;vertical-align: middle;text-align:center;">You have not added any
+                        content.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <pagination num-pages="numberOfPages()" current-page="currentPage"></pagination>
+
+            <!--<form class="form-horizontal">-->
+            <!--<div class="control-group">-->
+            <!--<a href="#supplierOverlay" role="button" class="btn btn-small" data-toggle="modal">Create a new supplier</a>-->
+            <!--</div>-->
+            <!--</form>-->
+        </form>
+        <!-- Modals -->
+        <!--<div id="supplierOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/supplier-modal.html'"></div>-->
+        <!-- /Modals -->
+    </div>
+
+</div>

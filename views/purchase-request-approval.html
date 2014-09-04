@@ -1,0 +1,205 @@
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+{{#pending}}
+<form action="/purchaseRequests/approve" method="post">
+{{/pending}}
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td style="border-bottom: 1px black solid" width="45%"><img src="{{logoName}}"></td>
+                    <td style="border-bottom: 1px black solid" width="10%">&nbsp;</td>
+                    <td style="border-bottom: 1px black solid; font-family: arial, verdana, sans-serif; font-size: 1.5em" align="right" valign="bottom" width="45%">APPROVAL FOR PURCHASE REQUEST</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 10px">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-family: arial, verdana, sans-serif; font-size: 1.2em" align="center">Welcome to the Vroozi Business Shopping Platform, the evolution in eProcurement! You have been asked to approve or reject the purchase request shown below.</td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+    {{#viewApproved}}
+    <tr>
+        <td style="font-family: arial, verdana, sans-serif; font-size: 2em; line-height: 28px; color: #ffffff; background-color: green" align="center"><span style="color:#ffffff">APPROVED</span></td>
+    </tr>
+    {{/viewApproved}}
+    {{#viewRejected}}
+    <tr>
+        <td style="font-family: arial, verdana, sans-serif; font-size: 2em; line-height: 28px; color: #ffffff; background-color: red" align="center"><span style="color:#ffffff">REJECTED</span></td>
+    </tr>
+    {{/viewRejected}}
+    {{#errorMessage}}
+    <tr>
+        <td style="font-family: arial, verdana, sans-serif; font-size: 1.5em; line-height: 28px; color: #ffffff; border: 1px solid black; background-color: lightyellow" align="center"><span style="color:#000000">{{errorMessage}}</span></td>
+    </tr>
+    {{/errorMessage}}
+    <tr>
+        <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+
+    <tr>
+        <td style="font-family: arial, verdana, sans-serif; font-size: 2em; line-height: 28px; color: #ffffff; background-color: #00dbba" align="center"><a href="/#/purchase-request/{{id}}" style="color:#ffffff">VIEW DETAILED PURCHASE REQUEST</a></td>
+    </tr>
+
+    {{#pending}}
+    <tr>
+      <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <span style="font-family: Arial, Helvetica, sans-serif; font-size:1.5em"><b>Notes for Requester:</b></span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <textarea name="reason" style="resize: none; width: 100%" rows="4" cols="50"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="100%">
+        <div style="font-family: arial,verdana,sans-serif; font-size: 1.5em;">
+          {{#reject}}
+          You have chosen to reject Purchase Request {{orderNumber}}. Please enter your pin code to confirm.
+          {{/reject}}
+          {{#approve}}
+          You have chosen to approve Purchase Request {{orderNumber}}. Please enter your pin code to confirm.
+          {{/approve}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="100%">
+        <div style="padding-top: 20px;">
+          <div style="float: left; padding-top: 7px;">
+            <span style="font-family: arial, verdana, sans-serif; font-size: 2em; padding-left: 120px;">PIN Code: </span>
+            <input type="password" autocomplete="off" size="12" name="pin" style="font-family: arial, verdana, sans-serif; font-size: 2em">
+          </div>
+          <div style="float: left; padding-left: 82px;">
+            {{#reject}}
+            <input name="reject" style="background-color: red; font-family: arial, verdana, sans-serif; font-size: 2em; font-weight: bolder; padding: 4px 24px; color: #ffffff" type="submit" value="REJECT">
+            {{/reject}}
+            {{#approve}}
+            <input name="approve" style="background-color: green; font-family: arial, verdana, sans-serif; font-size: 2em; font-weight: bolder; padding: 4px 24px; color: #ffffff" type="submit" value="APPROVE">
+            {{/approve}}
+          </div>
+        </div>
+      </td>
+    </tr>
+    {{/pending}}
+
+    <tr>
+        <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            <table cellpadding="2" cellspacing="0" border="0" width="100%" bgcolor="#f3f2e4">
+                <tr>
+                    <td colspan="2" style="font-size: 1px; line-height: 2px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" width="30%"><b>Requester</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{requester}}</td>
+                </tr>
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" width="30%"><b>Priority</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{priority}}</td>
+                </tr>
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" width="30%"><b>Date</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{createdDate}}</td>
+                </tr>
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" width="30%"><b>Order Number</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{orderNumber}}</td>
+                </tr>
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" width="30%"><b>Reason for Request</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{reasonForRequest}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-size: 1px; line-height: 2px">&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            <table cellpadding="2" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" bgcolor="#e3f3e4"><b>Description</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" bgcolor="#e3f3e4"><b>Supplier</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" bgcolor="#e3f3e4"><b>Qty</b></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px" bgcolor="#e3f3e4"><b>Unit Price</b></td>
+                </tr>
+                {{#items}}
+                <tr>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{description}}</td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{supplierName}}</td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{qty}}</td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{unitPrice}}</td>
+                </tr>
+                {{/items}}
+                <tr style="height: 3px"></tr>
+                <tr>
+                    <td colspan="3" style="font-family: arial, verdana, sans-serif; font-size: 14px;"><i>Shipping Charges</i></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{shippingCharges}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="font-family: arial, verdana, sans-serif; font-size: 14px"><i>Tax</i></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px">{{taxAmount}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="font-family: arial, verdana, sans-serif; font-size: 14px"><i><b>Total</b></i></td>
+                    <td style="font-family: arial, verdana, sans-serif; font-size: 14px"><i><b>{{totalAmount}}</b></i></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 15px">&nbsp;</td>
+    </tr>
+    {{^pending}}
+    <tr>
+        <td colspan="3">
+            <div style="font-family: Arial, Helvetica, sans-serif; font-size:12px">{{reasonForReject}}</div>
+        </td>
+    </tr>
+    {{/pending}}
+    <tr>
+        <td style="font-size: 1px; line-height: 10px">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 20px">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 10px" bgcolor="#f3f2e4">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-family: arial, verdana, sans-serif; font-size: 12px" align="center" bgcolor="#f3f2e4">
+            In case you have any problems please contact Vroozi Support</td>
+    </tr>
+    <tr>
+        <td style="font-size: 1px; line-height: 10px" bgcolor="#f3f2e4">&nbsp;</td>
+    </tr>
+</table>
+{{#pending}}
+<input type="hidden" name="token" value="{{token}}">
+</form>
+{{/pending}}
+</body>
+</html>

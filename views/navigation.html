@@ -1,0 +1,133 @@
+<div class="span9 hide-sidebar-demo" ng-controller="NavRequestCtrl" ng-hide="acl==undefined">
+    <div class="span7 nav-bar">
+
+      <!--<div class="btn-group span7">-->
+      <div>
+        <div class="btn btn-success btn-block" ng-click="createPurchaseRequest()" ng-show="acl.createRequest">Create Request</div>
+        <div class="btn btn-success btn-block" ng-click="createPurchaseOrder()" ng-show="acl.createPurchaseOrder && acl.savePurchaseOrder">Create Purchase Order</div>
+        <div class="btn btn-warning btn-block" ng-click="createQuickRfx()" ng-show="acl.createQuickRfx">Create QuickRFX</div>
+        <a class="btn btn-success btn-block" href="#/content-manager" ng-show="acl.createCatalog">Create Catalog</a>
+        <a class="btn btn-success btn-block"  href="#/purchase-request-template" ng-show="acl.createTemplate">Create Template</a>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid-cell-none" style="height: 30px;">&nbsp;</div>
+      <div id="purchaseRequestGrid" ng-show="purchaseRequestGrid">
+      <div ng-show="acl.viewPurchaseRequestSummary">
+        <div class="grid-cell-dark">
+            <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseRequestsClick('DRAFT')"
+                                        ng-show="acl.viewDraftRequests">{{ orderSummary.draft }}</a></h2>
+            <h5 class="grid-cell-h5" ng-show="acl.viewDraftRequests">Draft</h5>
+        </div>
+        <div class="grid-cell-dark">
+            <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseRequestsClick('APPROVED')"
+                                        ng-show="acl.viewApprovedRequests">{{ orderSummary.approved }}</a>
+                                     <a href="" ng-click="viewApprovalPurchaseRequests('APPROVED')"
+                                        ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">{{ approved }}</a></h2>
+            <h5 class="grid-cell-h5" ng-show="acl.viewApprovedRequests">Approved</h5>
+            <h5 class="grid-cell-h5" ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">Approved</h5>
+        </div>
+        <div class="grid-cell-none">&nbsp;</div>
+      </div>
+      <div ng-show="acl.viewPurchaseRequestSummary">
+        <div class="grid-cell-lite">
+            <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseRequestsClick('PENDING')"
+                                        ng-show="acl.viewPendingRequests">{{ orderSummary.pendingApproval }}</a>
+                                     <a href="" ng-click="viewApprovalPurchaseRequests('PENDING')"
+                                        ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">{{ pendingApproval }}</a>
+            </h2>
+            <h5 class="grid-cell-h5" ng-show="acl.viewPendingRequests">Pending</h5>
+            <h5 class="grid-cell-h5" ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">Pending</h5>
+        </div>
+        <div class="grid-cell-lite">
+            <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseRequestsClick('REJECTED')"
+                                        ng-show="acl.viewAttentionRequests">{{ orderSummary.attention }}</a>
+                                     <a href="" ng-click="viewApprovalPurchaseRequests('REJECTED')"
+                                        ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">{{ attention }}</a></h2>
+            <h5 class="grid-cell-h5" ng-show="acl.viewAttentionRequests">Attention</h5>
+            <h5 class="grid-cell-h5" ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">Rejected</h5>
+        </div>
+        <div class="grid-cell-none">&nbsp;</div>
+      </div>
+      </div>
+      <div id="purchaseOrderGrid" ng-show="purchaseOrdersGrid">
+        <div ng-show="acl.viewPurchaseOrdersSummary">
+            <div class="grid-cell-dark">
+                <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseOrdersClick('DRAFT')"
+                                            >{{ PurchaseOrdersSummary.draft }}</a></h2>
+                <h5 class="grid-cell-h5">Draft</h5>
+            </div>
+            <div class="grid-cell-dark">
+                <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseOrdersClick('APPROVED')"
+                                           >{{ PurchaseOrdersSummary.approved }}</a></h2>
+                <h5 class="grid-cell-h5" >Approved</h5>
+            </div>
+            <div class="grid-cell-none">&nbsp;</div>
+        </div>
+        <div ng-show="acl.viewPurchaseOrdersSummary">
+            <div class="grid-cell-lite">
+                <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseOrdersClick('PENDING')"
+                                            >{{ PurchaseOrdersSummary.pendingApproval }}</a>
+                </h2>
+                <h5 class="grid-cell-h5">Pending</h5>
+            </div>
+            <div class="grid-cell-lite">
+                <h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseOrdersClick('REJECTED')"
+                                            >{{ PurchaseOrdersSummary.attention }}</a></h2>
+                <h5 class="grid-cell-h5">Attention</h5>
+            </div>
+            <div class="grid-cell-none">&nbsp;</div>
+        </div>
+      </div>
+        <!--Approval Grid Start-->
+      <div id="approvalOrderGrid" ng-show="approvalOrdersGrid">
+        <div ng-show="acl.viewApproversPurchaseOrdersSummary">
+            <div class="grid-cell-dark">
+                <!--<h2 class="grid-cell-h2"><a href="" ng-click="viewPurchaseRequests('DRAFT')"-->
+                <!--ng-show="acl.viewDraftRequests">{{ orderSummary.draft }}</a></h2>-->
+                <!--<h5 class="grid-cell-h5" ng-show="acl.viewDraftRequests">Draft</h5>-->
+            </div>
+            <div class="grid-cell-dark">
+                <h2 class="grid-cell-h2">
+                    <!--<a href="" ng-click="viewPurchaseRequests('APPROVED')"-->
+                    <!--ng-show="acl.viewApprovedRequests">{{ orderSummary.approved }}</a>-->
+                    <a href="" ng-click="viewApprovalBoxClick('APPROVED')"
+                       ng-show="acl.viewApproversPurchaseOrdersSummary">{{ appr }}</a>
+                </h2>
+                <h5 class="grid-cell-h5" ng-show="acl.viewApprovedRequests">Approved</h5>
+                <h5 class="grid-cell-h5" ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">Approved</h5>
+            </div>
+            <div class="grid-cell-none">&nbsp;</div>
+        </div>
+        <div ng-show="acl.viewApproversPurchaseOrdersSummary">
+            <div class="grid-cell-lite">
+                <h2 class="grid-cell-h2">
+                    <!--<a href="" ng-click="viewPurchaseRequests('PENDING')"-->
+                    <!--ng-show="acl.viewPendingRequests">{{ orderSummary.pendingApproval }}</a>-->
+                    <a href="" ng-click="viewApprovalBoxClick('PENDING')"
+                       ng-show="acl.viewApproversPurchaseOrdersSummary">{{ pendingApp }}</a>
+                </h2>
+                <h5 class="grid-cell-h5" ng-show="acl.viewPendingRequests">Pending</h5>
+                <h5 class="grid-cell-h5" ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">Pending</h5>
+            </div>
+            <div class="grid-cell-lite">
+                <h2 class="grid-cell-h2">
+                    <a href="" ng-click="viewApprovalBoxClick('REJECTED')"
+                       ng-show="acl.viewApproversPurchaseOrdersSummary">{{ atten }}</a></h2>
+                <h5 class="grid-cell-h5" ng-show="acl.viewAttentionRequests">Attention</h5>
+                <h5 class="grid-cell-h5" ng-show="acl.viewApproversPurchaseOrdersSummary && !acl.viewOrders">Rejected</h5>
+            </div>
+            <div class="grid-cell-none">&nbsp;</div>
+        </div>
+      </div>
+        <!--Approval Grid End-->
+      <div class="spacer" style="height:30px">&nbsp;</div>
+      <div class="pagination-centered" ng-show = "showImage">
+          <img src="images/owl.png">
+      </div>
+        <div id="faceTextDiv" class="pagination-centered" ng-show = "!showImage">
+            <!--{{companySettings1.faceText}}-->
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<div class="span40">
+    <!--<div class="spacing" style="height:900px">-->
+
+    <div class="page-header">
+        <h2 class="section-h2">Accounting</h2>
+    </div>
+
+<!-- Cost Centers Start -->
+<div class="plainwell" ng-controller="CostCenterCtrl">
+    <form class="form-horizontal">
+        <h4 style="margin: 10px 0">Cost Centers</h4>
+        <hr style="margin-top: 5px">
+        <div class="bar">
+            <!-- Create a binding between the searchString model and the text field -->
+            <input type="text" ng-model="searchString" placeholder="Enter your search terms" />
+        </div>
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-change="checkAll(confirmed)" ng-model="confirmed"></th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="loadingMessageCost">
+                <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+            </tr>
+            <tr ng-repeat="costCenter in costCenters | searchForCostCenter:searchString:this | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+                <td><input ng-model="costCenter.selected" type="checkbox" ng-change="setCheckAll(costCenter.selected)"></td>
+                <td><a href="" ng-click="editCostCenter(costCenter)">{{costCenter.name}}</a></td>
+                <td>{{costCenter.code}}</td>
+                <td>{{costCenter.description}}</td>
+                <td>{{costCenter.active | setStatus}}</td>
+                <td><a href="" ng-click="deleteCostCenter(costCenter)"><i class="icon-trash"> </i></a></td>
+            </tr>
+            <tr ng-show="noContentCost">
+                <td colspan="4" style="height: 4em;vertical-align: middle;text-align:center;">You have not defined any cost centers.</td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-show="numberOfPages()>1">
+            <pagination num-pages="numberOfPages()" current-page="currentPage"></pagination>
+        </div>
+
+        <form class="form-horizontal">
+            <div class="control-group">
+                <a href="#costCenterOverlay" role="button" ng-click="resetClassCostCenter()" class="btn btn-small" data-toggle="modal">Create a new Cost Center</a>
+                <a role="button" class="btn btn-small" ng-click="activateCostCenter()"><i class="icon-small icon-ok"></i> ACTIVATE</a>
+                <a role="button" class="btn btn-small" ng-click="deactivateCostCenter()"><i class="icon-small icon-remove"></i> DEACTIVATE</a>
+            </div>
+        </form>
+    </form>
+    <!-- Modals -->
+    <div id="costCenterOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/costcenter-modal.html'"></div>
+    <!-- /Modals -->
+</div>
+<!-- Cost Centers Stop -->
+<!-- GL Accounts Start -->
+<div class="plainwell" ng-controller="GLAccounts">
+    <form class="form-horizontal">
+        <h4 style="margin: 10px 0">GL Accounts</h4>
+        <hr style="margin-top: 5px">
+        <div class="bar">
+            <!-- Create a binding between the searchString model and the text field -->
+            <input type="text" ng-model="searchString" placeholder="Enter your search terms" />
+        </div>
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-model="confirmed" ng-change="checkAll(confirmed)"></th>
+                <th>GL Account Code</th>
+                <th>GL Account Description</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Deleted</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="loadingMessageGL">
+                <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+            </tr>
+            <tr ng-repeat="account in gLAccounts | searchForGLAccount:searchString:this | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+                <td><input ng-model="account.selected" type="checkbox" ng-change="setCheckAll(account.selected)"></td>
+                <td><a href="" ng-click="editGLAccount(account)">{{account.glAccountCode}}</a></td>
+                <td>{{account.glAccountDescription}}</td>
+                <td>{{account.createdOn | date:'MM/dd/yyyy'}}</td>
+                <td>{{account.active | setStatus}}</td>
+                <td><a href="" ng-click="deleteGLAccount(account)"><i class="icon-trash"> </i></a></td>
+            </tr>
+            <tr ng-show="noContentGL">
+                <td colspan="5" style="height: 4em;vertical-align: middle;text-align:center;">You have not defined any GL Account.</td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-show="numberOfPages()>1">
+            <pagination num-pages="numberOfPages()" current-page="currentPage"></pagination>
+        </div>
+
+        <form class="form-horizontal">
+            <div class="control-group">
+                <a href="#glAccountsOverlay" role="button" ng-click="resetClassGLAccounts()" class="btn btn-small" data-toggle="modal">Create a new GL Accounts</a>
+                <a role="button" class="btn btn-small" ng-click="activateGLAccount()"><i class="icon-small icon-ok"></i> ACTIVATE</a>
+                <a role="button" class="btn btn-small" ng-click="deactivateGLAccount()"><i class="icon-small icon-remove"></i> DEACTIVATE</a>
+            </div>
+        </form>
+    </form>
+    <!-- Modals -->
+    <div id="glAccountsOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/glAccounts-modal.html'"></div>
+    <!-- /Modals -->
+</div>
+<!-- GL Accounts Stop -->
+
+</div>

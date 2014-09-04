@@ -1,0 +1,7 @@
+<div class="pagination pagination-right">
+    <ul>
+        <li ng-repeat="page in pages" ng-class="{active: page.active, disabled: page.disabled}">
+            <a href="" ng-click="selectPage(page.number)">{{page.text}}</a>
+        </li>
+    </ul>
+</div>

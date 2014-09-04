@@ -1,0 +1,70 @@
+<!-- Body Start -->
+<div class="span40">
+    <!--<div class="spacing" style="height:900px">-->
+
+    <div class="page-header">
+        <h2 class="section-h2">User Management</h2>
+    </div>
+
+    <!-- User overview Start -->
+    <div class="plainwell" ng-controller="UserCtrl">
+        <form class="form-horizontal">
+            <h4 style="margin: 10px 0">User Management</h4>
+            <hr style="margin-top: 5px">
+            <div class="bar">
+                <!-- Create a binding between the searchString model and the text field -->
+                <input type="text" ng-model="searchString" placeholder="Enter your search terms" />
+            </div>
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" ng-change="checkAll(confirmed)" ng-model="confirmed"></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                    <th>Roles</th>
+                    <th>Status</th>
+                    <th class="hidden-phone">Last Login</th>
+                    <th class="hidden-phone">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="loadingMessage">
+                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+                </tr>
+                <tr ng-repeat="user in users  | searchFor:searchString:this | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+                    <td ng-show="!user.isLoggedIn"><input ng-model="user.selected" type="checkbox" ng-change="setCheckAll(user.selected)" ></td>
+                    <td ng-show="user.isLoggedIn"><input ng-model="user.selected" type="checkbox" disabled = "disabled" ></td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td><a href="" ng-click="editUser(user)">{{user.username}}</a></td>
+                    <td>{{user.rolesAssigned}}</td>
+                    <td>{{user.active}}</td>
+                    <td class="hidden-phone">{{user.lastLogin | date:'MM/dd/yyyy'}}</td>
+                    <td class="hidden-phone" ><a href=""ng-click="deleteUser(user)" ><i class="icon-trash" ng-show="!user.isLoggedIn"> </i></a></td>
+                </tr>
+                <tr ng-show="noContent">
+                    <td colspan="4" style="height: 4em;vertical-align: middle;text-align:center;">You have not added any users.</td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-show="numberOfPages()>1">
+                <pagination num-pages="numberOfPages()" current-page="currentPage"></pagination>
+            </div>
+
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <a href="#userOverlay" role="button" class="btn btn-small" ng-click="setValues(); resetClass()" data-toggle="modal">Create a new user</a>
+                    <a role="button" class="btn btn-small" ng-click="activateUser()"><i class="icon-small icon-ok"></i> ACTIVATE</a>
+                    <a role="button" class="btn btn-small" ng-click="deactivateUser()"><i class="icon-small icon-remove"></i> DEACTIVATE</a>
+                </div>
+            </form>
+        </form>
+        <!-- Modals -->
+        <div id="userOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/user-modal.html'"></div>
+        <!-- /Modals -->
+    </div>
+    <!-- Accounting Stop -->
+
+    <!--</div>-->
+</div>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="PurchaseManager">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico?">
+    <title>Purchase Manager</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--<script src="js/bootstrap.js"></script>-->
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <link href="css/ie.css" rel="stylesheet">
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="ico/favicon.png">
+</head>
+
+<body data-ng-controller="AppCtrl">
+<div ng-include="'partials/menu.html'"></div>
+
+<div class="container">
+
+    <div class="row">
+
+        <!-- Navigation -->
+        <div class="hidden-phone hidden-tablet" ng-include="'partials/navigation.html'"></div>
+
+        <!-- Body Start -->
+        <div id="indexContainer" class="span40">
+          <div ng-view></div>
+          <div class="" ng-include="'partials/footer.html'"></div>
+        </div>
+        <!-- Body End -->
+
+    </div>
+
+
+</div>
+<!-- /container -->
+
+
+<!-- Footer -->
+
+<!-- /Footer -->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- JQuery -->
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/ckeditor/ckeditor.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.min.js"></script>
+<script src="js/angular-ui-utils.min.js"></script>
+
+
+<script>
+    $( document ).ready(function() {
+         setFavicon();
+    });
+    function setFavicon() {
+        var link = "../../images/favicon.ico?";
+        $('<link href="'+ link +'" rel="shortcut icon" type="image/x-icon" />').appendTo('head');
+    }
+</script>
+
+<!-- File Upload -->
+<script src="js/ng-upload.js"></script>
+
+<!-- ui-select2 -->
+<link rel="stylesheet" href="components/select2/select2.css">
+<!--<script type="text/javascript" src="components/jquery/jquery.js"></script>-->
+<script type="text/javascript" src="components/select2/select2.js"></script>
+<!--<script type="text/javascript" src="components/angular/angular.js"></script>-->
+<script type="text/javascript" src="components/angular-ui-select2/src/select2.js"></script>
+
+<!-- Library Dependencies -->
+<script type="text/javascript" src="ext/jquery.carouFredSel-6.2.0-packed.js"></script>
+<script type="text/javascript" src="js/accounting.min.js"></script>
+<script type="text/javascript" src="js/moment.js"></script>
+
+<!-- Bootstrap -->
+<script src="js/bootstrap-transition.js"></script>
+<script src="js/bootstrap-alert.js"></script>
+<script src="js/bootstrap-modal.js"></script>
+<script src="js/bootstrap-dropdown.js"></script>
+<script src="js/bootstrap-scrollspy.js"></script>
+<script src="js/bootstrap-tab.js"></script>
+<script src="js/bootstrap-tooltip.js"></script>
+<script src="js/bootstrap-popover.js"></script>
+<script src="js/bootstrap-button.js"></script>
+<script src="js/bootstrap-collapse.js"></script>
+<script src="js/bootstrap-carousel.js"></script>
+<script src="js/bootstrap-typeahead.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/ui-bootstrap-tpls-0.2.0.min.js"></script>
+
+<!-- Main scripts -->
+<script src="js/app/pman.js"></script>
+<script src="js/directives/directives.js"></script>
+<script src="js/services/services.js"></script>
+<script src="js/services/countries.service.js"></script>
+<script src="js/services/currencies.service.js"></script>
+<script src="js/services/categories.service.js"></script>
+<script src="js/services/purchaseorders.service.js"></script>
+<script src="js/services/quickrfx.service.js"></script>
+<script src="js/services/uoms.services.js"></script>
+<script src="js/services/regions.service.js"></script>
+<script src="js/services/overview.service.js"></script>
+<script src="js/services/suppliers.service.js"></script>
+<script src="js/services/items.service.js"></script>
+<script src="js/services/organization.service.js"></script>
+
+<script src="js/controllers/controllers.js"></script>
+<script src="js/controllers/overview.controller.js"></script>
+<script src="js/controllers/addresses.controller.js"></script>
+<script src="js/controllers/costcenter.controller.js"></script>
+<script src="js/controllers/currency.controller.js"></script>
+<script src="js/controllers/header.controller.js"></script>
+<script src="js/controllers/suppliers.controller.js"></script>
+<script src="js/controllers/quickquote.controller.js"></script>
+<script src="js/controllers/content-manager.controller.js"></script>
+<script src="js/controllers/purchase.order.controller.js"></script>
+<script src="js/controllers/purchaseOrder.controller.js"></script>
+<script src="js/controllers/quickRfx.controller.js"></script>
+<script src="js/controllers/search.controller.js"></script>
+<script src="js/controllers/items.controller.js"></script>
+<script src="js/controllers/users.controller.js"></script>
+<script src="js/controllers/contentmedia.controller.js"></script>
+<script src="js/controllers/fileUploadProgress.controller.js"></script>
+<script src="js/controllers/organization.controller.js"></script>
+<script src="js/controllers/buyer-group.controller.js"></script>
+<script src="js/controllers/master-data.controller.js"></script>
+
+<script src="js/filters/filters.js"></script>
+
+<script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+
+<script type="text/javascript" src="js/jquery.noty.js"></script>
+<script type="text/javascript" src="js/jquery.noty-settings.js"></script>
+
+<!-- jsPDF scripts -->
+<script type="text/javascript" src="js/jspdf/base64.js"></script>
+<script type="text/javascript" src="js/jspdf/sprintf.js"></script>
+<script type="text/javascript" src="js/jspdf/jspdf.js"></script>  
+<script type="text/javascript" src="js/jspdf/FileSaver.js"></script>  
+</body>
+</html>
+

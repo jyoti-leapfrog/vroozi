@@ -1,0 +1,27 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">Associate Organization</h3>
+</div>
+<div class="modal-body" >
+    <form class="form-horizontal" name="associateOrgForm">
+        <div id="associatedCompanyNameDiv" class="control-group" ng-class="{error: associateOrgForm.name.$dirty && associateOrgForm.name.$invalid}">
+            <label class="control-label" for="name">Company Name</label>
+            <div class="controls">
+                <input type="text" name="name" id="name" placeholder="" required ng-model="organization.associatedCompanyName">
+                <span class="help-inline" ng-show="associateOrgForm.name.$error.required">required</span>
+            </div>
+        </div>
+        <div id="associatedCompanyUserNameDiv" class="control-group" ng-class="{error: associateOrgForm.userName.$dirty && associateOrgForm.userName.$invalid}">
+            <label class="control-label" for="userName">Company User Name</label>
+            <div class="controls">
+                <input type="text" name="userName" id="userName" placeholder="" required ng-model="organization.associatedCompanyUserName">
+                <span class="help-inline" ng-show="associateOrgForm.userName.$error.required">required</span>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="associate()" ng-disabled="associateOrgForm.$invalid" type="button" class="btn btn-primary">Save</button>
+</div>

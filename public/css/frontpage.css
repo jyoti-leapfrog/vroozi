@@ -1,0 +1,36 @@
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    background: #000 url('../images/downtown-la.jpg') center center fixed no-repeat;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+
+@media only all and (max-width: 1024px) and (max-height: 768px) {
+    body {
+        padding-top: 60px;
+        -moz-background-size: 1040px 693px;
+        background-size: 1040px 693px;
+    }
+}
+
+@media (max-width: 979px) {
+    body {
+        padding-top: 0;
+    }
+}
+
+.form-login {
+    padding: 19px 19px 19px;
+    margin: 0px auto 20px;
+    background-color: rgb(255, 255, 255);
+
+    background: -moz-linear-gradient(center top, rgb(255, 255, 255) 0px, rgb(221, 221, 221) 100%) repeat scroll 0% 0% transparent;
+    background: -webkit-linear-gradient(top, #fff 0, #ddd 100%);
+
+    border: 1px solid rgb(229, 229, 229);
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+
+

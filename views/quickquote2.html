@@ -1,0 +1,109 @@
+<div class="center-div" ng-controller="QuickRfxCtrl">
+    <section class="main-content">
+        <div class="page-header mt-0">
+            <h2 class="section-h2">Create QuickQuote</h2>
+        </div>
+        <div class="quickrfx-container">
+            <div class="quickrfx-blocks">
+                <div class="quickrfxbg-blocks">
+                    <form name="quickquote" id="quickquote" method="post" action="#">
+                        <div class="span19">
+                            <div class="form-group">
+                                <label>QuickQuote Number </label>
+                                <input name="quickquote_number" id="quickquote_number" class="form-control" type="text" ng-model="" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>QuickQuote Name </label>
+                                <input name="quickquote_name" id="quickquote_name" type="text" class="form-control" ng-model="" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Buyer Name </label>
+                                <select name="quickquote_buyer" id="quickquote_buyer" class="form-control" ng-model="buyerName" required>
+                                    <option ng-repeat="buyer in buyers" value="{{buyer}}">{{buyer}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Price </label>
+                                <input name="quickquote_price" id="quickquote_price" type="text" class="form-control" ng-model="" required>
+                            </div>
+                            <div class="form-group input-append date">
+                                <label>Quote Date</label>
+                                <input name="quickquote_quotedate" id="quickquote_quotedate" type="text" class="effective ng-valid ng-valid-required ng-dirty" b-datepicker="" ng-model="" required>
+                                <span class="add-on"> <span class="icon icon-calendar"></span> </span>
+                            </div>
+                        </div>
+                        <div class="span19">
+                            <div class="form-group">
+                                <label>Description </label>
+                                <input name="quickquote_description" id="quickquote_description" type="text" class="form-control" ng-model="" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Supplier Name </label>
+                                <input name="quickquote_supplier" id="quickquote_supplier" type="text" class="form-control" ng-model="" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Name </label>
+                                <input name="quickquote_contact" id="quickquote_contact" type="text" class="form-control" ng-model="" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Terms </label>
+                                <select name="quickquote_payterms" id="quickquote_payterms" class="form-control" ng-model="paymentTerms" required>
+                                    <option ng-repeat="term in terms" value="{{term}}">{{term}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group input-append date">
+                                <label>Deadline</label>
+                                <input type="text" name="quickquote_deadline" id="quickquote_deadline" class="effective ng-valid ng-valid-required ng-dirty" b-datepicker=""  ng-model="" required>
+                                <span class="add-on"> <span class="icon icon-calendar"></span> </span>
+                            </div>
+                        </div>
+                        <div class="page-header mt-0">
+                            <h2 class="section-h2">Line Item Overview</h2>
+                        </div>
+                        <div class="span40">
+                            <table class="table table-condensed table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Description</th>
+                                    <th class="hidden-phone">Category</th>
+                                    <th>Supplier</th>
+                                    <th class="hidden-phone">Part No.</th>
+                                    <th>Qty</th>
+                                    <th>UoM</th>
+                                    <th>Delivery Date</th>
+                                    <th class="hidden-phone">Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-show="!quickrfx">
+                                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+                                </tr>
+                                <tr ng-repeat="order in quickrfx">
+                                    <td><a href="#/" >{{ order.number }}</a></td>
+                                    <td>{{ order.description}}</td>
+                                    <td class="hidden-phone">{{ order.category }}</td>
+                                    <td>{{ order.supplierName }}</td>
+                                    <td class="hidden-phone">{{ order.partno }}</td>
+                                    <td>{{ order.quantity }}</td>
+                                    <td>{{ order.uom }}</td>
+                                    <td>{{ order.deliveryDate }}</td>
+                                    <td class="hidden-phone">{{ order.comments }}</td>
+                                </tr>
+                                <tr ng-show="orders && orders.length == 0">
+                                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">There are no existing orders.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="span40">
+                            <button type="button" class="btn btn-primary">Submit</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</div>

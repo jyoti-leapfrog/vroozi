@@ -1,0 +1,74 @@
+exports.settings = {
+    // App settings
+    release: '1.0.0',
+    appStart: 0,
+    gitHash: '',
+
+    // Purchase Manager UI
+    purchaseManagerWeb: '{{{global.purchaseUi.web}}}',
+
+    // User Data Service API
+    userDataServiceHost: '{{{global.userDataService.host}}}',
+    userDataServicePort: {{{global.userDataService.port}}},
+    userDataServicePath: '/userDataService',
+
+    // Content Manager Service API
+    contentManagerServiceHost: {{{global.contentManagerService.host}}},
+    contentManagerServicePort: {{{global.contentManagerService.port}}},
+    contentManagerServicePath: '/contentmanager/api',
+
+    // Purchase API
+    purchaseApiHost: '{{{global.purchaseService.host}}}',
+    purchaseApiPort: {{{global.purchaseService.port}}},
+    purchaseApiPath: '/purchaseapi',
+
+    // Shopper API
+    shopperServiceHost: '{{{global.shopperService.host}}}',
+    shopperServicePort: {{{global.shopperService.port}}},
+    shopperServicePath: '/shopperapi',
+
+    // search
+    solrCoreForPurchaseManager: 711,
+    contentViewGroupToken: 'u86x5j89cd4i2ar0',
+
+    // image dirs
+    supplierImagesPath: '/usr/local/src/v2-setup/workdir/catalog-upload-images/output/supplier',
+    itemImagesPath: '/usr/local/src/v2-setup/workdir/content-upload/content-imgs/output',
+    companyContentPath: '/usr/local/src/v2-setup/workdir/company-content',
+    flagIconUploadPath: '/usr/local/src/v2-setup/workdir/catalog-upload-icons',
+    itemAttachmentsPath:'/usr/local/src/v2-setup/workdir/attachments',
+
+    //file dirs
+    contentFileUploadPath: '/usr/local/src/v2-setup/workdir/pathForContentManager/uploaded',
+	reportsFilePath: '/usr/local/src/v2-setup/workdir/purchase-manager-reports',
+
+    // cookie settings
+    cookieVSD: '{{{purchaseManagerUi.cookieVSD}}}',
+    cookieVCI: '{{{purchaseManagerUi.cookieVCI}}}',
+    cookieDomain: '{{{purchaseManagerUi.cookieDomain}}}',
+    vsdCookieMaxAge: 86400000,
+    vciCookieMaxAge: 15811200,
+    vsdCookieHttpOnly: false,
+    vciCookieHttpOnly: false,
+    cookieEncryptionKey: 'InmbuvP6Z8Inmbuv',
+    sessionTimeout: 86400000,
+    sessionRedirectUrl: '/session',
+    webLoginRedirectUrl: '{{{purchaseManagerUi.webLoginRedirectUrl}}}',
+
+    // are these needed any more?
+    server: {
+        distFolder: 'public',   // The folder that contains the application files (note that the files are in a different repository) - relative to this file
+        contextUrl: '/'          // The base url from which we serve static files (such as js, css and images)
+    },
+
+    // localization
+    localization: {
+        languages: ['ENG', 'NLD', 'SPA', 'FRA', 'DEU'],
+        packFilesPath: 'lang_packs',
+        paths: [
+            {inputDir:"master_templates", matchExt:".tpl", outputDir:"public/templates", newExt:".tpl", recursive:true},
+            {inputDir:"master_views", matchExt:".html", outputDir:"views", newExt:".html", recursive:true},
+            {inputDir:"master_js", matchExt:".js", outputDir:"public/js/generated", newExt:".js", recursive:true}
+        ]
+    }
+};

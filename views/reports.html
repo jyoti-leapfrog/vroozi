@@ -1,0 +1,112 @@
+<!-- Body Start -->
+<div class="span40" ng-controller="ReportsCtrl">
+<!--<div class="spacing" style="height:900px">-->
+
+    <!-- Generate Reports Start -->
+    <div class="page-header">
+        <h2 class="section-h2">Reports</h2>
+    </div>
+
+    <form name="ordersForm" novalidate>
+        <div class="form-section-plain" style="padding-bottom: 24px;">
+
+
+        <div class="spacing" style="height: 20px"></div>
+        <div class="row">
+            <div class="span10 offset1">
+                <label class="control-label" for="report" style="display:inline;">Report</label>
+                <!-- <small ng-show="ordersForm.reportName.$error.required" class="muted"> - required</small> -->
+
+                <div class="controls">
+                  <div>
+                    <select class="span8" id="report" ng-model="reports.reportId" required>
+                    	<option value="1" selected="selected">Purchase Request Overview</option>
+                    </select>
+                    
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+        
+        <div class="row">
+            <div class="span10 offset1">
+                <label class="control-label" for="reportStatus" style="display:inline;">Status</label>
+                <div class="controls">
+		            <select class="span8" id="reportStatus" ng-model="reports.status">
+		            	<option value="ALL" selected="selected">ALL</option>
+		            	<option value="NEW">NEW</option>
+		            	<option value="DRAFT">DRAFT</option>
+		            	<option value="PENDING">PENDING</option>
+		            	<option value="APPROVED">APPROVED</option>
+		            	<option value="REJECTED">REJECTED</option>
+		            </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+        	<div class="span7 offset1">
+        		<input type="radio" name="timePeriod" id="timeperiod" ng-model="reports.timePeriod" value="0" checked="checked" />
+				<label class="control-label radios" for="timeperiod">Last </label>
+            </div>
+            <div class="span7 offset2">
+           		 <label class="control-label" for="lastDays">Days </label>
+                 <select class="span8" id="lastDays" ng-model="reports.days" ng-disabled="reports.isDateRange">
+                 	<option value="5">5</option>
+                 	<option value="10">10</option>
+                 	<option value="15">15</option>
+                 	<option value="30" selected="selected">30</option>
+                 	<option value="60">60</option>
+                 	<option value="90">90</option>
+                 </select>
+               
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+        
+        <div class="row">
+       		 <div class="span7 offset1">
+                <input type="radio" name="timePeriod" id="dateRange" ng-model="reports.timePeriod" value="1"/>
+                <label class="control-label radios" for="dateRange" >Date Range </label>
+            </div>
+            <div class="span7 offset2">
+                <label class="control-label" for="startDate">Start Date  </label>
+                <!--<small ng-show="purchaseRequestForm.approver.$error.required" class="muted"> -required</small>-->
+                <!--<input class="span7" type="email" id="approver" name="approver" placeholder="joe.smith@gmail.com" ng-model="purchaseRequest.approverEmail" ng-disabled="isReadOnlyRequest" required>-->
+	            <input type="input" name="startDate" id="startDate" class="span7" ng-model="reports.startDate" b-datepicker ng-disabled="reports.isDateRange">
+            </div>
+            <div class="span7 offset3">
+                <label class="control-label" for="endDate">End Date  </label>
+                <!--<small ng-show="purchaseRequestForm.approver.$error.required" class="muted"> -required</small>-->
+                <!--<input class="span7" type="email" id="approver" name="approver" placeholder="joe.smith@gmail.com" ng-model="purchaseRequest.approverEmail" ng-disabled="isReadOnlyRequest" required>-->
+                <input type="input" name="endDate" id="endDate" class="span7" ng-model="reports.endDate" b-datepicker ng-disabled="reports.isDateRange">
+            </div>
+        </div>
+
+ 		<div class="spacing" style="height: 20px"></div>
+ 		<div class="spacing" style="height: 20px"></div>
+ 		<div class="spacing" style="height: 20px"></div>
+        <div class="row">
+            <div class="span6 offset13">
+                <a ng-click="goBack()" class="btn btn-warning btn-large span6">Go Back</a>
+            </div>
+            <div class="span7 offset3">
+                <button ng-click="generateReport()" class="btn btn-primary btn-large btn-block"  ng-show="acl.exportAllRequests" ng-disabled="ordersForm.$invalid">Generate</button>
+                <a ng-href="{{reportsUrl}}" href="" id="reportsUrl" ng-show="false"></a>
+            </div>
+
+        </div>
+
+        <div class="spacing" style="height: 60px"></div>
+
+        </div>
+    </form>
+    <!-- Generate reports end -->
+
+<!--</div>-->
+</div>
+
+

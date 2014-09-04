@@ -1,0 +1,418 @@
+<div class="modal-header">
+    <button type="button" ng-click="closeModal()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <!--<h3 id="myModalLabel" ng-show="lineItem.id == null">Create Line Item #{{lineItem.id}} </h3>-->
+    <h3 id="myModalLabel1">{{labelLineItem}} #{{lineItemNo}}</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="lineItemForm" novalidate>
+        <h5>General Information</h5>
+
+        <div class="control-group" ng-class="{error: lineItemForm.itemType.$dirty && lineItemForm.itemType.$invalid}">
+            <label class="control-label" for="itemType">Type</label>
+
+            <div class="controls">
+                <select id="itemType" name="itemType" ng-model="lineItem.type" ng-change="setDateField(lineItem.type)" ng-disabled="isReadOnlyRequest || disablePOforEmployee"  required>
+                    <option value="product">Product</option>
+                    <option value="service">Service</option>
+                    <option value="recurring service">Recurring Service</option>
+                </select>
+                <span class="help-inline" ng-show="lineItemForm.itemType.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+
+        <div id="categoryDiv" class="control-group" ng-class="{error: lineItemForm.category.$dirty && lineItemForm.category.$invalid}">
+            <label class="control-label" for="category">Category</label>
+
+            <div class="controls">
+                <input type="text" name="category" id="category" ng-change="populateBuyerGroups(lineItem.category, lineItem.supplierId);" ng-model="lineItem.category" typeahead="category.unspscCode as category.unspscCategory for category in categories | filter:$viewValue" required ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                 <span class="help-inline" ng-show="lineItemForm.category.$error.required">
+                     <small class="muted">required</small>
+                 </span>
+            </div>
+        </div>
+
+        <div id="descriptionDiv" class="control-group" ng-class="{error: lineItemForm.description.$dirty && lineItemForm.description.$invalid}">
+            <label class="control-label" for="description">Description</label>
+
+            <div class="controls">
+                <input type="text" name="description" id="description" placeholder="" ng-model="lineItem.description" required ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.description.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="limitDiv" class="control-group" ng-class="{error: lineItemForm.limitAmount.$dirty && lineItemForm.limitAmount.$invalid}" ng-disabled="isReadOnlyRequest || disablePOforEmployee" ng-show="lineItem.type == 'recurring service'">
+            <label class="control-label">Limit</label>
+
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="lineItem.limit">
+                </label>
+            </div>
+
+            <label class="control-label" ng-show="lineItem.limit">Total Limit Amount</label>
+
+            <div class="controls">
+                <input type="text" name="limitAmount" id="limitAmount" placeholder="" ng-model="lineItem.unitPrice" ng-disabled="isReadOnlyRequest || disablePOforEmployee" ng-required="lineItem.limit && lineItem.type == 'recurring service'" ng-show="lineItem.limit" smart-float>
+                <span class="help-inline" ng-show="lineItemForm.limitAmount.$error.required">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.limitAmount.$error.float">
+                    <small class="muted">must be a number</small>
+                </span>
+            </div>
+        </div>
+        <div class="control-group"ng-show="!lineItem.limit && lineItem.type == 'recurring service'" >
+            <label class="control-label" for="performancePeriod">Performance Period</label>
+
+            <div class="controls">
+                <input type="text" name="performancePeriod" id="performancePeriod" placeholder="" ng-model="lineItem.performancePeriod" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+            </div>
+        </div>
+
+        <div class="control-group"ng-show="!lineItem.limit && lineItem.type == 'recurring service'">
+            <label class="control-label" for="performanceFrequency">Performance Frequency</label>
+
+            <div class="controls">
+                <select id="performanceFrequency" name="performanceFrequency" ng-change="reloadUoms(lineItem.performanceFrequency)" ng-model="lineItem.performanceFrequency">
+                    <option value="" selected="selected">Select Frequency</option>
+                    <option value="DAY">Day</option>
+                    <option value="WEE">Week</option>
+                    <option value="MON">Month</option>
+                    <option value="ANN">Annual</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <!--<div class="control-group"ng-show="lineItem.type == 'recurring service'">-->
+            <!--<label class="control-label" for="endDate">End Date</label>-->
+
+            <!--<div class="controls">-->
+                <!--<input type="text" name="endDate" id="endDate" placeholder="" ng-model="lineItem.endDate" b-datepicker>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div id="servicePriceDiv" class="control-group" ng-class="{error: lineItemForm.servicePrice.$dirty && lineItemForm.servicePrice.$invalid}" ng-show="!lineItem.limit && lineItem.type == 'recurring service'">
+            <label class="control-label" for="servicePrice" >Service Price</label>
+
+            <div class="controls">
+                <input type="text" name="servicePrice" id="servicePrice" placeholder="" ng-model="lineItem.unitPrice" smart-float ng-required="lineItem.type == 'recurring service'" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="!lineItem.unitPrice">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.servicePrice.$error.float">
+                    <small class="muted">must be a currency amount</small>
+                </span>
+            </div>
+        </div>
+
+        <div id="unitPriceDiv" class="control-group" ng-class="{error: lineItemForm.unitPrice.$dirty && lineItemForm.unitPrice.$invalid}" ng-show="lineItem.type == 'product'">
+            <label class="control-label" for="unitPrice" >Unit Price</label>
+
+            <div class="controls">
+                <input type="text" name="unitPrice" id="unitPrice" placeholder="" ng-model="lineItem.unitPrice" smart-float ng-required="lineItem.type == 'product'" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="!lineItem.unitPrice">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.unitPrice.$error.float">
+                    <small class="muted">must be a currency amount</small>
+                </span>
+            </div>
+        </div>
+        <div id="rateCardDiv" class="control-group" ng-class="{error: lineItemForm.rateCard.$dirty && lineItemForm.rateCard.$invalid}" ng-show="lineItem.type == 'service'">
+            <label class="control-label" for="rateCard">Service Price</label>
+
+            <div class="controls">
+                <input type="text" name="rateCard" id="rateCard" placeholder="" ng-model="lineItem.unitPrice" smart-float ng-required="lineItem.type == 'service'"   ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="!lineItem.unitPrice">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.rateCard.$error.float">
+                    <small class="muted">must be a currency amount</small>
+                </span>
+            </div>
+        </div>
+
+        <div id="currencyDiv" class="control-group" ng-class="{error: lineItemForm.currency.$dirty && lineItemForm.currency.$invalid}">
+            <label class="control-label" for="currency">Currency</label>
+
+            <div class="controls">
+
+                <!--<select id="currency" name="currency"  class="span6" ng-model='lineItem.currency' ng-options='option.code as option.description for option in currencies' ng-disabled="isReadOnlyRequest" required>-->
+                <select id="currency" name="currency" ng-model="lineItem.currency" ng-options="currency.code as currency.codeCurrency for currency in currencies | filter:$viewValue" ng-change="defaultCurrencyChange(selectedCurrency)" ng-disabled="isReadOnlyRequest || disablePOforEmployee" required></select>
+                <span class="help-inline" ng-show="lineItemForm.currency.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="control-group" ng-class="{error: lineItemForm.qty.$dirty && lineItemForm.qty.$invalid}" ng-show="(!lineItem.limit && lineItem.type == 'recurring service') || (lineItem.type != 'recurring service')">
+            <label class="control-label" for="qty">Qty.</label>
+
+            <div class="controls">
+                <input type="text" name="qty" id="qty" placeholder="" ng-model="lineItem.qty" integer ng-required="(!lineItem.limit && lineItem.type == 'recurring service') || (lineItem.type != 'recurring service')" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+
+                <span class="help-inline" ng-show="lineItemForm.qty.$error.required">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.qty.$error.integer">
+                    <small class="muted">must be a number</small>
+                </span>
+            </div>
+        </div>
+
+        <div id="uomDiv" class="control-group" ng-class="{error: lineItemForm.uom.$dirty && lineItemForm.uom.$invalid}" ng-show="(!lineItem.limit && lineItem.type == 'recurring service') || (lineItem.type != 'recurring service')">
+            <label class="control-label" for="uom">UoM</label>
+
+            <div class="controls">
+                <input type="text" name="uom" id="uom" ng-model="lineItem.uom" typeahead="uom.isoCode as uom.isoTxt for uom in uoms | filter:$viewValue" ng-required="(!lineItem.limit && lineItem.type == 'recurring service') || (lineItem.type != 'recurring service')" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.uom.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+        <div class="control-group" ng-show="showSupplierFields">
+            <label class="control-label" for="supplier">Supplier</label>
+
+            <div class="controls">
+                <!--<input type="text" id="supplier" placeholder="" ng-model="lineItem.supplierName" ng-disabled="isReadOnlyRequest">-->
+                <input type="text" ng-change="populateSupplierId();updateSupplierData(true); populateBuyerGroups(lineItem.category, lineItem.supplierId);" name="supplier" id="supplier" ng-model="lineItem.supplierName" typeahead="supplier.companyName for supplier in suppliers | filter:$viewValue" ng-disabled="isReadOnlyRequest || !tempData.availableSupplier || disablePOforEmployee">
+            </div>
+        </div>
+
+        <!--Buyer Group Selection box-->
+        <div id="buyerGroupSelectDiv" class="control-group" ng-show="showBuyerGroupSelect || forQuickRfx" ng-class="{error: lineItemForm.buyerGroupSelectId.$dirty && lineItemForm.buyerGroupSelectId.$invalid}">
+            <label class="control-label" for="buyerGroupSelectId">Buyer Groups</label>
+
+            <div class="controls">
+                <select name="buyerGroupSelectId" id="buyerGroupSelectId" ng-model='lineItem.buyerGroupId' ng-options='buyerGroup.id as buyerGroup.groupName for buyerGroup in buyerGroups' ng-disabled="isReadOnlyRequest || disablePOforEmployee"></select>
+                <!--<span class="help-inline" ng-show="lineItemForm.buyerGroupSelectId.$error.required">-->
+                    <!--<small class="muted">required</small>-->
+                <!--</span>-->
+            </div>
+        </div>
+        <!--Default Buyer Group input field-->
+        <div id="buyerGroupTextDiv" class="control-group" ng-show="showBuyerGroupText" ng-class="{error: lineItemForm.buyerGroupTextId.$dirty && lineItemForm.buyerGroupTextId.$invalid}">
+            <label class="control-label" for="buyerGroupTextId">Buyer Groups</label>
+
+            <div class="controls">
+                <input type="text" name="buyerGroupTextId" id="buyerGroupTextId" ng-model='buyerGroupName' ng-readonly="true" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <!--<span class="help-inline" ng-show="lineItemForm.buyerGroupTextId.$error.required">-->
+                <!--<small class="muted">required</small>-->
+                <!--</span>-->
+            </div>
+        </div>
+        <!--<pre>{{lineItem.supplierName}}</pre>-->
+        <div class="control-group" ng-show="showSupplierFields">
+            <label class="control-label" for="recommendedSupplier">Recommended Supplier</label>
+
+            <div class="controls">
+                <!--<input type="text" id="supplier" placeholder="" ng-model="lineItem.supplierName" ng-disabled="isReadOnlyRequest">-->
+                <input type="text" ng-change="updateSupplierData(false);" name="recommendedSupplier" id="recommendedSupplier" ng-model="lineItem.recommendedSupplier" ng-disabled="isReadOnlyRequest || !tempData.recommendedSupplier || disablePOforEmployee">
+            </div>
+        </div>
+        <div class="control-group" ng-show="lineItem.type != 'product'">
+            <label class="control-label">Validity Period</label>
+            <br>
+            <br>
+            <label class="control-label">From</label>
+
+            <div class="controls">
+                <input type="text" name="validityFrom" id="validityFrom" placeholder="" ng-model="lineItem.validityFrom" ng-required="lineItem.type != 'product'" a-datepicker ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.validityFrom.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+            <br>
+            <label class="control-label">To</label>
+
+            <div class="controls">
+                <input type="text" name="validityTo" id="validityTo" placeholder="" ng-model="lineItem.validityTo" ng-required="lineItem.type != 'product'" a-datepicker ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.validityTo.$error.required">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.validityTo.$error.selectFrom">
+                    <small class="muted">Please select from date</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.validityTo.$error.afterFrom">
+                    <small class="muted">Date should be greater than or equal to {{validityFromDate}}</small>
+                </span>
+            </div>
+        </div>
+
+        <div id="deliveryDateDiv" class="control-group" ng-class="{error: lineItemForm.deliveryDate.$dirty && lineItemForm.deliveryDate.$invalid}" ng-show="lineItem.type == 'product'">
+            <label class="control-label" for="deliveryDate">Delivery Date</label>
+
+            <div class="controls">
+                <input type="text" name="deliveryDate" id="deliveryDate" class="delivery" ng-model="lineItem.deliveryDate" ng-required="lineItem.type == 'product'" a-datepicker ng-disabled="isReadOnlyRequest || disablePOforEmployee" required>
+                <span class="help-inline" ng-show="lineItemForm.deliveryDate.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="partNoDiv" class="control-group" ng-class="{error: lineItemForm.partNo.$dirty && lineItemForm.partNo.$invalid}" ng-show="lineItem.type == 'product'">
+            <label class="control-label" for="partNo">Part No.</label>
+            <div class="controls">
+                <input type="text" name="partNo" id="partNo" placeholder="" ng-model="lineItem.partNo" ng-required="lineItem.type == 'product'" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.partNo.$error.required">
+                    <small class="muted">required</small>
+                </span>
+            </div>
+        </div>
+
+        <div class="control-group" ng-show="lineItem.type == 'product'">
+            <label class="control-label" for="manufacturerpartno">Manufacturer Part No.</label>
+
+            <div class="controls">
+                <input type="text" id="manufacturerpartno" placeholder="" ng-model="lineItem.manufacturerPartNo" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+            </div>
+        </div>
+
+        <div class="control-group" ng-show="lineItem.type == 'product'">
+            <label class="control-label" for="brandName">Brand Name</label>
+
+            <div class="controls">
+                <input type="text" id="brandName" placeholder="" ng-model="lineItem.brandName" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+            </div>
+        </div>
+
+        <div class="control-group" ng-show="lineItem.type == 'product'">
+            <label class="control-label" for="manufacturerName">Manufacturer Name</label>
+
+            <div class="controls">
+                <input type="text" id="manufacturerName" placeholder="" ng-model="lineItem.manufacturerName" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="refWebUrl">Ref. Web URL</label>
+
+            <div class="controls">
+                <input type="text" id="refWebUrl" placeholder="" ng-model="lineItem.refWebUrl" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+            </div>
+        </div>
+
+
+
+        <div class="control-group" ng-class="{error: lineItemForm.taxableAmount.$dirty && lineItemForm.taxableAmount.$invalid}">
+            <label class="control-label">Taxable</label>
+
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="lineItem.taxable" ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                </label>
+            </div>
+
+            <label class="control-label">Taxable Amount</label>
+
+            <div class="controls">
+                <input type="text" name="taxableAmount" id="taxableAmount" placeholder="" ng-model="lineItem.taxableAmount" ng-required="lineItem.taxable" smart-float ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.taxableAmount.$error.required">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.taxableAmount.$error.float">
+                    <small class="muted">must be a currency amount</small>
+                </span>
+            </div>
+        </div>
+
+
+
+        <!--<div class="control-group" ng-show="lineItem.type != 'product'">-->
+            <!--<label class="control-label">Validity Period</label>-->
+            <!--<br>-->
+            <!--<br>-->
+            <!--<label class="control-label">From</label>-->
+
+            <!--<div class="controls">-->
+                <!--<input type="input" name="validityFrom" id="validityFrom" placeholder="" ng-model="lineItem.validityFrom" ng-required="lineItem.type != 'product'" b-datepicker ng-disabled="isReadOnlyRequest">-->
+                <!--<span class="help-inline" ng-show="lineItemForm.validityFrom.$error.required">-->
+                    <!--<small class="muted">required</small>-->
+                <!--</span>-->
+            <!--</div>-->
+            <!--<br>-->
+            <!--<label class="control-label">To</label>-->
+
+            <!--<div class="controls">-->
+                <!--<input type="input" name="validityTo" id="validityTo" placeholder="" ng-model="lineItem.validityTo" ng-required="lineItem.type != 'product'" b-datepicker ng-disabled="isReadOnlyRequest">-->
+                <!--<span class="help-inline" ng-show="lineItemForm.validityTo.$error.required">-->
+                    <!--<small class="muted">required</small>-->
+                <!--</span>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="control-group">
+            <label class="control-label" for="notes">Notes</label>
+
+            <div class="controls">
+                <textarea rows="5" id="notes" ng-model="lineItem.notes" ng-disabled="isReadOnlyRequest || disablePOforEmployee"></textarea>
+            </div>
+        </div>
+
+        <hr>
+        <h5>Shipping</h5>
+
+        <div class="control-group">
+            <label class="control-label" for="shippingAddress">Shipping Address</label>
+            <div class="controls">
+                <select id="shippingAddress"  name="shippingAddress" ng-model='lineItem.shippingAddress' ng-options="shippingAddress as shippingAddress.addressName for shippingAddress in addresses|filter:{active:'true'}" ng-disabled="isReadOnlyRequest || disablePOforEmployee" >
+
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group" ng-class="{error: lineItemForm.shippingCharges.$dirty && lineItemForm.shippingCharges.$invalid}">
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="lineItem.hasShippingCharges" ng-disabled="isReadOnlyRequest || disablePOforEmployee"> Has shipping charges
+                </label>
+            </div>
+
+            <label class="control-label" for="shippingCharges">Shipping Charges</label>
+
+            <div class="controls">
+                <input type="text" name="shippingCharges" id="shippingCharges" placeholder="" ng-model="lineItem.shippingCharges" ng-required="lineItem.hasShippingCharges" smart-float ng-disabled="isReadOnlyRequest || disablePOforEmployee">
+                <span class="help-inline" ng-show="lineItemForm.shippingCharges.$error.required">
+                    <small class="muted">required</small>
+                </span>
+                <span class="help-inline" ng-show="lineItemForm.shippingCharges.$error.float">
+                    <small class="muted">must be a currency amount</small>
+                </span>
+            </div>
+        </div>
+
+        <hr>
+        <h5>Accounting</h5>
+
+        <div class="control-group">
+            <label class="control-label" for="costCenter">Cost Center</label>
+
+            <div class="controls">
+                <select id="costCenter"  name="costCenter" ng-model='lineItem.accountingInfo.costCenter' ng-options="costCenter.code as costCenter.description for costCenter in costCenters|filter:{active:'true'}" ng-disabled="isReadOnlyRequest || disablePOforEmployee" >
+
+                    </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="glAccount">G/L Account</label>
+            <div class="controls">
+                <select id="glAccount"  name="costCenter" ng-model='lineItem.accountingInfo.glAccountNumber' ng-options="gLAccount.glAccountCode as gLAccount.glAccountDescription for gLAccount in gLAccounts|filter:{active:'true'}" ng-disabled="isReadOnlyRequest || disablePOforEmployee" >
+
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()"  class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="saveLineItem(lineItem.description, lineItem.supplierName, lineItem.qty, lineItem.uom, lineItem.category, lineItem.partNo, lineItem.unitPrice);" ng-show="!disablePOforEmployee && !isReadOnlyPO" ng-disabled="lineItemForm.$invalid" class="btn btn-primary">{{ saveButtonLabel }}</button>
+</div>

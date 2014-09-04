@@ -1,0 +1,33 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel2">Cost Center</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="costCenterForm">
+        <div id="costCenterNameDiv" class="control-group" ng-class="{error: costCenterForm.costCenterName.$dirty && costCenterForm.costCenterName.$invalid}">
+            <label class="control-label" for="costCenterName">Cost Center Name</label>
+            <div class="controls">
+                <input type="text" name="costCenterName" id="costCenterName" placeholder="" required ng-model="costCenter.name">
+                <span class="help-inline" ng-show="costCenterForm.costCenterName.$error.required">required</span>
+            </div>
+        </div>
+        <div id="costCenterCodeDiv" class="control-group" ng-class="{error: costCenterForm.costCenterCode.$dirty && costCenterForm.costCenterCode.$invalid}">
+            <label class="control-label" for="costCenterCode">Cost Center Code</label>
+            <div class="controls">
+                <input type="text" name="costCenterCode" id="costCenterCode" placeholder="" required ng-model="costCenter.code">
+                <span class="help-inline" ng-show="costCenterForm.costCenterCode.$error.required">required</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="costCenterDescription">Description</label>
+            <div class="controls">
+                <input type="text" name="costCenterDescription" id="costCenterDescription" placeholder="" ng-model="costCenter.description">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button ng-click="saveCostCenter()" ng-disabled="costCenterForm.$invalid" type="button" class="btn btn-primary">Save changes</button>
+</div>

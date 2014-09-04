@@ -1,0 +1,92 @@
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container hidden-desktop">
+
+                <div >
+                <a  ng-click="parentStatus()" ng-controller="LogoCtrl">
+                    <div class="pull-left" id="logoContainer" style="width: 190px;">
+                      <img id="logo-image" class="brand" ng-src="{{logoPath}}" style="cursor: pointer">
+                    </div>
+                </a>
+                </div>
+                <div style="padding-top: 16px; padding-right: 10px">
+                    <div class="pull-right" ng-controller="CurrentRequestCtrl" ng-show="showCurrentRequest()"><a href="#/purchase-request/{{currentRequest.id}}" style="color:#000000" title="Current Request"><i class="icon-shopping-cart"></i>{{ currentRequest.orderNumber | formatOrder}} ({{ currentRequest.items.length }})</a></div>
+                    <div class="pull-right" ng-controller="CurrentPurchaseOrderCtrl" ng-show="showCurrentPurchaseOrder()"><a href="#/purchase-order/{{currentPurchaseOrder.id}}" style="color:#000000" title="Current Purchase Order"><i class="icon-shopping-cart"></i>{{ currentPurchaseOrder.orderNumber | formatOrder}} ({{ currentPurchaseOrder.items.length }})</a></div>
+                </div>
+        </div>
+        <div class="container">
+            <div class="visible-desktop" >
+                <a  ng-click="parentStatus()" ng-controller="LogoCtrl">
+                    <div class="pull-left" id="logoContainer" style="width: 190px;">
+                        <img id="logo-image" class="brand" ng-src="{{logoPath}}" style="cursor: pointer">
+                    </div>
+                </a>
+            </div>
+            <div ng-controller="SearchCtrl">
+            <a class="brand hidden-phone hidden-tablet" style="display: none;" href="/#"><strong style="color: #808080">Purchase Manager</strong></a>
+            <form class="navbar-search menu-search pull-left" id="searchForm" action="" ng-submit="search()">
+                    <input class="search-query span13" style="border-radius: 4px 4px 4px 4px; width: 260%" type="text" placeholder="Search" ng-show="acl.viewSearch" ng-model="searchQuery">
+
+            </form>
+
+            <span id="searchIcon" ng-show="acl.viewSearch" ng-click="search()" style="height: 26px; margin-left: 321px; margin-top: 9px; width: 40px; cursor: pointer" class="label label-info ico-search">
+                <div class="icon-search icon-white" style="display: block; margin-left: 12px; margin-top: 5px;"></div>
+            </span>
+
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="margin-top: 10px;">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!--<div id="searchIcon" class="icon-search" style="margin-left: 321px; margin-top: 15px;"></div>-->
+
+            <div style="margin-top: -37px;" class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li ng-controller="CurrentRequestCtrl" ng-show="showCurrentRequest()"><a href="#/purchase-request/{{currentRequest.id}}" title="Current Request"><i class="icon-shopping-cart"></i>{{ currentRequest.orderNumber | formatOrder}} ({{ currentRequest.items.length }})</a></li>
+                    <li ng-controller="CurrentPurchaseOrderCtrl" ng-show="showCurrentPurchaseOrder()"><a href="#/purchase-order/{{currentPurchaseOrder.id}}" title="Current Purchase Order"><i class="icon-shopping-cart"></i>{{ currentPurchaseOrder.orderNumber | formatOrder}} ({{ currentPurchaseOrder.items.length }})</a></li>
+                    <li class="dropdown visible-phone visible-tablet" ng-controller="NavRequestCtrl">
+                        <a href="#i-want-to" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-pencil"></i> I want to.. <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click="createPurchaseRequest()" ng-show="acl.createRequest">Create Request</a></li>
+                            <li><a href="" ng-click="createPurchaseOrder()" ng-show="acl.createPurchaseOrder && acl.savePurchaseOrder">Create Purchase Order</a></li>
+                            <li><a href="#/purchase-request-template" ng-show="acl.createTemplate">Create Template</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" ng-show="acl.viewMyAccount">
+                        <a href="#my-account" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i> My Account <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/profile">Profile</a></li>
+                            <li><a href="#/settings" ng-show="acl.viewSettings">Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" ng-show="acl.viewCompanySettings">
+                        <a href="#company" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-cog"></i> Company<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/company-settings"> Company Profile</a></li>
+                            <li><a href="#/user-management"> User Management</a></li>
+                            <li><a href="#/organization"> Organization Management</a></li>
+                            <li><a href="#/address-management"> Address Management</a></li>
+                            <li><a href="#/accounting"> Accounting</a></li>
+                            <li><a href="#/master-data"> Master Data</a></li>
+                            <!--<li ng-show="acl.viewOrganization"><a href="#/organization"> Organization Management</a></li>-->
+                            <li><a href="#/reports"> Reports</a></li>
+                            <li><a href="#/suppliers" ng-show="acl.viewSuppliers">View Suppliers</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+<!-- Body Start -->
+<div class="span40" ng-controller="PurchaseRequestCtrl">
+<!--<div class="spacing" style="height:900px">-->
+
+    <!-- Create Purchase Request Start -->
+    <div class="page-header" ng-show = "showHeadingDrop" style="padding-bottom: 20px; border-bottom: 0px solid #EEEEEE;">
+        <!--<h2 class="section-h2">{{labelPurchaseRequest}}</h2>-->
+        <div class="btn-group pull-left" style="margin-right:3px;">
+            <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+                Goods Receipt
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="" ng-href="#/purchase-request/{{ idOrder }}">Purchase Request</a></li>
+                <!--<li><a href="" ng-click="">Purchase Order</a></li>-->
+                <li><a href="" ng-href="#/purchase-goods/{{ idOrder }}">Goods Receipt</a></li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <form name="purchaseRequestForm" novalidate>
+        <div class="form-section-plain" style="padding-bottom: 24px;">
+
+
+        <div class="spacing" style="height: 20px"></div>
+        <div class="row">
+            <div class="span6 offset1">
+                <label class="control-label" for="order">GR # </label>
+                <span class="span6 uneditable-input" id="order">{{ requestOrder | formatOrder }}</span>
+            </div>
+
+            <div class="span2 offset6">
+                <label class="control-label" for="order">PR # </label>
+                <span class="span6 uneditable-input" id="request">{{ requestNumber | formatOrder }}</span>
+            </div>
+
+            <div class="span4 offset17">
+                <label class="control-label" for="effectiveDate" style="display:inline;">Requested Date</label>
+                <small ng-show="purchaseRequestForm.effectiveDate.$error.required" class="muted"> - required</small>
+                <input  type="text" name="effectiveDate" id="effectiveDate" class="span7" ng-model="purchaseRequest.effectiveDate" b-datepicker ng-disabled = "true" required >
+
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+            <div class="span11 offset1">
+                <label class="control-label" for="name" style="display:inline;">Request Name</label>
+                <small ng-show="purchaseRequestForm.name.$error.required" class="muted"> - required</small>
+                <input class="span11" type="text" name="name" id="name" placeholder="" ng-model="purchaseRequest.name" ng-disabled = "true" required >
+            </div>
+
+            <div class="span7 offset1">
+                <label class="control-label" for="requester" style="display:inline;">Requester</label>
+                <small ng-show="purchaseRequestForm.requester.$error.required" class="muted"> - required</small>
+                <input class="span7" type="text" name="requester" id="requester" placeholder="" ng-model="purchaseRequest.requester" ng-disabled = "true" required>
+            </div>
+            <div class="span7 offset4">
+                <label class="control-label" for="approver">Approver  <small ng-show="purchaseRequestForm.approver.$error.required" class="muted"> -required</small></label>
+                <!--<small ng-show="purchaseRequestForm.approver.$error.required" class="muted"> -required</small>-->
+                <!--<input class="span7" type="email" id="approver" name="approver" placeholder="joe.smith@gmail.com" ng-model="purchaseRequest.approverEmail" ng-disabled="isReadOnlyRequest" required>-->
+                <!--<select id="approver" class="span7" ng-model='purchaseRequest.approverId' ng-options='option.value as option.name for option in approverUsersOptions' ng-disabled = "true" required>-->
+                <input type="text" id="approver" class="span7" ng-model='purchaseRequest.approverName' ng-disabled = "true" required>
+                </select>
+            </div>
+        </div>
+        <div class="spacing" style="height: 20px"></div>
+
+        <div class="row">
+
+        </div>
+
+        <div class="row">
+            <div class="span38 offset1">
+                <table class="hidden-phone span38 table table-striped table-hover table-condensed table-bordered">
+                <table class="display-phone table table-striped table-hover table-condensed table-bordered">
+                    <caption><h4 class="pull-left">Line Item Overview</h4></caption>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Qty Ordered</th>
+                        <th>Qty Received</th>
+                        <th class="hidden-phone hidden-tablet">Delivery Date</th>
+                        <th><span class="hidden-phone">Notes</span><span class="show-phone"></span></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="lineItem in purchaseRequest.items">
+                        <td>{{ lineItem.id }}</td>
+                        <td>{{ lineItem.description }}</td>
+                        <td>{{lineItem.qty}}</td>
+                        <td>{{lineItem.qtyNew}}</td>
+                        <td>{{lineItem.validityFrom | date: 'MM/dd/yyyy'}}</td>
+                        <td>{{lineItem.goodsNotes}}</td>
+                        <!--<td class="hidden-phone hidden-tablet">-->
+                            <!--<input type="input" name="validityFrom"  id="validityFrom" placeholder="" ng-model="lineItem.validityFrom" ng-required="lineItem.type != 'product'" b-datepicker ng-disabled="true"></td>-->
+                        <!--<td>-->
+                            <!--<div class="controls">-->
+                                <!--<select ng-model='lineItem.goodsNotes'ng-disabled="true">-->
+                                    <!--<option value=""></option>-->
+                                    <!--<option value="Item passed inspection">Item passed inspection</option>-->
+                                    <!--<option value="Item faulty">Item faulty</option>-->
+                                    <!--<option value="Item faulty">Received item satisfactory</option>-->
+
+
+                                <!--</select>-->
+                                <!--&lt;!&ndash;<span class="help-inline" ng-show="lineItemForm.currency.$error.required">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<small class="muted">required</small>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                            <!--</div>-->
+                            </i></a></td>
+
+                    </tr>
+                    <tr ng-show="lineItems.length == 0">
+                        <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">This purchase request has no line items.</td>
+                    </tr>
+                    </tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="spacing" style="height: 15px"></div>
+
+        <div class="spacing" style="height: 40px"></div>
+
+        <div class="spacing" style="height: 60px"></div>
+
+        </div>
+    </form>
+    <!-- Create Purchase Request End -->
+
+    <!-- Modals -->
+    <!--<div id="lineItemOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/lineItem-modal.html'"></div>-->
+    <!--<div id="shippingAddressOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/address-modal.html'" ng-controller="AddressCtrl"></div>-->
+    <!--<div id="rejectNotesOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" ng-include="'partials/reject-notes-modal.html'"></div>-->
+    <!--<div id="approveNotesOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true" ng-include="'partials/approve-notes-modal.html'"></div>-->
+    <!--<div id="deletedOrderOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" ng-include="'partials/delete-order-modal.html'"></div>-->
+
+<!-- /Modals -->
+
+<!--</div>-->
+</div>
+
+

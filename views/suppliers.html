@@ -1,0 +1,68 @@
+<!-- Body Start -->
+<div class="span40">
+    <!--<div class="spacing" style="height:900px">-->
+
+    <div class="page-header">
+        <h2 class="section-h2">Suppliers</h2>
+    </div>
+
+    <!-- User overview Start -->
+    <div class="plainwell" ng-controller="SuppliersCtrl">
+        <form class="form-horizontal">
+            <h4 style="margin: 10px 0">Suppliers</h4>
+            <hr style="margin-top: 5px">
+            <div class="bar">
+                <!-- Create a binding between the searchString model and the text field -->
+                <input type="text" ng-model="searchString" placeholder="Enter your search terms" />
+            </div>
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Names</th>
+                    <th class="hidden-phone">Logo</th>
+                    <th>Sales Rep</th>
+                    <th>City</th>
+                    <th class="hidden-phone hidden-tablet">State/Region</th>
+                    <th class="hidden-phone hidden-tablet">Country</th>
+                    <th>Email Address</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="loadingMessageSup">
+                    <td colspan="11" style="height: 4em;vertical-align: middle;text-align:center;">Loading...</td>
+                </tr>
+                <tr ng-repeat="supplier in suppliers | searchForSuppliers:searchString:this | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+                    <td><a href="" ng-click="editSupplier(supplier)" ng-show="(logedInUserDetails.email == supplier.createdBy) || acl.deleteSuppliers">{{supplier.companyName}}</a>
+                        <span ng-show="buyerLoggedIn && !(logedInUserDetails.email == supplier.createdBy)">{{supplier.companyName}}</span></td>
+                    <td class="hidden-phone"><a href="#supplierLogoOverlay" ng-click="openSupplierLogoModal(supplier.companyId)" data-toggle="modal" ng-show="(logedInUserDetails.email == supplier.createdBy) || acl.deleteSuppliers">
+                        <span ng-show="supplier.logo">Update</span>
+                        <span ng-show="! supplier.logo">Upload</span>
+                    </a></td>
+                    <td>{{supplier.contactName}}</td>
+                    <td>{{supplier.city}}</td>
+                    <td class="hidden-phone hidden-tablet">{{supplier.state}}</td>
+                    <td class="hidden-phone hidden-tablet">{{supplier.country}}</td>
+                    <td><a href="mailto:{{supplier.email}}">{{supplier.email}}</a></td>
+                    <td><a href="" ng-click="deleteSupplier(supplier)"><i class="icon-trash" ng-show="(logedInUserDetails.email == supplier.createdBy) || acl.deleteSuppliers"> </i></a></td>
+                </tr>
+                <tr ng-show="noContentSup">
+                    <td colspan="4" style="height: 4em;vertical-align: middle;text-align:center;">You have not added any suppliers.</td>
+                </tr>
+                </tbody>
+            </table>
+            <pagination num-pages="numberOfPages()" current-page="currentPage"></pagination>
+
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <a href="#supplierOverlay" role="button" ng-click="resetClassSupplier()" class="btn btn-small" data-toggle="modal">Create a new supplier</a>
+                </div>
+            </form>
+        </form>
+        <!-- Modals -->
+        <div id="supplierOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/supplier-modal.html'"></div>
+        <div id="supplierLogoOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/supplier-logo-modal.html'"></div>
+        <!-- /Modals -->
+    </div>
+
+</div>
