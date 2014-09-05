@@ -543,10 +543,11 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
         var shipCharge = $scope.shippingCharges;
         var taxAmt = $scope.taxAmount;
         var total = $scope.totalAmount;
+        var imgData = 'data:image/jpeg;base64,/9j/4QE2RXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAeAAAAcgEyAAIAAAAUAAAAkIdpAAQAAAABAAAApAAAANAACvzaAAAnEAAK/NoAACcQQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykAMjAxNDowOTowNSAwOTozMjoxMAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAm6ADAAQAAAABAAAAHwAAAAAAAAAGAQMAAwAAAAEABgAAARoABQAAAAEAAAEeARsABQAAAAEAAAEmASgAAwAAAAEAAgAAAgEABAAAAAEAAAEuAgIABAAAAAEAAAAAAAAAAAAAAEgAAAABAAAASAAAAAH/7Qj6UGhvdG9zaG9wIDMuMAA4QklNBCUAAAAAABAAAAAAAAAAAAAAAAAAAAAAOEJJTQQ6AAAAAADlAAAAEAAAAAEAAAAAAAtwcmludE91dHB1dAAAAAUAAAAAUHN0U2Jvb2wBAAAAAEludGVlbnVtAAAAAEludGUAAAAAQ2xybQAAAA9wcmludFNpeHRlZW5CaXRib29sAAAAAAtwcmludGVyTmFtZVRFWFQAAAABAAAAAAAPcHJpbnRQcm9vZlNldHVwT2JqYwAAAAwAUAByAG8AbwBmACAAUwBlAHQAdQBwAAAAAAAKcHJvb2ZTZXR1cAAAAAEAAAAAQmx0bmVudW0AAAAMYnVpbHRpblByb29mAAAACXByb29mQ01ZSwA4QklNBDsAAAAAAi0AAAAQAAAAAQAAAAAAEnByaW50T3V0cHV0T3B0aW9ucwAAABcAAAAAQ3B0bmJvb2wAAAAAAENsYnJib29sAAAAAABSZ3NNYm9vbAAAAAAAQ3JuQ2Jvb2wAAAAAAENudENib29sAAAAAABMYmxzYm9vbAAAAAAATmd0dmJvb2wAAAAAAEVtbERib29sAAAAAABJbnRyYm9vbAAAAAAAQmNrZ09iamMAAAABAAAAAAAAUkdCQwAAAAMAAAAAUmQgIGRvdWJAb+AAAAAAAAAAAABHcm4gZG91YkBv4AAAAAAAAAAAAEJsICBkb3ViQG/gAAAAAAAAAAAAQnJkVFVudEYjUmx0AAAAAAAAAAAAAAAAQmxkIFVudEYjUmx0AAAAAAAAAAAAAAAAUnNsdFVudEYjUHhsQFIAk4AAAAAAAAAKdmVjdG9yRGF0YWJvb2wBAAAAAFBnUHNlbnVtAAAAAFBnUHMAAAAAUGdQQwAAAABMZWZ0VW50RiNSbHQAAAAAAAAAAAAAAABUb3AgVW50RiNSbHQAAAAAAAAAAAAAAABTY2wgVW50RiNQcmNAWQAAAAAAAAAAABBjcm9wV2hlblByaW50aW5nYm9vbAAAAAAOY3JvcFJlY3RCb3R0b21sb25nAAAAAAAAAAxjcm9wUmVjdExlZnRsb25nAAAAAAAAAA1jcm9wUmVjdFJpZ2h0bG9uZwAAAAAAAAALY3JvcFJlY3RUb3Bsb25nAAAAAAA4QklNA+0AAAAAABAASAJOAAEAAQBIAk4AAQABOEJJTQQmAAAAAAAOAAAAAAAAAAAAAD+AAAA4QklNBA0AAAAAAAQAAAAeOEJJTQQZAAAAAAAEAAAAHjhCSU0D8wAAAAAACQAAAAAAAAAAAQA4QklNJxAAAAAAAAoAAQAAAAAAAAABOEJJTQP1AAAAAABIAC9mZgABAGxmZgAGAAAAAAABAC9mZgABAKGZmgAGAAAAAAABADIAAAABAFoAAAAGAAAAAAABADUAAAABAC0AAAAGAAAAAAABOEJJTQP4AAAAAABwAAD/////////////////////////////A+gAAAAA/////////////////////////////wPoAAAAAP////////////////////////////8D6AAAAAD/////////////////////////////A+gAADhCSU0EAAAAAAAAAgAAOEJJTQQCAAAAAAACAAA4QklNBDAAAAAAAAEBADhCSU0ELQAAAAAABgABAAAAAzhCSU0ECAAAAAAAEAAAAAEAAAJAAAACQAAAAAA4QklNBB4AAAAAAAQAAAAAOEJJTQQaAAAAAAM9AAAABgAAAAAAAAAAAAAAHwAAAJsAAAAEAGwAbwBnAG8AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAJsAAAAfAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAEAAAAAAABudWxsAAAAAgAAAAZib3VuZHNPYmpjAAAAAQAAAAAAAFJjdDEAAAAEAAAAAFRvcCBsb25nAAAAAAAAAABMZWZ0bG9uZwAAAAAAAAAAQnRvbWxvbmcAAAAfAAAAAFJnaHRsb25nAAAAmwAAAAZzbGljZXNWbExzAAAAAU9iamMAAAABAAAAAAAFc2xpY2UAAAASAAAAB3NsaWNlSURsb25nAAAAAAAAAAdncm91cElEbG9uZwAAAAAAAAAGb3JpZ2luZW51bQAAAAxFU2xpY2VPcmlnaW4AAAANYXV0b0dlbmVyYXRlZAAAAABUeXBlZW51bQAAAApFU2xpY2VUeXBlAAAAAEltZyAAAAAGYm91bmRzT2JqYwAAAAEAAAAAAABSY3QxAAAABAAAAABUb3AgbG9uZwAAAAAAAAAATGVmdGxvbmcAAAAAAAAAAEJ0b21sb25nAAAAHwAAAABSZ2h0bG9uZwAAAJsAAAADdXJsVEVYVAAAAAEAAAAAAABudWxsVEVYVAAAAAEAAAAAAABNc2dlVEVYVAAAAAEAAAAAAAZhbHRUYWdURVhUAAAAAQAAAAAADmNlbGxUZXh0SXNIVE1MYm9vbAEAAAAIY2VsbFRleHRURVhUAAAAAQAAAAAACWhvcnpBbGlnbmVudW0AAAAPRVNsaWNlSG9yekFsaWduAAAAB2RlZmF1bHQAAAAJdmVydEFsaWduZW51bQAAAA9FU2xpY2VWZXJ0QWxpZ24AAAAHZGVmYXVsdAAAAAtiZ0NvbG9yVHlwZWVudW0AAAARRVNsaWNlQkdDb2xvclR5cGUAAAAATm9uZQAAAAl0b3BPdXRzZXRsb25nAAAAAAAAAApsZWZ0T3V0c2V0bG9uZwAAAAAAAAAMYm90dG9tT3V0c2V0bG9uZwAAAAAAAAALcmlnaHRPdXRzZXRsb25nAAAAAAA4QklNBCgAAAAAAAwAAAACP/AAAAAAAAA4QklNBBQAAAAAAAQAAAADOEJJTQQhAAAAAABVAAAAAQEAAAAPAEEAZABvAGIAZQAgAFAAaABvAHQAbwBzAGgAbwBwAAAAEwBBAGQAbwBiAGUAIABQAGgAbwB0AG8AcwBoAG8AcAAgAEMAUwA2AAAAAQA4QklNBAYAAAAAAAcAAgAAAAEBAP/hDilodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDE0LTA5LTA0VDEyOjM5OjU0KzA1OjQ1IiB4bXA6TW9kaWZ5RGF0ZT0iMjAxNC0wOS0wNVQwOTozMjoxMCswNTo0NSIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxNC0wOS0wNVQwOTozMjoxMCswNTo0NSIgZGM6Zm9ybWF0PSJpbWFnZS9qcGVnIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiBwaG90b3Nob3A6SUNDUHJvZmlsZT0ic1JHQiBJRUM2MTk2Ni0yLjEiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEI5QkExNTBBRjM0RTQxMUE4OUJFNjk5RTgzMEVCQUYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEE5QkExNTBBRjM0RTQxMUE4OUJFNjk5RTgzMEVCQUYiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo4QTlCQTE1MEFGMzRFNDExQTg5QkU2OTlFODMwRUJBRiI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6OEE5QkExNTBBRjM0RTQxMUE4OUJFNjk5RTgzMEVCQUYiIHN0RXZ0OndoZW49IjIwMTQtMDktMDRUMTI6Mzk6NTQrMDU6NDUiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDUzYgKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjb252ZXJ0ZWQiIHN0RXZ0OnBhcmFtZXRlcnM9ImZyb20gaW1hZ2UvcG5nIHRvIGltYWdlL2pwZWciLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjhCOUJBMTUwQUYzNEU0MTFBODlCRTY5OUU4MzBFQkFGIiBzdEV2dDp3aGVuPSIyMDE0LTA5LTA1VDA5OjMyOjEwKzA1OjQ1IiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPD94cGFja2V0IGVuZD0idyI/Pv/iDFhJQ0NfUFJPRklMRQABAQAADEhMaW5vAhAAAG1udHJSR0IgWFlaIAfOAAIACQAGADEAAGFjc3BN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';
 
         var doc = new jsPDF();
         doc.setFontSize(14);
-        doc.text(20, 20, 'Vroozi Purchase Order');
+        doc.addImage(imgData, 'JPEG', 20, 25, 40, 10);
         
        
         doc.setFontSize(11);
@@ -575,40 +576,40 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
         doc.text(145, 65, 'Revision Date: 09/03/2014');
 
         //mid left
-        doc.text(20, 75, 'Vendor Information');       
-        doc.text(20, 80, 'Vendor: ' + purchaseOrder.companyAddress.addressName);    
-        //supplier email needs be dynamic
-        doc.text(20, 80, 'Email:' + purchaseOrder.supplierEmail);    
+        doc.text(20, 90, 'Vendor Information');   
+        doc.line(20, 20, 60, 20);    
+        doc.text(20, 95, 'Vendor: ' + purchaseOrder.companyAddress.addressName);            
+        doc.text(20, 100, 'Email:' + purchaseOrder.supplierEmail);    
         //mid right
-        doc.text(140, 75, 'Address: '); 
+        doc.text(140, 95, 'Address: '); 
         //supplier address needs to be supplier address, is set to PO maker's company address            
-            doc.text(140, 79, purchaseOrder.companyAddress.addressName);
-            doc.text(140, 83, purchaseOrder.companyAddress.street);
-            doc.text(140, 87, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
-            doc.text(140, 91, purchaseOrder.companyAddress.country);
-            doc.text(140, 95, 'Phone: ' + purchaseOrder.companyAddress.country); 
+            doc.text(140, 99, purchaseOrder.companyAddress.addressName);
+            doc.text(140, 103, purchaseOrder.companyAddress.street);
+            doc.text(140, 107, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
+            doc.text(140, 111, purchaseOrder.companyAddress.country);
+            doc.text(140, 115, 'Phone: ' + purchaseOrder.companyAddress.country); 
         //mid bot
-        doc.text(20, 100, 'Notes For Supplier: ' + purchaseOrder.notesToSupplier);
+        doc.text(20, 120, 'Notes For Supplier: ' + purchaseOrder.notesToSupplier);
 
         //bot left
-        doc.text(20, 110, 'Buyer Information');
-        doc.text(20, 120, 'Buyer Name: ' + purchaseOrder.buyer);
-        doc.text(20, 125, 'Buyer Contact: ' + purchaseOrder.buyerContact);
-        doc.text(20, 130, 'Purchasing Organization: ' + purchaseOrder.purchasingOrganization);
-        doc.text(20, 135, 'Purchasing Group: ' + purchaseOrder.purchasingGroup);
-        doc.text(20, 140, 'Company Code: ' + purchaseOrder.companyCode);       
+        doc.text(20, 130, 'Buyer Information');
+        doc.text(20, 140, 'Buyer Name: ' + purchaseOrder.buyer);
+        doc.text(20, 145, 'Buyer Contact: ' + purchaseOrder.buyerContact);
+        doc.text(20, 150, 'Purchasing Organization: ' + purchaseOrder.purchasingOrganization);
+        doc.text(20, 155, 'Purchasing Group: ' + purchaseOrder.purchasingGroup);
+        doc.text(20, 160, 'Company Code: ' + purchaseOrder.companyCode);       
 
         //bot right
-        doc.text(140, 110, 'Shipping Infromation');
-        doc.text(140, 120, 'Shipping Address: '); 
+        doc.text(140, 130, 'Shipping Infromation');
+        doc.text(140, 140, 'Shipping Address: '); 
         //shipping address needs to be supplier address, is set to PO maker's company address            
-            doc.text(140, 124, purchaseOrder.companyAddress.addressName);
-            doc.text(140, 128, purchaseOrder.companyAddress.street);
-            doc.text(140, 132, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
-            doc.text(140, 136, purchaseOrder.companyAddress.country);
-            doc.text(140, 140, 'Phone: ' + purchaseOrder.companyAddress.country);
+            doc.text(140, 144, purchaseOrder.companyAddress.addressName);
+            doc.text(140, 148, purchaseOrder.companyAddress.street);
+            doc.text(140, 152, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
+            doc.text(140, 156, purchaseOrder.companyAddress.country);
+            doc.text(140, 160, 'Phone: ' + purchaseOrder.companyAddress.country);
 
-        doc.text(140, 145, 'Shipping Instructions: ' + purchaseOrder.shippingInstructions); 
+        doc.text(140, 165, 'Shipping Instructions: ' + purchaseOrder.shippingInstructions); 
 
 
 
@@ -621,14 +622,14 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
 
         doc.setFontSize(11);
         doc.text(20, 25, 'Description');
-        doc.text(40, 25, 'Supplier');
-        doc.text(50, 25, 'Qty');
-        doc.text(60, 25, 'UOM');            
-        doc.text(70, 25, 'Category');
-        doc.text(100, 25, 'Part No');
-        doc.text(120, 25, 'Unit Price');        
-        doc.text(90, 25, 'Delivery Date');
-        doc.text(140, 25, 'Total');
+        doc.text(50, 25, 'Supplier');
+        doc.text(70, 25, 'Qty');
+        doc.text(80, 25, 'UOM');            
+        doc.text(95, 25, 'Category');
+        doc.text(115, 25, 'Part No');
+        doc.text(130, 25, 'Unit Price');        
+        doc.text(150, 25, 'Delivery Date');
+        doc.text(180, 25, 'Total');
         var y = 30;
         angular.forEach(purchaseOrder.items, function(item, key) {           
             // return;
@@ -657,14 +658,14 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
             item.deliveryDate = new Date(moment(item.deliveryDate));
 
             doc.text(20, y, item.description);
-            doc.text(40, y, item.supplierName);
-            // doc.text(50, y, item.qty);
-            doc.text(60, y, item.uom);            
-            doc.text(70, y, item.category);
-            doc.text(100, y, item.partNo);
-            doc.text(120, y, item.unitPrice);        
-            doc.text(90, y, '09/04/2014');
-            doc.text(140, y, '$ ' + item.unitPrice * item.qty);
+            doc.text(50, y, item.supplierName);
+            doc.text(70, y, ''+item.qty);
+            doc.text(80, y, item.uom);            
+            doc.text(95, y, item.category);
+            doc.text(115, y, item.partNo);
+            doc.text(130, y, item.unitPrice);        
+            doc.text(150, y, '09/04/2014');
+            doc.text(180, y, '$ ' + item.unitPrice * item.qty);
 
             y = y + 5;            
         });                  
@@ -681,14 +682,14 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
         doc.text(20, y, 'Invoice Comments: ' + purchaseOrder.invoiceComments);
 
         //bot right
-        doc.text(45, offsetY, 'Subtotal: $ ' + sub);
+        doc.text(145, offsetY, 'Subtotal: $ ' + sub);
         offsetY = offsetY + 5;            
-        doc.text(45, offsetY, 'Shipping Charges: $ ' + shipCharge);
+        doc.text(145, offsetY, 'Shipping Charges: $ ' + shipCharge);
         offsetY = offsetY + 5;            
-        doc.text(45, offsetY, 'Tax: $ ' + taxAmt);
+        doc.text(145, offsetY, 'Tax: $ ' + taxAmt);
         offsetY = offsetY + 10;  
         doc.setFontSize(15);          
-        doc.text(45, offsetY, 'Total: $ ' + total);
+        doc.text(145, offsetY, 'Total: $ ' + total);
 
 
         // console.log($scope.subTotal);

@@ -15,7 +15,7 @@ var upload  ={
             file_ext = files.file.name.split('.').pop(),
             index = old_path.lastIndexOf('/') + 1,
             file_name = old_path.substr(index),
-            new_path =  path.join(process.env.PWD, 'public', 'uploads', files.file.name);
+            new_path =  path.join('public', 'uploads', files.file.name);
             fs.readFile(old_path, function(err, data) {
 	            fs.writeFile(new_path, data, function(err) {
 	                fs.unlink(old_path, function(err) {

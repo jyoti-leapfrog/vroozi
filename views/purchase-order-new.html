@@ -20,8 +20,8 @@
             <span class="btn btn-primary" ng-click="upload()">Sign the selected PDF</span>
         </form>
     </div>
-    <div class="span3 pull-right" style="width: 6.5%">
-        <a class="btn " ng-click="generatePDFOrder(purchaseOrder)" ng-show="acl.exportPdfOrder" ng-disabled="ordersForm.$invalid"><i class="icon-print"></i></a>
+    <div class="span3 pull-right" style="width: 20%">
+        <a class="btn " ng-click="generatePDFOrder(purchaseOrder)" ng-show="acl.exportPdfOrder" ng-disabled="ordersForm.$invalid"><!-- <i class="icon-print"></i> -->Generate PDF</a>
         <!-- <a ng-href="{{pdfOrderReportsUrl}}" href="" id="pdfOrderReportsUrl" ng-show="false"></a> -->
     </div>
     <!-- will be opened once FALC-357 (Purchase Order PDF) is implemented
@@ -536,24 +536,7 @@
 </div>
 </form>
 <!-- Create Purchase Order End -->
-<!-- pdf view starts -->
-<div class="pdf-report" id="pdfView">   
 
-    <div class="border pull-right clearfix span7 margin-bot-10">        
-        PO#: 2-0000-000-71
-    </div> 
-    <div class="border pull-right clearfix span7 margin-bot-10">        
-        Status: NEW
-    </div>
-    <div class="border pull-right clearfix span7 margin-bot-10">        
-        Order Type: < Value >
-    </div>
-
-
-    <div class="clearfix"></div>    
-</div>
-<button ng-click="newPdf()">Generate PDF</button>
-<!-- pdf view ends -->
 <!-- Modals -->
 <div id="lineItemOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-include="'partials/lineItem-modal.html'"></div>
 <div id="shippingAddressOverlay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" ng-include="'partials/address-modal.html'" ng-controller="AddressCtrl"></div>
