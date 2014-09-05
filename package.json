@@ -8,17 +8,18 @@
   "dependencies": {
     "express": "3.0.3",
     "express-namespace": "~0.1.1",
-    "elasticsearchclient" : "0.5.3",
+    "elasticsearchclient": "0.5.3",
     "consolidate": "*",
-    "mustache":"0.7.2",
+    "mustache": "0.7.2",
     "mime": "1.2.9",
     "underscore": "*",
     "optimist": "*",
     "moment": "2.0.0",
     "winston": "*",
-    "clone":"0.1.7",
-    "gm":"1.9.1",
-    "mv":"*",
-    "newrelic":"1.2.0"
+    "clone": "0.1.7",
+    "gm": "1.9.1",
+    "mv": "*",
+    "newrelic": "1.2.0",
+    "formidable": "^1.0.15"
   }
 }

@@ -14,6 +14,12 @@
 
 <div class="spacing" style="height: 10px"></div>
 <div class="row">
+     <div class="span3 pull-right" style="width: 50%">
+        <form action="/upload" enctype="multipart/form-data" method="post">
+            <input type="file" file-model="myFile"/>            
+            <span class="btn btn-primary" ng-click="upload()">Sign the selected PDF</span>
+        </form>
+    </div>
     <div class="span3 pull-right" style="width: 6.5%">
         <a class="btn " ng-click="generatePDFOrder(purchaseOrder)" ng-show="acl.exportPdfOrder" ng-disabled="ordersForm.$invalid"><i class="icon-print"></i></a>
         <!-- <a ng-href="{{pdfOrderReportsUrl}}" href="" id="pdfOrderReportsUrl" ng-show="false"></a> -->

@@ -3,7 +3,7 @@
 function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,PurchaseOrders, $location,
                              Address, CompanySettings, Suppliers, CountriesList, PaymentTerms, Users,
                              DefaultCurrency,Categories, Uoms, Currencies,DefaultCostCenter,
-                             CostCenters,PurchaseOrderLineItem, CompanyCodes, GLAccounts,MessageService) {
+                             CostCenters,PurchaseOrderLineItem, CompanyCodes, GLAccounts,MessageService, Upload) {
 
 
     $rootScope.currentRequest = undefined;
@@ -920,5 +920,12 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
         }
     });
 
+
+    $scope.upload = function(){
+        var file = $scope.myFile;
+        console.log('file is ' + JSON.stringify(file));
+        var uploadUrl = "/sign";
+        Upload.uploadFileToUrl(file, uploadUrl);
+    };
 
 }

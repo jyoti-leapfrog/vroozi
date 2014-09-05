@@ -11,6 +11,8 @@ var http = require('http'),
     routes = require('./routes'),
     imageUtils = require('./routes/imageUtils'),
     api = require('./routes/api'),
+    docusign = require('./routes/docusign'),
+    upload = require('./routes/upload'),
     prApproval = require('./routes/purchaseRequestApproval'),
     config = require('./conf/app_settings.js').settings,
     clientSession = require('./vroozi_modules/client-session'),
@@ -259,6 +261,8 @@ app.post('/uploads', fileUpload.deferHandler({"unitLogo": contentMedia.unitLogoH
 app.post('/uploads/supplier-logo', fileUpload.deferHandler({"logo": contentMedia.supplierLogoHandler}));
 
 app.post('/contentuploads', fileUpload.deferHandler({"contentFile": contentfileUpload.postFileUploadHandler}));
+
+app.post('/sign', upload.upload, docusign.initialize, docusign.sendTemplate);
 
 // Bootstrap controllers
 var controllers_path = __dirname + '/router'
