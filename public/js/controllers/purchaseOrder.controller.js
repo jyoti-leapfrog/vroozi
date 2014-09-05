@@ -537,56 +537,207 @@ function PurchaseOrdersCtrl ($routeParams, $rootScope, $scope, PurchaseOrder,Pur
             if (purchaseOrder[obj] == null || purchaseOrder[obj] == undefined) {
                 purchaseOrder[obj] = "NA";
             }
-        }    
-        //company address           
+        }           
+        
+        var sub = $scope.subTotal;
+        var shipCharge = $scope.shippingCharges;
+        var taxAmt = $scope.taxAmount;
+        var total = $scope.totalAmount;
+
         var doc = new jsPDF();
         doc.setFontSize(14);
         doc.text(20, 20, 'Vroozi Purchase Order');
-
-        doc.setFontSize(11);        
-        doc.text(20, 40, 'Company Address: ' + purchaseOrder.companyAddress.addressName);            
-            doc.text(30, 50, purchaseOrder.companyAddress.addressName);
-            doc.text(30, 55, purchaseOrder.companyAddress.street);
-            doc.text(30, 60, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
-            doc.text(30, 65, purchaseOrder.companyAddress.country);
-            doc.text(30, 70, 'Phone: ' + purchaseOrder.companyAddress.country); 
-        doc.text(20, 80, 'Approval Required: ' + purchaseOrder.companyAddress.addressName);    
-        doc.text(20, 90, 'Vendor Name: ' + purchaseOrder.companyAddress.addressName);    
-        //NA need display dynamic value
-        doc.text(20, 100, 'Supplier Address: NA');   
-        doc.text(20, 110, 'Supplier Email: ' + purchaseOrder.supplierEmail);   
-        doc.text(20, 120, 'Shipping Instructions: NA');   
-
-
-
-
-
-        doc.text(100, 40, 'Order Number: ' + purchaseOrder.orderNumber);                                    
-        doc.text(100, 50, 'Order Type: ' + purchaseOrder.purchasingOrganization);
-        doc.text(100, 60, 'Order Name: ' + purchaseOrder.orderName);
-        // version needs to be dynamic, its static for now
-        doc.text(100, 70, 'Version: 1');
-        doc.text(100, 80, 'Status: ' + purchaseOrder.status);        
-        doc.text(100, 90, 'Requester: ' + purchaseOrder.requester);
-        doc.text(100, 100, 'Payment Terms: ' + purchaseOrder.paymentTerms);
-        doc.text(100, 110, 'VAT Info: ' + purchaseOrder.vatInfo);
-        doc.text(100, 120, 'Creation Date: ' + purchaseOrder.createdDate);
-        doc.text(100, 130, 'Revision Date: ' + purchaseOrder.revisionDate);
-        doc.text(100, 140, 'Buyer: ' + purchaseOrder.buyer);
-        doc.text(100, 150, 'Buyer Contact: ' + purchaseOrder.buyerContact);
-        doc.text(100, 160, 'Purchasing Organization: ' + purchaseOrder.purchasingOrganization);
-        doc.text(100, 170, 'Purchasing Group: ' + purchaseOrder.purchasingGroup);
-        doc.text(100, 180, 'Company Code: ' + purchaseOrder.companyCode);       
-        doc.text(100, 190, 'Invoice Comments: ' + purchaseOrder.invoiceComments);
-
-
         
+       
+        doc.setFontSize(11);
+        // doc top right
+        doc.text(150, 30, 'PO#: ' + purchaseOrder.orderNumber);
+        doc.text(150, 35, 'Status: ' + purchaseOrder.status);
+        doc.text(150, 40, 'Order Type: ' + purchaseOrder.orderType);
+
+        // top mid left
+        doc.text(20, 50, 'Order Name: ' + purchaseOrder.orderName);
+        doc.text(20, 55, 'Requester: ' + purchaseOrder.requester);
+            //company address 
+                doc.text(20, 60, 'Company Address: ');                                      
+                doc.text(30, 64, purchaseOrder.companyAddress.addressName);
+                doc.text(30, 68, purchaseOrder.companyAddress.street);
+                doc.text(30, 72, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
+                doc.text(30, 76, purchaseOrder.companyAddress.country);
+                doc.text(30, 80, 'Phone: ' + purchaseOrder.companyAddress.country); 
+
+        // top mid right
+        // version needs to be dynamic, its static for now   
+        doc.text(145, 50, 'Version: 1');
+        //dates needs be dynamic
+        doc.text(145, 55, 'Created on: 09/03/2014');
+        doc.text(145, 60, 'Issued on: 09/03/2014');
+        doc.text(145, 65, 'Revision Date: 09/03/2014');
+
+        //mid left
+        doc.text(20, 75, 'Vendor Information');       
+        doc.text(20, 80, 'Vendor: ' + purchaseOrder.companyAddress.addressName);    
+        //supplier email needs be dynamic
+        doc.text(20, 80, 'Email:' + purchaseOrder.supplierEmail);    
+        //mid right
+        doc.text(140, 75, 'Address: '); 
+        //supplier address needs to be supplier address, is set to PO maker's company address            
+            doc.text(140, 79, purchaseOrder.companyAddress.addressName);
+            doc.text(140, 83, purchaseOrder.companyAddress.street);
+            doc.text(140, 87, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
+            doc.text(140, 91, purchaseOrder.companyAddress.country);
+            doc.text(140, 95, 'Phone: ' + purchaseOrder.companyAddress.country); 
+        //mid bot
+        doc.text(20, 100, 'Notes For Supplier: ' + purchaseOrder.notesToSupplier);
+
+        //bot left
+        doc.text(20, 110, 'Buyer Information');
+        doc.text(20, 120, 'Buyer Name: ' + purchaseOrder.buyer);
+        doc.text(20, 125, 'Buyer Contact: ' + purchaseOrder.buyerContact);
+        doc.text(20, 130, 'Purchasing Organization: ' + purchaseOrder.purchasingOrganization);
+        doc.text(20, 135, 'Purchasing Group: ' + purchaseOrder.purchasingGroup);
+        doc.text(20, 140, 'Company Code: ' + purchaseOrder.companyCode);       
+
+        //bot right
+        doc.text(140, 110, 'Shipping Infromation');
+        doc.text(140, 120, 'Shipping Address: '); 
+        //shipping address needs to be supplier address, is set to PO maker's company address            
+            doc.text(140, 124, purchaseOrder.companyAddress.addressName);
+            doc.text(140, 128, purchaseOrder.companyAddress.street);
+            doc.text(140, 132, purchaseOrder.companyAddress.city + ', ' + purchaseOrder.companyAddress.state + ', ' + purchaseOrder.companyAddress.postalCode);
+            doc.text(140, 136, purchaseOrder.companyAddress.country);
+            doc.text(140, 140, 'Phone: ' + purchaseOrder.companyAddress.country);
+
+        doc.text(140, 145, 'Shipping Instructions: ' + purchaseOrder.shippingInstructions); 
+
+
+
+        //next page
+        doc.addPage();
+
+        //line items       
+        doc.setFontSize(13);
+        doc.text(20, 20, 'Line Item');       
+
+        doc.setFontSize(11);
+        doc.text(20, 25, 'Description');
+        doc.text(40, 25, 'Supplier');
+        doc.text(50, 25, 'Qty');
+        doc.text(60, 25, 'UOM');            
+        doc.text(70, 25, 'Category');
+        doc.text(100, 25, 'Part No');
+        doc.text(120, 25, 'Unit Price');        
+        doc.text(90, 25, 'Delivery Date');
+        doc.text(140, 25, 'Total');
+        var y = 30;
+        angular.forEach(purchaseOrder.items, function(item, key) {           
+            // return;
+            if (null == item.supplierName || undefined == item.supplierName) {
+                item.supplierName = 'NA';
+            }
+            if (null == item.qty || undefined == item.qty) {
+                item.qty = 'NA';
+            }
+            if (null == item.uom || undefined == item.uom) {
+                item.uom = 'NA';
+            }
+            if (null == item.category || undefined == item.category) {
+                item.category = 'NA';
+            }
+            if (null == item.partNo || undefined == item.partNo) {
+                item.partNo = 'NA';
+            }
+            if (null == item.unitPrice || undefined == item.unitPrice) {
+                item.unitPrice = 0;
+            }
+            if (null == item.deliveryDate || undefined == item.deliveryDate) {
+                item.deliveryDate = 'NA';
+            }
+
+            item.deliveryDate = new Date(moment(item.deliveryDate));
+
+            doc.text(20, y, item.description);
+            doc.text(40, y, item.supplierName);
+            // doc.text(50, y, item.qty);
+            doc.text(60, y, item.uom);            
+            doc.text(70, y, item.category);
+            doc.text(100, y, item.partNo);
+            doc.text(120, y, item.unitPrice);        
+            doc.text(90, y, '09/04/2014');
+            doc.text(140, y, '$ ' + item.unitPrice * item.qty);
+
+            y = y + 5;            
+        });                  
+        
+        y = y + 5;
+        var offsetY = y;
+        //bot left
+        doc.text(20, y, 'Payment Terms: ' + purchaseOrder.paymentTerms);
+        y = y + 5;
+        doc.text(20, y, 'VAT Info: ' + purchaseOrder.vatInfo);
+        y = y + 5;        
+        doc.text(20, y, 'FOB Terms: ' + purchaseOrder.fobTerms);  
+        y = y + 5;
+        doc.text(20, y, 'Invoice Comments: ' + purchaseOrder.invoiceComments);
+
+        //bot right
+        doc.text(45, offsetY, 'Subtotal: $ ' + sub);
+        offsetY = offsetY + 5;            
+        doc.text(45, offsetY, 'Shipping Charges: $ ' + shipCharge);
+        offsetY = offsetY + 5;            
+        doc.text(45, offsetY, 'Tax: $ ' + taxAmt);
+        offsetY = offsetY + 10;  
+        doc.setFontSize(15);          
+        doc.text(45, offsetY, 'Total: $ ' + total);
+
+
+        // console.log($scope.subTotal);
         // doc.addPage();        
         // Output as Data URI
         doc.output('datauri');       
         // window.open().document.open();
 
     };
+
+    $scope.newPdf = function(){        
+        var pdf = new jsPDF('p','pt','a4');
+        var source = $('#pdfView')[0];
+        var specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '#byPass': function(element, renderer){
+                // true = "handled elsewhere, bypass text extraction"
+                return true;
+            }
+        };
+
+        var margins = {
+                top: 80,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+        /*pdf.fromHTML(
+            source // HTML string or DOM elem ref.
+            , margins.left // x coord
+            , margins.top // y coord
+            , {
+                'width': margins.width // max width of content on PDF
+                , 'elementHandlers': specialElementHandlers
+            },
+            function (dispose) {
+              // dispose: object with X, Y of the last line add to the PDF
+              //          this allow the insertion of new lines after html
+                // pdf.save('Test.pdf');
+                pdf.output('dataurl');
+              },
+            margins
+        );
+*/     
+
+        pdf.addHTML(source,function() {
+             pdf.save('Test.pdf');
+        });
+    }
 
     $scope.resetClassAddressManagement = function(){
         $('#addressNameDiv').removeClass('error');

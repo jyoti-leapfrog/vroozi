@@ -1041,3 +1041,20 @@ span.grand-total, em.grand-total {
 	margin-bottom: 10px;
 }
 }
+
+
+
+/*New css added by Prajwal Simkhada: 9/4/2014*/
+.pdf-report{
+    width: 100%;    
+}
+.width-20{
+    width: 20%;
+}
+.margin-bot-10{
+    margin-bottom: 10px;
+}
+.border{
+    border: 1px solid black;
+    padding: 5px 10px;
+}
